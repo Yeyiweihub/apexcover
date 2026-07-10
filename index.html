@@ -1187,6 +1187,32 @@ function QuestionCard({question,selected,onSelect,onNext,onPrev,isFirst,isLast,i
   </div>);
 }
 
+function SuggestionBox(){
+  const [text,setText]=useState("");const [sent,setSent]=useState(false);
+  const submit=()=>{
+    if(!text.trim())return;
+    const body=encodeURIComponent(text.trim()+"\n\n---\n"+new Date().toLocaleString("zh-CN"));
+    window.open("mailto:862175542@qq.com?subject=ApexCover%E5%BB%BA%E8%AE%AE&body="+body,"_blank");
+    setSent(true);
+  };
+  return(<div className="max-w-3xl mx-auto px-4 pb-16">
+    <div className="bg-white rounded-2xl p-8 card-shadow">
+      <h3 className="text-lg font-bold text-gray-800 mb-2">💬 你的建议</h3>
+      <p className="text-sm text-gray-400 mb-4">觉得哪里可以改进？有什么保险产品想让我们加入？告诉我们</p>
+      {sent?(
+        <div className="text-center py-6"><div className="text-4xl mb-3">🎉</div><p className="text-green-600 font-medium">感谢！邮件客户端已打开</p><p className="text-sm text-gray-400 mt-1">如未打开请直接发邮件到 862175542@qq.com</p></div>
+      ):(
+        <><textarea className="w-full border border-gray-200 rounded-xl p-4 text-sm resize-none focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" rows={4} placeholder="写下你的想法..." maxLength={500} value={text} onChange={e=>setText(e.target.value)}/>
+        <div className="flex justify-between items-center mt-3">
+          <span className="text-xs text-gray-300">{text.length}/500</span>
+          <button className="btn-primary text-sm px-6 py-2" disabled={!text.trim()} onClick={submit}>📧 发送建议</button>
+        </div></>
+      )}
+    </div>
+  </div>);
+}
+
+
 function ResultsPage({recommendations,onRestart}){
   const cats=[
     {key:"medical",title:"🏥 百万医疗险",desc:"住院报销——年保费几百元撬动百万保障，DRG改革后最重要的底层保障"},
@@ -1223,30 +1249,6 @@ function ResultsPage({recommendations,onRestart}){
   </div>);
 }
 
-function SuggestionBox(){
-  const [text,setText]=useState("");const [sent,setSent]=useState(false);
-  const submit=()=>{
-    if(!text.trim())return;
-    const body=encodeURIComponent(text.trim()+"\n\n---\n"+new Date().toLocaleString("zh-CN"));
-    window.open("mailto:862175542@qq.com?subject=ApexCover%E5%BB%BA%E8%AE%AE&body="+body,"_blank");
-    setSent(true);
-  };
-  return(<div className="max-w-3xl mx-auto px-4 pb-16">
-    <div className="bg-white rounded-2xl p-8 card-shadow">
-      <h3 className="text-lg font-bold text-gray-800 mb-2">💬 你的建议</h3>
-      <p className="text-sm text-gray-400 mb-4">觉得哪里可以改进？有什么保险产品想让我们加入？告诉我们</p>
-      {sent?(
-        <div className="text-center py-6"><div className="text-4xl mb-3">🎉</div><p className="text-green-600 font-medium">感谢！邮件客户端已打开</p><p className="text-sm text-gray-400 mt-1">如未打开请直接发邮件到 862175542@qq.com</p></div>
-      ):(
-        <><textarea className="w-full border border-gray-200 rounded-xl p-4 text-sm resize-none focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" rows={4} placeholder="写下你的想法..." maxLength={500} value={text} onChange={e=>setText(e.target.value)}/>
-        <div className="flex justify-between items-center mt-3">
-          <span className="text-xs text-gray-300">{text.length}/500</span>
-          <button className="btn-primary text-sm px-6 py-2" disabled={!text.trim()} onClick={submit}>📧 发送建议</button>
-        </div></>
-      )}
-    </div>
-  </div>);
-}
 
 function WelcomeScreen({onStart}){
   return(<div className="fade-in flex flex-col items-center justify-center min-h-screen px-6 text-center">
