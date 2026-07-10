@@ -1292,12 +1292,7 @@ function App(){
 
     // === Q-specific rules ===
     switch(q.id){
-      case "t3": // Family role ← age
-        if(age){
-          if(["18-25"].includes(age)) filterOut("elder","parent","single-parent");
-          else if(["26-35"].includes(age)) filterOut("elder");
-          else if(["56-65","66+"].includes(age)) filterOut("single","parent","single-parent");
-        }
+      case "t3": // Family role — no age filter, all options available to everyone
         break;
       case "t4": // Income ← age + role
         if(age&&["18-25"].includes(age)){boost("lt5","（含学生/零收入）");}
