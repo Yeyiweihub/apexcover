@@ -1400,6 +1400,7 @@ function App(){
     <ProgressBar current={progressCurrent} total={progressTotal}/>
     {phase==="branch"&&<div className="px-6 pt-2"><span className="text-xs text-blue-500 bg-blue-50 px-3 py-1 rounded-full font-medium">{BRANCH_LABELS[branchKey]} · 专属问题</span></div>}
     <div key={displayQ.id}><QuestionCard question={displayQ} selected={latestAnswers.current[displayQ.id]||(displayQ.ty==="multi"?[]:null)} onSelect={handleSelect} onNext={handleNext} onPrev={handlePrev} isFirst={phase==="trunk"?qIdx===0:false} isLast={phase==="branch"&&qIdx===totalQuestions-1} isMulti={displayQ.ty==="multi"}/></div>
+    <SuggestionBox/>
     <div className="fixed bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f5f5f7] to-transparent pointer-events-none"></div>
   </div>);
 }
