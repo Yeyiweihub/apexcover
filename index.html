@@ -1226,16 +1226,16 @@ function SuggestionBox(){
   const [text,setText]=useState("");const [sent,setSent]=useState(false);
   const submit=()=>{
     if(!text.trim())return;
-    const body=encodeURIComponent(text.trim()+"\n\n---\n时间: "+new Date().toLocaleString("zh-CN"));
+    const body=encodeURIComponent(text.trim()+"\n\n---\n"+new Date().toLocaleString("zh-CN"));
     window.open("mailto:862175542@qq.com?subject=ApexCover%E5%BB%BA%E8%AE%AE&body="+body,"_blank");
     setSent(true);
   };
   return(<div className="max-w-3xl mx-auto px-4 pb-16">
     <div className="bg-white rounded-2xl p-8 card-shadow">
       <h3 className="text-lg font-bold text-gray-800 mb-2">💬 你的建议</h3>
-      <p className="text-sm text-gray-400 mb-4">觉得哪里可以改进？有什么保险产品想让我们加入？直接告诉我们 → 862175542@qq.com</p>
+      <p className="text-sm text-gray-400 mb-4">觉得哪里可以改进？有什么保险产品想让我们加入？告诉我们</p>
       {sent?(
-        <div className="text-center py-6"><div className="text-4xl mb-3">🎉</div><p className="text-green-600 font-medium">感谢！邮件客户端已打开</p><p className="text-sm text-gray-400 mt-1">如果没有自动打开，直接发邮件到 862175542@qq.com</p></div>
+        <div className="text-center py-6"><div className="text-4xl mb-3">🎉</div><p className="text-green-600 font-medium">感谢！邮件客户端已打开</p><p className="text-sm text-gray-400 mt-1">如未打开请直接发邮件到 862175542@qq.com</p></div>
       ):(
         <><textarea className="w-full border border-gray-200 rounded-xl p-4 text-sm resize-none focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" rows={4} placeholder="写下你的想法..." maxLength={500} value={text} onChange={e=>setText(e.target.value)}/>
         <div className="flex justify-between items-center mt-3">
@@ -1258,6 +1258,7 @@ function WelcomeScreen({onStart}){
     </div>
     <button className="btn-primary px-12 py-4 text-lg rounded-2xl shadow-lg" onClick={onStart}>开始测评 →</button>
     <p className="mt-10 text-xs text-gray-300">全程无需注册 · 数据不上传 · 约 4 分钟完成</p>
+    <SuggestionBox/>
   </div>);
 }
 
