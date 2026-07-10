@@ -283,9 +283,10 @@ const TRUNK = [
     {v:"male",l:"男性",i:"👨"},{v:"female",l:"女性",i:"👩"}
   ]},
   { id:"t3", t:"您目前所处的家庭角色？", s:"家庭责任大小直接决定身故/失能保障的保额", ty:"single", o:[
-    {v:"child",l:"被抚养人（学生/由父母供养）",i:"🎒"},{v:"single",l:"单身独立",i:"🧍"},
-    {v:"couple",l:"已婚/伴侣，尚无子女",i:"💑"},{v:"parent-young",l:"年轻父母（最小子女<6岁）",i:"👶"},
-    {v:"parent-school",l:"有学龄子女（6-18岁）",i:"👨‍👩‍👧"},{v:"parent-adult",l:"子女已成年/独立",i:"🧑"},
+    {v:"single",l:"单身独立",i:"🧍"},
+    {v:"couple",l:"已婚/伴侣，尚无子女",i:"💑"},
+    {v:"parent",l:"已婚有子女",i:"👨‍👩‍👧"},
+    {v:"single-parent",l:"单亲家庭",i:"👩‍👧"},
     {v:"elder",l:"退休/半退休状态",i:"🌅"}
   ]},
   { id:"t4", t:"您的家庭年收入？", s:"收入水平是确定保额和保费预算的最核心依据", ty:"single", o:[
@@ -792,7 +793,7 @@ function resolveBranch(trunkAnswers){
   // D: age 46+ → Senior (unless biz owner)
   if(["46-55","56-65","66+"].includes(age)&&occupation!=="business-owner")return {branch:"D",label:"银发安康"};
   // B: family (has kids / married)
-  if(["parent-young","parent-school"].includes(role)||["couple"].includes(role))return {branch:"B",label:"家庭守护者"};
+  if(["parent","single-parent"].includes(role)||["couple"].includes(role))return {branch:"B",label:"家庭守护者"};
   // A: default → young strivers
   return {branch:"A",label:"年轻奋斗族"};
 }
@@ -892,7 +893,7 @@ function calculateRecommendations(answers) {
 
   // === Term Life ===
   if(!existingS.has("term-life")&&!existingS.has("whole-life")){
-    const needTerm=role==="parent-young"||role==="parent-school"||hasDep||hasDebt||priority==="family-protect";
+    const needTerm=role==="parent"||role==="single-parent"||hasDep||hasDebt||priority==="family-protect";
     if(needTerm||isMiddle){
       if(healthS.has("nodule-thyroid")||healthS.has("nodule-breast")||healthS.has("nodule-lung")||healthS.has("hepatitis")||healthS.has("hypertension"))
         add("termLife","定海柱8号",30,"健康告知最宽松——不问乙肝/结节/高血压，猝死最高赔180%");
@@ -988,7 +989,7 @@ function calculateRecommendations(answers) {
   if(microS.has("dental")){add("dental","齿科险·泰康E齿康",28,"预防+基础+复杂治疗全覆盖，含拔牙/根管/牙冠");add("dental","齿科险·平安齿康保",22,"洁牙/补牙/拔牙全覆盖，正畸/种植优惠");}
 
   // === Maternity ===
-  if(gender==="female"&&h(["18-25","26-35","36-45"],age)&&role!=="child"){add("maternity","孕产险·平安幸孕星",22,"妊娠并发症20种+新生儿先天性疾病，备孕/孕期必备");add("maternity","孕产险·众安好孕保",18,"妊娠期并发症+新生儿保障+产后抑郁，0免赔");}
+  if(gender==="female"&&h(["18-25","26-35","36-45"],age)){add("maternity","孕产险·平安幸孕星",22,"妊娠并发症20种+新生儿先天性疾病，备孕/孕期必备");add("maternity","孕产险·众安好孕保",18,"妊娠期并发症+新生儿保障+产后抑郁，0免赔");}
 
   // === 惠民保 (City-subsidized) ===
   if(!existingS.has("medical")&&(isSenior||healthS.size>0||budget==="minimal")){add("hmb","全国版惠民保·众安全民保",22,"不限地域/年龄/职业/病史，79-168元/年，医保内外均可报");add("hmb","全国版惠民保·泰康全民e保",16,"全国可投，医保内外最高400万，特药0免赔");}
@@ -1293,9 +1294,9 @@ function App(){
     switch(q.id){
       case "t3": // Family role ← age
         if(age){
-          if(["18-25","26-35"].includes(age)) filterOut("child","elder","parent-young","parent-school","parent-adult");
-          else if(["36-45","46-55"].includes(age)) filterOut("child","elder");
-          else if(["56-65","66+"].includes(age)) filterOut("child","parent-young","parent-school","single");
+          if(["18-25"].includes(age)) filterOut("elder","parent","single-parent");
+          else if(["26-35"].includes(age)) filterOut("elder");
+          else if(["56-65","66+"].includes(age)) filterOut("single","parent","single-parent");
         }
         break;
       case "t4": // Income ← age + role
@@ -1304,7 +1305,7 @@ function App(){
         break;
       case "t5": // Occupation ← age + role
         if(age&&["56-65","66+"].includes(age)){filterOut("high-risk","freelancer");boost("retired","（推荐）");}
-        if(role==="elder"||role==="child"){autoSelect(role==="elder"?"retired":"employee");}
+        if(role==="elder"){autoSelect("retired");}
         break;
       case "a1": case "b1": case "c1": case "d1": // Social ← occupation
         if(occupation==="civil"||occupation==="employee"){boost("employee-ins","（当前职业匹配）");}
