@@ -1289,7 +1289,7 @@ function App(){
 
     let opts=[...q.o]; let subtitle=q.s||""; let changed=false;
     const filterOut=(...vals)=>{const prev=opts.length;opts=opts.filter(o=>!vals.includes(o.v));if(opts.length<prev)changed=true;};
-    const boost=(val,label)=>{const o=opts.find(x=>x.v===val);if(o&&!o.l.includes(label)){o.l=label;changed=true;}};
+    const boost=(val,label)=>{const o=opts.find(x=>x.v===val);if(o&&!o.l.includes(label)){o.l=o.l+label;changed=true;}};
     const autoSelect=(val)=>{opts=[opts.find(o=>o.v===val)].filter(Boolean);changed=true;};
 
     // === Q-specific rules ===
