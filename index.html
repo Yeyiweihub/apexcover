@@ -298,7 +298,7 @@ section .lead {
 .card:hover .tag::after { transform: translateX(2px); }
 
 /* Featured card (large, consumer vs pro) */
-.featured-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.featured-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .featured {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -330,15 +330,15 @@ section .lead {
 .featured h3 { font-size: 28px; font-weight: 700; letter-spacing: -.015em; margin-bottom: 12px; }
 .featured .desc { font-size: 16px; color: var(--text-tertiary); line-height: 1.65; margin-bottom: 28px; letter-spacing: -.005em; }
 .featured .links { display: flex; flex-direction: column; gap: 2px; }
-.featured .links span,.featured .links div {
+.featured .links div {
   font-size: 15px; color: var(--text-secondary);
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
   transition: all .25s;
   display: flex; align-items: center; justify-content: space-between;
 }
-.featured .links span,.featured .links div:last-child { border-bottom: none; }
-.featured .links span,.featured .links div::after {
+.featured .links div:last-child { border-bottom: none; }
+.featured .links div::after {
   content: '';
   width: 6px; height: 6px;
   border-right: 1.5px solid currentColor;
@@ -347,8 +347,8 @@ section .lead {
   opacity: 0;
   transition: all .25s;
 }
-.featured .links span,.featured .links div:hover { color: var(--accent); padding-left: 4px; }
-.featured .links span,.featured .links div:hover::after { opacity: 1; }
+.featured .links div:hover { color: var(--accent); padding-left: 4px; }
+.featured .links div:hover::after { opacity: 1; }
 
 /* Footer */
 footer {
@@ -378,7 +378,7 @@ footer {
 }
 </style>
 </head>
-<body><div style="position:fixed;top:100px;left:20px;z-index:9999;background:red;color:#fff;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600" onclick="alert('OK!')">🔴 测试按钮 - 点我</div>
+<body>
 <div class="bg-grid"></div>
 
 <nav>
@@ -401,35 +401,52 @@ footer {
   </div>
 </section>
 
-
-<!-- Consumer & Pro -->
+<!-- Consumer tools -->
 <section>
   <div class="container">
-    <div class="featured-grid">
-      <div class="featured reveal">
-        <div class="tag">消费者</div>
-        <h3>我想买保险</h3>
-        <p class="desc">为自己和家人，找到合适的保障方案。</p>
-        <div class="links">
-          <span style="cursor:pointer" onclick="event.stopPropagation();location.href='advisor.html'">智能规划</span>
-          <span style="cursor:pointer" onclick="event.stopPropagation();location.href='learn.html'">保险科普</span>
-          <span style="cursor:pointer" onclick="event.stopPropagation();location.href='products.html'">产品目录</span>
-        </div>
+    <div class="section-header">
+      <div class="reveal">
+        <div class="section-label">为购买保险的人</div>
+        <h2>不必懂得一切，只需懂得足够。</h2>
       </div>
-      <div class="featured reveal reveal-delay-1">
-        <div class="tag">从业者</div>
-        <h3>我是保险从业者</h3>
-        <p class="desc">提升专业能力，更精准地服务每一位客户。</p>
-        <div class="links">
-          <span>产品拆解</span>
-          <span>法商课堂</span>
-          <span>金税四期</span>
-          <span>销售实战</span>
-        </div>
+      <p class="lead reveal reveal-delay-1">不需要成为专家，也能做出明智的决定。</p>
+    </div>
+    <div class="cards cards-3">
+      <a href="advisor.html" style="text-decoration:none;color:inherit"><div class="card reveal" data-magnetic><span class="emoji">🎯</span><h3>智能规划</h3><p>回答 25 道题，精准匹配 185 款产品中适合你的方案</p><span class="tag">开始测评</span></div></a>
+      <a href="learn.html" style="text-decoration:none;color:inherit"><div class="card reveal reveal-delay-1" data-magnetic><span class="emoji">📚</span><h3>保险科普</h3><p>视频讲解每种险种的核心要点，看到最后就能自己做判断</p><span class="tag">开始学习</span></div></a>
+      <a href="advisor.html" style="text-decoration:none;color:inherit"><div class="card reveal reveal-delay-2" data-magnetic><span class="emoji">📦</span><h3>产品目录</h3><p>185 款在售产品，按险种、公司、价格快速检索和对比</p><span class="tag">浏览产品</span></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- Pro tools -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="reveal">
+        <div class="section-label">为保险从业者</div>
+        <h2>专业能力，是信任的唯一来源。</h2>
+      </div>
+      <p class="lead reveal reveal-delay-1">持续学习，为每一位客户提供更精准的服务。</p>
+    </div>
+    <div class="cards cards-4">
+      <div class="card reveal" data-magnetic style="cursor:pointer" onclick="location.href='advisor.html'">
+        <span class="emoji">🔬</span><h3>产品拆解</h3><p>热销产品深度剖析</p><span class="tag">了解</span>
+      </div>
+      <div class="card reveal reveal-delay-1" data-magnetic>
+        <span class="emoji">⚖️</span><h3>法商课堂</h3><p>婚姻继承 · 家企隔离</p><span class="tag">了解</span>
+      </div>
+      <div class="card reveal reveal-delay-2" data-magnetic>
+        <span class="emoji">🏛️</span><h3>金税四期</h3><p>以数治税下的保险合规</p><span class="tag">了解</span>
+      </div>
+      <div class="card reveal reveal-delay-3" data-magnetic>
+        <span class="emoji">🎙️</span><h3>销售实战</h3><p>SPIN · 异议处理 · 大单复盘</p><span class="tag">了解</span>
       </div>
     </div>
   </div>
-</section>footer class="reveal">
+</section>
+
+<footer class="reveal">
   ApexCover · 23 名平均从业超过十年的保险规划师给您的最好建议
 </footer>
 
