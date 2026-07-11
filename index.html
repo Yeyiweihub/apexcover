@@ -496,10 +496,10 @@ footer {
 (function(){
   const btn = document.getElementById('themeToggle');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if(!prefersDark) document.documentElement.setAttribute('data-theme','light');
+  if(!prefersDark){document.documentElement.setAttribute('data-theme','light');localStorage.setItem('apexcover-theme','light');}
   btn.addEventListener('click',()=>{
     const cur = document.documentElement.getAttribute('data-theme');
-    document.documentElement.setAttribute('data-theme', cur==='light'?'dark':'light');
+    const next=cur==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',next);localStorage.setItem('apexcover-theme',next);
   });
 })();
 
