@@ -330,15 +330,15 @@ section .lead {
 .featured h3 { font-size: 28px; font-weight: 700; letter-spacing: -.015em; margin-bottom: 12px; }
 .featured .desc { font-size: 16px; color: var(--text-tertiary); line-height: 1.65; margin-bottom: 28px; letter-spacing: -.005em; }
 .featured .links { display: flex; flex-direction: column; gap: 2px; }
-.featured .links div {
+.featured .links a,.featured .links div {
   font-size: 15px; color: var(--text-secondary);
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
   transition: all .25s;
   display: flex; align-items: center; justify-content: space-between;
 }
-.featured .links div:last-child { border-bottom: none; }
-.featured .links div::after {
+.featured .links a,.featured .links div:last-child { border-bottom: none; }
+.featured .links a,.featured .links div::after {
   content: '';
   width: 6px; height: 6px;
   border-right: 1.5px solid currentColor;
@@ -347,8 +347,8 @@ section .lead {
   opacity: 0;
   transition: all .25s;
 }
-.featured .links div:hover { color: var(--accent); padding-left: 4px; }
-.featured .links div:hover::after { opacity: 1; }
+.featured .links a,.featured .links div:hover { color: var(--accent); padding-left: 4px; }
+.featured .links a,.featured .links div:hover::after { opacity: 1; }
 
 /* Footer */
 footer {
@@ -410,9 +410,9 @@ footer {
         <h3>我想买保险</h3>
         <p class="desc">为自己和家人，找到合适的保障方案。</p>
         <div class="links">
-          <div onclick="location.href='advisor.html'">智能规划</div>
-          <div onclick="location.href='learn.html'">保险科普</div>
-          <div onclick="location.href='products.html'">产品目录</div>
+          <a href="advisor.html" style="text-decoration:none;color:inherit;display:block">智能规划</a>
+          <a href="learn.html" style="text-decoration:none;color:inherit;display:block">保险科普</a>
+          <a href="products.html" style="text-decoration:none;color:inherit;display:block">产品目录</a>
         </div>
       </div>
       <div class="featured reveal reveal-delay-1">
