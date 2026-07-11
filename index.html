@@ -410,8 +410,8 @@ footer {
         <h3>我想买保险</h3>
         <p class="desc">为自己和家人，找到合适的保障方案。不需要成为专家。</p>
         <div class="links">
-          <div onclick="location.href='advisor.html'" style="cursor:pointer">智能规划</div>
-          <div onclick="location.href='learn.html'" style="cursor:pointer">保险科普</div>
+          <div style="cursor:pointer" onmousedown="event.stopPropagation();location.href='advisor.html'">智能规划</div>
+          <div style="cursor:pointer" onmousedown="event.stopPropagation();location.href='learn.html'">保险科普</div>
           <div style="cursor:pointer" onclick="location.href='advisor.html'">浏览产品</div>
         </div>
       </div>
@@ -441,7 +441,7 @@ footer {
       <p class="lead reveal reveal-delay-1">不需要成为专家，也能做出明智的决定。</p>
     </div>
     <div class="cards cards-3">
-      <div class="card reveal" data-magnetic>
+      <div class="card reveal" data-magnetic style="cursor:pointer" onclick="location.href='advisor.html'">
         <span class="emoji">🎯</span><h3>智能规划</h3>
         <p>回答 25 道题，精准匹配 185 款产品中适合你的方案</p>
         <span class="tag">开始测评</span>
@@ -471,7 +471,7 @@ footer {
       <p class="lead reveal reveal-delay-1">持续学习，为每一位客户提供更精准的服务。</p>
     </div>
     <div class="cards cards-4">
-      <div class="card reveal" data-magnetic>
+      <div class="card reveal" data-magnetic style="cursor:pointer" onclick="location.href='advisor.html'">
         <span class="emoji">🔬</span><h3>产品拆解</h3><p>热销产品深度剖析</p><span class="tag">了解</span>
       </div>
       <div class="card reveal reveal-delay-1" data-magnetic>
