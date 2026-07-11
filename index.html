@@ -3,1411 +3,562 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>保险顾问 — 23名平均从业超过十年的保险规划师给您的最好建议</title>
-<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin></script>
-<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.6/babel.min.js" crossorigin></script>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>ApexCover</title>
 <style>
-:root{--blue:#0071e3;--gray-50:#f5f5f7;--gray-800:#1d1d1f}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased;min-height:100vh}
-.slide-in{animation:slideIn .4s cubic-bezier(.16,1,.3,1)}
-@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeIn .5s ease-out}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.card-shadow{box-shadow:0 4px 24px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04)}
-.card-shadow-lg{box-shadow:0 12px 48px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04)}
-.btn-primary{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-primary:hover{background:#0062c4;transform:scale(1.01)}
-.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.btn-option{background:#fff;border:1.5px solid #d2d2d7;border-radius:14px;padding:16px 20px;font-size:15px;cursor:pointer;transition:all .2s;text-align:left;width:100%}
-.btn-option:hover{border-color:var(--blue);background:#f0f5ff}
-.btn-option.selected{border-color:var(--blue);background:#e8f0fe;box-shadow:0 0 0 3px rgba(0,113,227,.15)}
-.progress-bar{height:4px;background:#d2d2d7;border-radius:2px}
-.progress-bar-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .5s cubic-bezier(.16,1,.3,1)}
-.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
-.tag-recommend{background:#e8f5e9;color:#1b5e20}
-.tag-consider{background:#fff3e0;color:#e65100}
-.tag-wealth{background:#f3e5f5;color:#4a148c}
-.product-card{background:#fff;border-radius:18px;padding:24px;border:1px solid #e8e8ed;transition:all .2s}
-.product-card:hover{border-color:#d2d2d7;box-shadow:0 8px 32px rgba(0,0,0,.06)}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #000;
+  --surface: rgba(255,255,255,.04);
+  --surface-hover: rgba(255,255,255,.08);
+  --border: rgba(255,255,255,.06);
+  --border-hover: rgba(255,255,255,.12);
+  --text: #e8e8ed;
+  --text-secondary: #98989e;
+  --text-tertiary: #636369;
+  --blue: #5e9eff;
+  --accent: #5e9eff;
+  --nav-bg: rgba(0,0,0,.7);
+  --radius: 20px;
+  --radius-lg: 28px;
+  --transition: cubic-bezier(.25,.1,.25,1);
+}
+[data-theme="light"] {
+  --bg: #fbfbfd;
+  --surface: #fff;
+  --surface-hover: #f5f5f7;
+  --border: #e5e5ea;
+  --border-hover: #d2d2d7;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #aeaeb2;
+  --blue: #0066cc;
+  --accent: #0066cc;
+  --nav-bg: rgba(251,251,253,.8);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Background */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(41,151,255,.08) 0%, transparent 100%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(41,151,255,.04) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+/* Nav */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0; right: 0;
+  z-index: 100;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+}
+nav .logo { font-size: 18px; font-weight: 600; letter-spacing: -.01em; color: var(--text); }
+nav .logo span { color: var(--accent); }
+.theme-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f5f5f7;
+  transition: all .25s;
+}
+[data-theme="light"] .theme-btn {
+  background: #1d1d1f;
+  color: #f5f5f7;
+}
+.theme-btn:hover { opacity: .8; }
+[data-theme="light"] .sun { display: none; }
+html:not([data-theme="light"]) .moon { display: none; }
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+}
+.hero h1 {
+  font-size: clamp(48px, 7vw, 80px);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.05;
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+.hero h1 .accent {
+  background: linear-gradient(135deg, #2997ff 0%, #5e9eff 40%, #a0c4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 19px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: -.01em;
+  max-width: 480px;
+  line-height: 1.6;
+  margin-bottom: 48px;
+}
+
+/* Search */
+.search-wrap {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  margin-bottom: 56px;
+}
+.search-wrap input {
+  width: 100%;
+  padding: 18px 24px 18px 56px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  font-size: 17px;
+  font-family: inherit;
+  background: var(--surface);
+  color: var(--text);
+  transition: all .3s var(--transition);
+  outline: none;
+}
+[data-theme="dark"] .search-wrap input {
+  background: rgba(255,255,255,.05);
+  backdrop-filter: blur(10px);
+}
+[data-theme="light"] .search-wrap input {
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.search-wrap input::placeholder { color: var(--text-tertiary); }
+.search-wrap input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0,113,227,.1);
+  outline: none;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  max-height: 360px;
+  overflow-y: auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,.12);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  display: none;
+  z-index: 200;
+}
+[data-theme="dark"] .search-results { background: rgba(30,30,32,.95); }
+.search-results.show { display: block; }
+.search-results .item {
+  padding: 14px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: background .2s;
+}
+.search-results .item:last-child { border: none; }
+.search-results .item:hover { background: var(--surface-hover); }
+.search-results .item .icon { font-size: 22px; flex-shrink: 0; opacity: .8; }
+.search-results .item .title { font-weight: 500; font-size: 15px; color: var(--text); }
+.search-results .item .meta { font-size: 13px; color: var(--text-tertiary); margin-top: 2px; }
+
+/* Grid */
+section { padding: 100px 0; }
+.section-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+section h2 {
+  font-size: clamp(32px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+}
+section .lead {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  line-height: 1.7;
+  align-self: end;
+  text-align: right;
+  letter-spacing: -.005em;
+}
+@media (max-width: 768px) {
+  .section-header { grid-template-columns: 1fr; gap: 16px; }
+  section .lead { text-align: left; }
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  gap: 20px;
+  align-items: stretch;
+}
+.cards-2 { grid-template-columns: 1fr 1fr; }
+.cards-3 { grid-template-columns: repeat(3, 1fr); }
+.cards-4 { grid-template-columns: repeat(4, 1fr); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  transition: all .4s var(--transition);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(41,151,255,.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+.card:hover::after { opacity: 1; }
+.card .emoji { font-size: 36px; margin-bottom: 24px; display: block; }
+.card h3 { font-size: 20px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 8px; }
+.card p { font-size: 14px; color: var(--text-tertiary); line-height: 1.55; letter-spacing: -.005em; }
+.card .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  transition: gap .25s;
+}
+.card:hover .tag { gap: 10px; }
+.card .tag::after {
+  content: '→';
+  transition: transform .25s;
+}
+.card:hover .tag::after { transform: translateX(2px); }
+
+/* Featured card (large, consumer vs pro) */
+.featured-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.featured {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 56px 48px;
+  transition: all .4s var(--transition);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.featured::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgba(41,151,255,.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.featured:hover { border-color: var(--border-hover); }
+.featured:hover::after { opacity: 1; }
+.featured .tag {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.featured h3 { font-size: 28px; font-weight: 700; letter-spacing: -.015em; margin-bottom: 12px; }
+.featured .desc { font-size: 16px; color: var(--text-tertiary); line-height: 1.65; margin-bottom: 28px; letter-spacing: -.005em; }
+.featured .links { display: flex; flex-direction: column; gap: 2px; }
+.featured .links div {
+  font-size: 15px; color: var(--text-secondary);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  transition: all .25s;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.featured .links div:last-child { border-bottom: none; }
+.featured .links div::after {
+  content: '';
+  width: 6px; height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-top: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: all .25s;
+}
+.featured .links div:hover { color: var(--accent); padding-left: 4px; }
+.featured .links div:hover::after { opacity: 1; }
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 32px;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+
+@media (max-width: 768px) {
+  .featured-grid, .cards-2, .cards-3, .cards-4 { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 40px; }
+  .container { padding: 0 20px; }
+}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<div id="error-screen" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:9999;padding:40px;font-family:monospace;overflow:auto">
-  <h2 style="color:red;margin-bottom:16px">⚠️ 运行时错误</h2>
-  <pre id="error-msg" style="white-space:pre-wrap;word-break:break-all;background:#fff0f0;padding:16px;border-radius:8px;font-size:13px"></pre>
-  <button onclick="location.reload()" style="margin-top:16px;padding:10px 24px;background:#0071e3;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">刷新页面</button>
-</div>
+<div class="bg-grid"></div>
+
+<nav>
+  <div class="logo">Apex<span>Cover</span></div>
+  <button id="themeToggle" class="theme-btn" aria-label="切换主题">
+    <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center;">
+    <h1 class="reveal">保障，可以<br>更<span class="accent">清晰</span>一点</h1>
+    <p class="reveal reveal-delay-1">无论是为自己寻找一份安心的保单，还是成为更值得信赖的保险人</p>
+    <div class="search-wrap reveal reveal-delay-2">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="搜产品、公司、课程..." autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Consumer & Pro -->
+<section>
+  <div class="container">
+    <div class="featured-grid">
+      <div class="featured reveal" data-magnetic>
+        <div class="tag">消费者</div>
+        <h3>我想买保险</h3>
+        <p class="desc">为自己和家人，找到合适的保障方案。不需要成为专家。</p>
+        <div class="links">
+          <div>智能规划 </div>
+          <div>保险科普 </div>
+          <div>产品目录 </div>
+        </div>
+      </div>
+      <div class="featured reveal reveal-delay-1" data-magnetic>
+        <div class="tag">从业者</div>
+        <h3>我是保险从业者</h3>
+        <p class="desc">持续提升专业能力，更精准地服务每一位客户。</p>
+        <div class="links">
+          <div>产品拆解 </div>
+          <div>法商课堂 </div>
+          <div>金税四期 </div>
+          <div>销售实战 </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Consumer tools -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="reveal">
+        <div class="section-label">为购买保险的人</div>
+        <h2>不必懂得一切，只需懂得足够。</h2>
+      </div>
+      <p class="lead reveal reveal-delay-1">不需要成为专家，也能做出明智的决定。</p>
+    </div>
+    <div class="cards cards-3">
+      <div class="card reveal" data-magnetic>
+        <span class="emoji">🎯</span><h3>智能规划</h3>
+        <p>回答 25 道题，精准匹配 185 款产品中适合你的方案</p>
+        <span class="tag">开始测评</span>
+      </div>
+      <div class="card reveal reveal-delay-1" data-magnetic>
+        <span class="emoji">📚</span><h3>保险科普</h3>
+        <p>视频讲解每种险种的核心要点，看到最后就能自己做判断</p>
+        <span class="tag">开始学习</span>
+      </div>
+      <div class="card reveal reveal-delay-2" data-magnetic>
+        <span class="emoji">📦</span><h3>产品目录</h3>
+        <p>185 款在售产品，按险种、公司、价格快速检索和对比</p>
+        <span class="tag">浏览产品</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pro tools -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="reveal">
+        <div class="section-label">为保险从业者</div>
+        <h2>专业能力，是信任的唯一来源。</h2>
+      </div>
+      <p class="lead reveal reveal-delay-1">持续学习，为每一位客户提供更精准的服务。</p>
+    </div>
+    <div class="cards cards-4">
+      <div class="card reveal" data-magnetic>
+        <span class="emoji">🔬</span><h3>产品拆解</h3><p>热销产品深度剖析</p><span class="tag">了解</span>
+      </div>
+      <div class="card reveal reveal-delay-1" data-magnetic>
+        <span class="emoji">⚖️</span><h3>法商课堂</h3><p>婚姻继承 · 家企隔离</p><span class="tag">了解</span>
+      </div>
+      <div class="card reveal reveal-delay-2" data-magnetic>
+        <span class="emoji">🏛️</span><h3>金税四期</h3><p>以数治税下的保险合规</p><span class="tag">了解</span>
+      </div>
+      <div class="card reveal reveal-delay-3" data-magnetic>
+        <span class="emoji">🎙️</span><h3>销售实战</h3><p>SPIN · 异议处理 · 大单复盘</p><span class="tag">了解</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="reveal">
+  ApexCover · 23 名平均从业超过十年的保险规划师给您的最好建议
+</footer>
+
 <script>
-window.onerror=function(msg,url,line,col,err){
-  document.getElementById('root').style.display='none';
-  var es=document.getElementById('error-screen');es.style.display='block';
-  document.getElementById('error-msg').textContent=(err&&err.stack)||(msg+' @ line '+line+':'+col);
-};
-window.addEventListener('unhandledrejection',function(e){
-  document.getElementById('root').style.display='none';
-  var es=document.getElementById('error-screen');es.style.display='block';
-  document.getElementById('error-msg').textContent='Unhandled Promise: '+(e.reason&&e.reason.stack||e.reason);
+// Theme toggle
+(function(){
+  const btn = document.getElementById('themeToggle');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if(!prefersDark) document.documentElement.setAttribute('data-theme','light');
+  btn.addEventListener('click',()=>{
+    const cur = document.documentElement.getAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme', cur==='light'?'dark':'light');
+  });
+})();
+
+// Scroll reveal
+(function(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('visible'); }
+      else { e.target.classList.remove('visible'); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// Magnetic hover effect on cards
+document.querySelectorAll('[data-magnetic]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    card.style.setProperty('--my', `${e.clientY - r.top}px`);
+  });
 });
-</script>
-<script type="text/babel">
-const { useState, useEffect, useCallback, useRef } = React;
 
-/* ==================== FULL PRODUCT DATABASE ==================== */
-const PRODUCTS = {
-  criticalIllness: [
-    { name:"达尔文12号", company:"复星联合健康", price:"30岁男约6,620元/年(50万保终身/30年交)", highlights:["意外重疾额外赔35%","60岁后住院津贴500元/天","重疾赔完轻中症继续赔","全网性价比标杆"], bestFor:["成人男性","追求性价比"], score:95 },
-    { name:"完美人生8号", company:"复星联合健康", price:"30岁女约6,330元/年(50万保终身/30年交)", highlights:["女性4大特疾额外赔10%","癌症拓展金50%","重疾后轻中症0间隔期"], bestFor:["成人女性","妇科癌症家族史"], score:93 },
-    { name:"超级玛丽16号Pro", company:"君龙人寿", price:"30岁约8,000元/年(50万保终身/30年交)", highlights:["首创重疾医疗金报销","三大结节专项保障","癌症全周期覆盖","核保友善"], bestFor:["有结节/慢病史","亚健康"], score:91 },
-    { name:"哪吒2号", company:"海保人寿", price:"30岁男约6,620元/年(50万保终身/30年交)", highlights:["1-6类职业可投","60岁前重疾额外赔90%","轻中症后重疾多赔30%"], bestFor:["高危职业","高杠杆需求"], score:88 },
-    { name:"阿基米德2025", company:"太平洋人寿", price:"保30年50万约3,615元/年", highlights:["世界500强品牌","等待期仅90天","中症60%/轻症30%"], bestFor:["大品牌偏好","稳健型"], score:85 },
-    { name:"大黄蜂17号全能版", company:"北京人寿", price:"0岁约2,500元/年(50万保终身/30年交)", highlights:["癌症不限次赔付","自闭症/抑郁症保障","18岁前保额额外108%"], bestFor:["少儿","全面保障"], score:94 },
-    { name:"达尔文宝贝计划15号", company:"信美相互", price:"0岁约2,698元/年(50万保终身/30年交)", highlights:["20种特疾额外120%","核保宽松(早产/卵圆孔)","先天性疾病可赔"], bestFor:["新生儿","出生异常"], score:92 },
-    { name:"青云卫6号", company:"招商仁和(央企)", price:"0岁约3,510元/年(50万保终身)", highlights:["白血病骨髓移植赔50万","缴费期确诊退全保费","央企品牌"], bestFor:["白血病关注","央企品牌"], score:89 },
-    { name:"妈咪保贝爱常在B款", company:"复星联合健康", price:"0岁约3,109元/年(50万保终身)", highlights:["白血病保障最强","孤独症关爱金","29年交省1年保费"], bestFor:["少儿白血病","心理健康"], score:87 },
-    { name:"i保·重疾险2026", company:"阳光人寿", price:"30岁约5,500元/年(50万保终身/30年交)", highlights:["大品牌+性价比","轻中症赔付次数多","含身故保障"], bestFor:["均衡型","阳光品牌偏好"], score:84 },
-    { name:"健康保·多倍版2026", company:"昆仑健康", price:"30岁约7,000元/年(50万/终身/30年交)", highlights:["重疾不分组多次赔","含护理保障","轻中症赔付比例高"], bestFor:["多次赔付需求","护理关注者"], score:83 },
-    { name:"凡尔赛PLUS·成人重疾", company:"同方全球人寿", price:"30岁约6,800元/年(50万/终身/30年交)", highlights:["合资品牌","重疾不分组多次赔","免体检额度高"], bestFor:["合资品牌偏好","高保额"], score:81 },
-    { name:"守卫者8号", company:"瑞泰人寿", price:"30岁约7,500元/年(50万/终身/30年交)", highlights:["重疾6次赔付","癌症多次赔","心脑血管二次赔"], bestFor:["家族病史","多次赔付刚需"], score:80 },
-    { name:"康惠保2026(旗舰版)", company:"百年人寿", price:"30岁约5,200元/年(50万保至70岁/30年交)", highlights:["纯重疾极致低价","无身故责任","消费型标杆"], bestFor:["预算极度有限","纯保障需求"], score:78 },
-    { name:"如意久久2026", company:"信泰人寿", price:"30岁约7,200元/年(50万/终身/30年交)", highlights:["重疾不分组6次赔","中症70%/轻症40%","身故返保费","含豁免"], bestFor:["终身多次赔付","高端保障"], score:79 },
-    { name:"多倍保2026", company:"新华人寿", price:"30岁约8,500元/年(50万/终身/30年交)", highlights:["重疾分5组赔5次","前10年额外50%","新华大品牌","含身故"], bestFor:["大品牌+多次赔","稳健型"], score:78 },
-    { name:"倍享健康2026", company:"富德生命", price:"30岁约5,800元/年(50万/终身/30年交)", highlights:["重疾不分组2次","中症60%/轻症30%","癌症二次120%","性价比突出"], bestFor:["中端多次赔","性价比"], score:80 },
-    { name:"安康福2026", company:"友邦人寿", price:"30岁约9,000元/年(50万/终身/30年交)", highlights:["友邦品牌","全球理赔","含海外二次诊疗","高端服务"], bestFor:["友邦品牌","全球服务"], score:77 },
-    { name:"常青树2026(特需版)", company:"华夏人寿", price:"30岁约6,500元/年(50万/终身/30年交)", highlights:["含特需部/国际部医疗","重疾绿通","二次诊疗","住院垫付"], bestFor:["中高端医疗资源","绿通需求"], score:79 },
-    { name:"老来保·老年重疾", company:"众安保险", price:"56-70岁约3,000-6,000元/年", highlights:["专为50+设计","免体检","含10种高发重疾","确诊即赔"], bestFor:["老年人专属","免体检"], score:76 }  ],
-  medical: [
-    { name:"好医保·长期医疗(旗舰版)", company:"人保健康", price:"30岁约400元/年", highlights:["20年+癌症/心血管终身续保","0免赔阶梯赔付","1500+种药械","健告宽松"], bestFor:["续保稳定","有既往症","中老年"], score:95 },
-    { name:"蓝医保·好医好药Pro版", company:"太平洋健康", price:"30岁约410元/年", highlights:["外购药不限清单","276种特药+64种进口药","186家私立医院","写入主险20年续保"], bestFor:["用药自由","DRG改革应对"], score:94 },
-    { name:"星相守2号", company:"众安保险", price:"30岁约298元/年", highlights:["0免赔","外购药不限清单","特需部可选","性价比突出"], bestFor:["中端医疗","性价比"], score:88 },
-    { name:"微医保·百万医疗险2026版", company:"泰康在线(腾讯微保)", price:"30岁约350元/年", highlights:["微信操作便捷","600万高保额","190家私立医院"], bestFor:["微信生态用户","年轻人群"], score:82 },
-    { name:"京东保·长期医疗险", company:"京东安联", price:"30岁约200-298元/年", highlights:["20年+终身续保","0免赔","外购药不限清单","极致性价比"], bestFor:["极致性价比","年轻人"], score:86 },
-    { name:"尊享e生2026", company:"众安保险", price:"30岁约308元/年", highlights:["300万一般+600万重疾","质子重离子100%报销","可选0免赔","就医绿通"], bestFor:["综合保障","绿通服务"], score:84 },
-    { name:"防癌医疗险·安享一生2026", company:"平安健康", price:"30岁约150元/年", highlights:["癌症专项医疗","0免赔100%报销","不限社保目录","终身保证续保"], bestFor:["癌症专项","高龄父母"], score:88 },
-    { name:"中端医疗·欣享人生2026", company:"MSH万欣和", price:"30岁约2,000-4,000元/年", highlights:["含特需/国际部","直付网络覆盖","私立医院可选","全球紧急救援"], bestFor:["中高端需求","特需部就诊"], score:83 },
-    { name:"高端医疗·卓越人生", company:"Bupa保柏", price:"30岁约8,000-20,000元/年", highlights:["全球就医","含美国","年度保额无上限","既往症有条件承保"], bestFor:["高净值","全球就医"], score:80 },
-    { name:"中端医疗·安盛天平智选", company:"安盛天平", price:"30岁约3,000-6,000元/年", highlights:["含特需/国际部","直付网络","门诊+住院","可选牙科"], bestFor:["中高端人群","特需部需求"], score:82 },
-    { name:"中端医疗·乐健一生2026", company:"复星联合健康", price:"30岁约1,500-4,000元/年", highlights:["0免赔可选","特需部/VIP病房","门诊+住院灵活组合"], bestFor:["中端入门","0免赔需求"], score:81 },
-    { name:"百万医疗·e生保2026", company:"平安健康", price:"30岁约380元/年", highlights:["平安品牌","一般医疗200万+重疾400万","可选特需部","平安健康APP管理"], bestFor:["平安品牌偏好","综合保障"], score:83 },
-    { name:"百万医疗·微医保·长期医疗", company:"泰康在线", price:"30岁约360元/年", highlights:["20年保证续保","微信生态一键投保","智能核保便捷"], bestFor:["微信重度用户","保证续保"], score:85 },
-    { name:"中端医疗·招商信诺醇享", company:"招商信诺", price:"30岁约2,500-5,000元/年", highlights:["含特需/国际部/VIP","招商银行渠道","直付网络覆盖广"], bestFor:["银行渠道","中高端","招商客户"], score:81 },
-    { name:"门诊险·微医保门诊版", company:"泰康在线", price:"30岁约300元/年", highlights:["门诊看病可报销","0免赔","微信便捷","与百万医疗互补"], bestFor:["经常看门诊","小额医疗"], score:82 },
-    { name:"住院医疗·平安住院保", company:"平安产险", price:"235元/年起", highlights:["住院医疗1万","0免赔","覆盖百万医疗免赔额","小额快赔"], bestFor:["百万医疗补充","住院小病"], score:83 },
-    { name:"海外医疗·盛诺一家", company:"盛诺一家+安盛", price:"30岁约1,200元/年", highlights:["海外二次诊疗","赴美/日/英就医","病历翻译+签证协助"], bestFor:["重症海外就医","第二诊疗意见"], score:78 },
-    { name:"特药险·药神保2026", company:"众安保险", price:"30岁约50元/年", highlights:["70种特药+PD-1","药品直付配送","与百万医疗互补","极低价"], bestFor:["百万医疗补充","特药保障"], score:80 },
-    { name:"住院医疗·国寿贴心保", company:"中国人寿", price:"198元/年起", highlights:["住院医疗最高5万","0免赔","不限社保","国寿大品牌"], bestFor:["百万医疗补充","国寿品牌"], score:82 },
-    { name:"百万医疗·太平超e保2026", company:"太平人寿", price:"30岁约350元/年", highlights:["20年保证续保","一般医疗200万+重疾400万","质子重离子100%","太平品牌"], bestFor:["太平品牌","保证续保"], score:83 },
-    { name:"百万医疗·国寿如E康悦2026", company:"中国人寿", price:"30岁约380元/年", highlights:["国寿大品牌","百万医疗+特药","全国网点","线下服务强"], bestFor:["国寿品牌","线下服务"], score:82 },
-    { name:"中端医疗·平安健康尊享", company:"平安健康", price:"30岁约1,500-3,500元/年", highlights:["0免赔","含特需/国际部","平安健康APP","直付+垫付"], bestFor:["中端需求","平安品牌"], score:81 },
-    { name:"高端医疗·招商信诺寰球", company:"招商信诺", price:"30岁约5,000-15,000元/年", highlights:["全球不含美","含美国可选","直付网络","第二诊疗意见"], bestFor:["高净值","全球就医","招行客户"], score:79 },
-    { name:"团体医疗·平安企业团险", company:"平安健康", price:"按人数/方案定價", highlights:["3人起保","门诊+住院+牙科可选","员工福利","补充医保"], bestFor:["企业主","员工福利"], score:78 },
-    { name:"税优健康险·个人税收优惠型", company:"多家公司可选", price:"每年最高2,400元税前扣除", highlights:["税收优惠","保证续保","带病可投","医保补充"], bestFor:["所有纳税人","节税+保障"], score:82 }
-  ],
-  accident: [
-    { name:"人保大护甲8号旗舰版", company:"中国人保", price:"138-355元/年", highlights:["最高150万保额","0免赔不限社保","猝死50万","意外医疗10万"], bestFor:["成人通用","综合保障"], score:95 },
-    { name:"太平洋小蜜蜂6号", company:"太平洋保险", price:"118-298元/年", highlights:["0免赔不限社保","节假日双倍赔","动物致伤美容费覆盖"], bestFor:["成人","节假日出行多"], score:92 },
-    { name:"众惠小美满2号", company:"众惠相互", price:"约290元/年", highlights:["0免赔不限社保","无医院限制","猝死50万"], bestFor:["就诊灵活"], score:88 },
-    { name:"平安小顽童7号", company:"平安产险", price:"68元/年", highlights:["0免赔不限社保100%","烧烫伤/误食异物","寒暑假津贴翻倍"], bestFor:["儿童/少儿"], score:94 },
-    { name:"平安小神童7号", company:"平安产险", price:"62元/年", highlights:["0免赔不限社保","监护人责任保障","极致低价"], bestFor:["学龄儿童","极致低价"], score:90 },
-    { name:"太平洋孝心安6号", company:"太平洋保险", price:"198元/年起", highlights:["50-85岁可投","0免赔不限社保","骨折保障","异地亲属探望费"], bestFor:["老年人"], score:93 },
-    { name:"众安孝欣保3号", company:"众安保险", price:"139元/年起", highlights:["0免赔不限社保","可选骨折加油包","陪诊/护工服务"], bestFor:["老年人","性价比"], score:89 },
-    { name:"平安孝福康2号", company:"平安产险", price:"256元/年", highlights:["免健康告知","高血压糖尿病可投","含骨折津贴"], bestFor:["老年","有慢性病"], score:88 },
-    { name:"小蜜蜂无畏版", company:"中国太保", price:"318元/年起", highlights:["1-6类职业可投","最高50万","含猝死+住院津贴"], bestFor:["高危职业(4-6类)"], score:90 },
-    { name:"人保1-6类守护神", company:"中国人保", price:"329-1,290元/年", highlights:["1-6类职业覆盖","最高50万","社保内100%报销"], bestFor:["高危职业","大品牌"], score:88 },
-    { name:"学平险·平安少儿综合", company:"平安产险", price:"100-200元/年", highlights:["3-22岁学生专属","意外+疾病住院","监护人责任","疫苗保障"], bestFor:["在校学生"], score:85 },
-    { name:"旅游险·安联环游四海", company:"安联财险", price:"按天数/目的地定价", highlights:["全球紧急救援","航班延误","行李丢失","高海拔/潜水覆盖"], bestFor:["出境旅行","户外运动"], score:87 },
-    { name:"旅游险·平安畅游全球", company:"平安产险", price:"按天数定价", highlights:["全球救援+医疗运送","航班延误+行李延误","含高风险运动"], bestFor:["出境游","平安品牌"], score:85 },
-    { name:"旅游险·美亚万国游踪", company:"美亚保险", price:"按天数/目的地定价", highlights:["全球领先的救援网络","个人责任保障","证件/行李丢失"], bestFor:["出境游","国际救援"], score:84 },
-    { name:"驾乘险·平安驾乘无忧", company:"平安产险", price:"100-300元/年", highlights:["保驾驶员+乘客","跟车不跟人","节假日翻倍"], bestFor:["经常开车","载人出行"], score:83 },
-    { name:"运动意外险·太平洋运动保", company:"太平洋保险", price:"50-200元/次或年", highlights:["覆盖滑雪/潜水/攀岩等运动","猝死保障","紧急救援"], bestFor:["运动爱好者","高风险运动"], score:82 },
-    { name:"骑行意外险·平安骑行保", company:"平安产险", price:"50元/年起", highlights:["骑行专属","含第三者责任","全年保障"], bestFor:["骑行爱好者","电动车/自行车"], score:78 },
-    { name:"家庭共享意外险·太平洋合家欢", company:"太平洋保险", price:"288元/年起(全家3人)", highlights:["一张保单保全家","共享保额","0免赔不限社保"], bestFor:["家庭投保","性价比"], score:84 },
-    { name:"住院津贴险·国寿住院宝", company:"中国人寿", price:"100-300元/年", highlights:["住院每天补贴100-300元","无免赔天数","与百万医疗互补"], bestFor:["百万医疗补充","误工费补偿"], score:81 },
-    { name:"航空意外险·全年畅飞保", company:"众安保险", price:"50元/年", highlights:["全年不限次","保额1000万","全球航班覆盖","即买即生效"], bestFor:["经常乘机","高频飞行"], score:80 },
-    { name:"新冠/传染病险·防疫保2026", company:"众安保险", price:"50-100元/年", highlights:["法定传染病身故保障","隔离津贴","住院补贴","确诊即赔"], bestFor:["传染病保障","全民适用"], score:75 },
-    { name:"电瓶车意外险·骑行守护", company:"太平洋保险", price:"36元/年起", highlights:["电瓶车/电动自行车专属","第三者责任","盗抢保障"], bestFor:["电瓶车代步","外卖骑手"], score:76 },
-    { name:"老人骨折险·平安骨安保", company:"平安产险", price:"150-300元/年", highlights:["50-80岁专属","骨折定额给付","意外医疗","0免赔"], bestFor:["老年人","骨质疏松"], score:80 },
-    { name:"监护人责任险·熊孩子险", company:"平安产险", price:"50-100元/年", highlights:["孩子闯祸赔偿","第三者人身/财产","最高50万","家长必备"], bestFor:["有儿童家庭","家长"], score:77 },
-    { name:"银行卡盗刷险·账户安全保", company:"众安保险", price:"30-60元/年", highlights:["银行卡/信用卡盗刷","网银/支付宝/微信","最高50万","24小时"], bestFor:["日常消费","电子支付"], score:74 }
-  ],
-  termLife: [
-    { name:"擎天柱12号·泰然一生版", company:"和泰人寿", price:"30岁男约1,112元/年(100万/30年交)", highlights:["价格全网最低","夫妻同一意外双倍赔","免责仅3条"], bestFor:["极致性价比","家庭支柱"], score:95 },
-    { name:"定海柱8号", company:"国富人寿", price:"30岁男约1,174元/年(100万/30年交)", highlights:["健康告知最宽松","不问乙肝/结节","猝死最高赔180%","增值服务8项"], bestFor:["有健康异常","加班高压族"], score:93 },
-    { name:"华贵大麦2026A款", company:"华贵人寿(茅台控股)", price:"30岁男约1,213元/年(100万/30年交)", highlights:["最高400万保额","可选失能保障","航空1000万","国资背景"], bestFor:["一线城市","高房贷","高保额"], score:91 },
-    { name:"大麦甜蜜家2026A款", company:"华贵人寿", price:"夫妻共保定價", highlights:["同一意外最高赔1200万","夫妻共保","一张保单保两人"], bestFor:["已婚夫妻","双经济支柱"], score:90 },
-    { name:"同方全球臻爱2026A", company:"同方全球人寿", price:"30岁男约1,500元/年", highlights:["满期返还保费","不白花保费","保障+储蓄"], bestFor:["不想消费型","返还需求"], score:82 },
-    { name:"擎天柱12号·一生中意版", company:"中意人寿", price:"30岁男约1,574元/年(100万/30年交)", highlights:["央企合资品牌","健康告知宽松","含航空意外400%"], bestFor:["合资品牌","央企背景"], score:84 },
-    { name:"定海柱8号·尊享版", company:"国富人寿", price:"30岁男约1,380元/年(100万/30年交)", highlights:["猝死额外赔100%","含豁免保费条款","核保最快1小时"], bestFor:["高压职业","快速核保"], score:82 },
-    { name:"臻爱2026·国寿定寿", company:"中国人寿", price:"30岁男约1,350元/年(100万/30年交)", highlights:["国寿大品牌","最高保额300万","全国网点投保"], bestFor:["国寿品牌偏好","线下投保"], score:81 },
-    { name:"大麦2026(减额定寿)", company:"华贵人寿", price:"30岁男约500-800元/年", highlights:["保额随房贷递减","专为房贷设计","极致低价"], bestFor:["房贷族","预算有限"], score:83 },
-    { name:"擎天柱12号·女性版", company:"和泰人寿", price:"30岁女约580元/年(100万/30年交)", highlights:["女性专属定价","费率更低","含女性特疾身故额外赔"], bestFor:["女性投保人","家庭女性支柱"], score:82 },
-    { name:"i保定寿2026", company:"阳光人寿", price:"30岁男约1,080元/年(100万/30年交)", highlights:["大品牌+极致低价","健告仅3条","免体检额度200万","线上投保便捷"], bestFor:["阳光品牌","线上投保"], score:84 },
-    { name:"祯爱优选2026", company:"中信保诚", price:"30岁男约1,250元/年(100万/30年交)", highlights:["合资品牌(中信+保诚)","健告宽松","含全残+终末期","免体检300万"], bestFor:["合资品牌","高净值"], score:83 },
-    { name:"瑞和2026(定寿)", company:"瑞泰人寿", price:"30岁男约1,050元/年(100万/30年交)", highlights:["不限职业(1-6类)","健告极简仅2条","免责仅3条","女性费率极低"], bestFor:["高危职业","非标体","女性"], score:85 },
-    { name:"定惠保2026", company:"百年人寿", price:"30岁男约1,020元/年(100万/30年交)", highlights:["消费型定寿标杆","纯保障极致低价","等待期90天","缴费灵活"], bestFor:["极致性价比","纯消费型"], score:82 },
-    { name:"擎天柱(横琴版)", company:"横琴人寿", price:"30岁男约1,100元/年(100万/30年交)", highlights:["粤港澳大湾区专属","港珠澳大桥意外双倍赔","含豁免条款"], bestFor:["大湾区居民","跨境通勤"], score:80 },
-    { name:"全家保·家庭定寿", company:"华贵人寿", price:"夫妻+子女联合定价", highlights:["一张保单保全家","夫妻+未成年子女","共享保额","家庭版更划算"], bestFor:["全家保障","简化管理"], score:81 }
-  ],
-  savings: [
-    { name:"岁享金生(固收型增额寿)", company:"昆仑健康", price:"趸交最低1万元", highlights:["IRR 1.99%行业最高","第4年回本","含护理保障","减保灵活"], bestFor:["追求确定性","应急流动性"], score:95 },
-    { name:"快享福5号(分红型年金)", company:"新华人寿", price:"趸交5000元起", highlights:["保底1.75%行业最高","保证第4年回本","2025分红实现率152%"], bestFor:["养老规划","分红保底"], score:94 },
-    { name:"星福家朱雀版(分红型增额寿)", company:"复星保德信", price:"期交5000元起", highlights:["保底1.75%","连续13年分红100%+","回本约4-5年"], bestFor:["长期增值+传承","分红信仰者"], score:93 },
-    { name:"如意尊8.0(固收型增额寿)", company:"信泰人寿", price:"期交5000元起", highlights:["IRR 1.97%","核保最宽松","第5年回本"], bestFor:["有体况","非标体投保"], score:90 },
-    { name:"一生中意福享版(分红型增额寿)", company:"中意人寿", price:"趸交1万元起", highlights:["中石油+忠利保险合资","20年分红记录","回本约4年"], bestFor:["合资品牌","传承+分红"], score:89 },
-    { name:"泰赢家2.0(分红型增额寿)", company:"陆家嘴国泰", price:"50万元起", highlights:["近10年分红达成率183%","保底1.75%","回本约4年"], bestFor:["高净值","分红王者"], score:88 },
-    { name:"E增福优享版(固收型增额寿)", company:"新华人寿", price:"期交5000元起", highlights:["大品牌","IRR 1.93%","第6年回本"], bestFor:["大品牌偏好","稳健增值"], score:85 },
-    { name:"福有余2025(固收型增额寿)", company:"太平洋人寿", price:"期交5000元起", highlights:["太平洋品牌","IRR 1.90%","服务网络强"], bestFor:["大品牌","服务优先"], score:83 },
-    { name:"星颐朱雀版(分红型年金)", company:"复星保德信", price:"期交5000元起", highlights:["领取金额高","长期IRR 3.11%","分红型养老年金"], bestFor:["养老刚需","高领取"], score:87 },
-    { name:"盛世金越(分红型增额寿)", company:"平安人寿", price:"期交1万元起", highlights:["平安品牌","分红型增额寿","双被保人设计"], bestFor:["平安品牌偏好","两代传承"], score:84 },
-    { name:"鑫相守2025(固收型增额寿)", company:"海保人寿", price:"期交5000元起", highlights:["IRR 1.92%","含特定疾病保障","第5年回本"], bestFor:["稳健增值","疾病保障需求"], score:81 },
-    { name:"鑫享至尊2026(养老年金)", company:"中国人寿", price:"期交1万元起", highlights:["国寿品牌","保证领取20年","可选分红"], bestFor:["国寿品牌","养老刚需"], score:83 },
-    { name:"金生有约2026(养老年金)", company:"光大永明", price:"期交5000元起", highlights:["保证领取25年","可选增额领取","央企品牌"], bestFor:["长期养老规划","央企品牌"], score:82 },
-    { name:"光明一生(养老年金)", company:"光大永明", price:"期交5000元起", highlights:["与光大养老社区对接","保证领取20年","可附加护理"], bestFor:["养老社区需求","护理保障"], score:81 },
-    { name:"金麒麟2026(万能险)", company:"招商信诺", price:"趸交1000元起", highlights:["保底利率1.75%","现行结算约3.2%","随存随取灵活"], bestFor:["灵活储蓄","活钱管理"], score:80 },
-    { name:"如意来2026(快返型年金)", company:"信泰人寿", price:"趸交1万元起", highlights:["第5年起每年返还","终身现金流","返还比例确定"], bestFor:["追求稳定现金流","补充收入"], score:79 },
-    { name:"传世金生(分红型终身寿)", company:"友邦保险", price:"期交2万元起", highlights:["友邦品牌","分红型终身寿","全球理赔服务"], bestFor:["友邦品牌","全球服务"], score:82 },
-    { name:"鑫裕金生(终寿年金组合)", company:"中国人寿", price:"期交1万元起", highlights:["终寿+年金组合","国寿品牌","一单两用"], bestFor:["国寿品牌","组合规划"], score:80 },
-    { name:"御享金越2026(分红型增额寿)", company:"平安人寿", price:"期交2万元起", highlights:["双被保人","分红型+终身寿","可附加万能账户"], bestFor:["平安高净值客户","代际传承"], score:81 },
-    { name:"泰康之家·幸福有约(养老年金+养老社区)", company:"泰康人寿", price:"总保费200万起", highlights:["对接泰康养老社区","保证入住权","医养结合","全国35城布局"], bestFor:["高净值养老","养老社区需求"], score:85 },
-    { name:"国寿嘉园·鑫享至尊(养老社区版)", company:"中国人寿", price:"总保费150万起", highlights:["对接国寿嘉园养老社区","保证领取25年","央企品牌","候鸟式养老"], bestFor:["国寿品牌","养老社区"], score:83 },
-    { name:"太平小镇·悦享金生(养老社区年金)", company:"太平人寿", price:"总保费150万起", highlights:["对接太平小镇","上海/三亚/成都等多地","医养+旅居"], bestFor:["养老社区","候鸟式养老"], score:82 },
-    { name:"大家保险·城心养老(养老社区年金)", company:"大家保险", price:"总保费100万起", highlights:["城市中心养老社区","离家近","就医方便","高性价比入门"], bestFor:["城市养老","不想远离家人"], score:81 },
-    { name:"大都会「都会尊享」年金", company:"中美联泰大都会", price:"期交1万元起", highlights:["外资品牌","保证领取+分红","全球紧急救援","高端服务"], bestFor:["外资品牌","全球服务需求"], score:80 },
-    { name:"金满意足2026(固收型增额寿)", company:"弘康人寿", price:"期交5000元起", highlights:["IRR 1.96%","第5年回本","减保灵活(不限次数)","互联网专属"], bestFor:["互联网投保","灵活支取"], score:84 },
-    { name:"传世金生2026(分红型增额寿)", company:"横琴人寿", price:"期交5000元起", highlights:["保底1.75%","粤港澳大湾区专属","分红实现率稳定","可附加万能"], bestFor:["大湾区","分红+万能组合"], score:82 },
-    { name:"金麒麟2026(固收型增额寿)", company:"长城人寿", price:"趸交1万元起", highlights:["IRR 1.94%","第4年回本(趸交)","国企背景","含意外身故额外赔"], bestFor:["国企品牌","短期缴费"], score:83 },
-    { name:"福满溢2026(固收型增额寿)", company:"和谐健康", price:"期交5000元起", highlights:["IRR 1.93%","含护理保障","第5年回本","健告宽松"], bestFor:["有体况","护理需求"], score:81 },
-    { name:"和裕金生2026(分红型增额寿)", company:"招商仁和", price:"期交1万元起", highlights:["招商局+仁和(央企)","分红型增额寿","可对接招商银行私行服务"], bestFor:["央企品牌","招行客户"], score:83 },
-    { name:"京福传世2026(分红型增额寿)", company:"北京人寿", price:"期交5000元起", highlights:["保底1.75%","北京属地服务优势","含养老社区对接权益"], bestFor:["北京地区","养老社区"], score:81 },
-    { name:"星盈家2026(分红型增额寿)", company:"复星保德信", price:"期交5000元起", highlights:["保底1.75%+分红","与星堡养老社区对接","连续13年分红≥100%"], bestFor:["养老社区","高分红记录"], score:84 },
-    { name:"金利优享2026(固收型年金)", company:"新华人寿", price:"期交1万元起", highlights:["保证领取20年","大品牌","可附加万能账户","缴费期灵活"], bestFor:["大品牌","稳定年金"], score:83 },
-    { name:"鑫丰年2026(分红型年金)", company:"工银安盛", price:"期交5000元起", highlights:["工商银行+安盛合资","分红型年金","满5年即返还","年金+万能组合"], bestFor:["工行客户","快返需求"], score:81 },
-    { name:"金裕安康2026(养老年金)", company:"招商信诺", price:"期交1万元起", highlights:["保证领取25年","招商银行渠道","可附加重疾豁免","含身故返还"], bestFor:["招行客户","长期养老"], score:82 },
-    { name:"颐养天年2026(养老年金)", company:"人保寿险", price:"期交5000元起", highlights:["人保大品牌","保证领取20年","养老金逐年递增3%","抗通胀设计"], bestFor:["人保品牌","抗通胀"], score:84 },
-    { name:"颐年金2026(养老年金)", company:"平安人寿", price:"期交1万元起", highlights:["平安品牌","保证领取25年","可附加护理险","平安养老社区对接"], bestFor:["平安品牌","养老+护理"], score:83 },
-    { name:"金佑人生2026(分红型终身年金)", company:"太平洋人寿", price:"期交1万元起", highlights:["太平洋品牌","分红+年金双账户","保证领取20年","太保家园对接"], bestFor:["太平洋品牌","太保养老社区"], score:82 },
-    { name:"福临门2026(快返型年金)", company:"华夏人寿", price:"趸交1万元起", highlights:["第5年起每年返还","终身现金流","万能账户结算利率约3.2%","随存随取"], bestFor:["快返需求","灵活现金"], score:80 },
-    { name:"金生有约2026(养老年金)", company:"中荷人寿", price:"期交5000元起", highlights:["保证领取20年","可选增额领取(每年递增5%)","健告宽松","合资品牌"], bestFor:["增额养老","合资品牌"], score:81 },
-    { name:"悦享金生2026(养老年金)", company:"太平人寿", price:"总保费100万起", highlights:["对接太平小镇养老社区","保证入住权","候鸟式养老(上海/三亚/成都)","含医疗绿通"], bestFor:["高端养老社区","候鸟养老"], score:84 },
-    { name:"财富智选2026(万能险)", company:"平安人寿", price:"趸交1万元起", highlights:["保底1.75%","现行结算约3.3%","灵活追加+领取","平安品牌"], bestFor:["活钱管理","灵活储蓄"], score:78 },
-    { name:"智能投连险·进取型", company:"泰康人寿", price:"趸交5万元起", highlights:["投资连结","股票+债券混合","长期增值潜力","专业投管"], bestFor:["风险承受力高","长期投资"], score:72 },
-    { name:"教育金·国寿英才少儿", company:"中国人寿", price:"期交5000元起", highlights:["18-21岁每年领取","25岁满期金","国寿品牌","确定性教育金"], bestFor:["子女教育","国寿品牌"], score:82 },
-    { name:"教育金·平安智慧星", company:"平安人寿", price:"期交5000元起", highlights:["教育+婚嫁+创业三金","分红型","万能账户","灵活部分领取"], bestFor:["教育+婚嫁","平安品牌"], score:80 },
-    { name:"教育金·太平卓越前程", company:"太平人寿", price:"期交5000元起", highlights:["高中+大学+深造三阶段","保证领取","分红型","太平品牌"], bestFor:["教育规划","太平品牌"], score:79 },
-    { name:"养老年金·阳光颐和", company:"阳光人寿", price:"期交5000元起", highlights:["保证领取25年","养老金年递增5%","阳光品牌+性价比","抗长寿风险"], bestFor:["长寿规划","增额领取"], score:81 },
-    { name:"养老年金·信美相互颐年", company:"信美相互", price:"期交5000元起", highlights:["相互制保险公司","盈余分配","保证领取20年","会员权益"], bestFor:["相互制特色","盈余分享"], score:78 }
-  ],
-  auto: [
-    { name:"平安车险", company:"平安产险", price:"10万级车型约4,500元/年", highlights:["AI闪赔3分钟到账","好车主APP全流程","新能源专属配套","83.7%线上结案"], bestFor:["城市通勤","新能源","年轻车主"], score:95 },
-    { name:"人保车险", company:"中国人保", price:"10万级车型约4,700元/年", highlights:["县域覆盖率97.3%","大额人伤案件专业","代位追偿效率高"], bestFor:["长途/高速","乡镇农村","营运"], score:93 },
-    { name:"太平洋车险", company:"太平洋保险", price:"10万级车型约4,500元/年", highlights:["同保障价格最低","不强制捆绑搭售","万元以下当天到账"], bestFor:["预算有限","老车/低里程"], score:90 },
-    { name:"平安新能源车险", company:"平安产险", price:"按车型/电池定價", highlights:["电池+三电专属保障","充电桩责任","电池衰减险可选"], bestFor:["新能源车主","平安品牌"], score:93 },
-    { name:"人保新能源车险", company:"中国人保", price:"按车型/电池定價", highlights:["电池+三电覆盖","充电意外保障","全国救援网络"], bestFor:["新能源车主","人保品牌"], score:90 },
-    { name:"太平洋新能源车险", company:"太平洋保险", price:"按车型/电池定價", highlights:["三电系统保障","电池衰减可选","性价比高"], bestFor:["新能源车主","性价比"], score:88 },
-    { name:"阳光车险", company:"阳光产险", price:"10万级车型约4,200元/年", highlights:["极致低价","理赔时效快","线上化程度高","4S店合作广泛"], bestFor:["极致性价比","线上投保"], score:85 },
-    { name:"大地车险", company:"大地保险", price:"10万级车型约4,100元/年", highlights:["低价+服务","全国通赔","免费道路救援","代步车服务"], bestFor:["预算有限","基础保障"], score:83 },
-    { name:"中华联合车险", company:"中华联合财险", price:"10万级车型约4,000元/年", highlights:["老牌国企","营运车辆经验丰富","货车/客车专属"], bestFor:["营运车辆","货车/客车"], score:82 }
-  ],
-  hkInsurance: [
-    { name:"友邦「充裕未来」储蓄计划", company:"友邦香港(AIA)", price:"年缴5,000美元起", highlights:["长期IRR可达5-7%","多元货币(美元/港币/人民币)","红利实现率连续10年>95%","全球理赔"], bestFor:["长期储蓄","教育金规划","多元币种"], score:92 },
-    { name:"保诚「隽富」多元货币计划", company:"保诚香港(Prudential)", price:"年缴3,000美元起", highlights:["6种货币自由转换","终期红利锁定","可拆分保单","更换受保人无限次"], bestFor:["财富传承","多代规划","币种灵活"], score:90 },
-    { name:"宏利「创富传承」保障计划", company:"宏利香港(Manulife)", price:"年缴5,000美元起", highlights:["保证现金价值+终期红利","更换受保人","保单分拆","身故赔偿递增"], bestFor:["家企传承","高净值专属"], score:88 },
-    { name:"安盛「挚汇」储蓄计划", company:"安盛香港(AXA)", price:"年缴3,000美元起", highlights:["欧元/美元/港币等9种货币","灵活提取","全球投资标的","税务优势"], bestFor:["跨境家庭","全球资产配置"], score:87 },
-    { name:"万通「富饶传承」储蓄计划", company:"万通保险(YF Life)", price:"年缴5,000美元起", highlights:["高预期回报","保证现金价值增长率","可附加万能账户","灵活缴费期"], bestFor:["高净值储蓄","退休规划"], score:85 }
-  ],
-  property: [
-    { name:"平安家庭财产险", company:"平安产险", price:"100-500元/年", highlights:["房屋+装修+室内财产","水管爆裂/盗抢/火灾","第三者责任"], bestFor:["有房一族","基础家财保障"], score:90 },
-    { name:"人保家财宝", company:"中国人保", price:"88-388元/年", highlights:["房屋主体最高500万","室内财产+盗抢","管道破裂+水渍"], bestFor:["自有住房","追求大品牌"], score:88 },
-    { name:"太平洋全能保·家财", company:"太平洋保险", price:"99-399元/年", highlights:["房屋+室内+三者","水管爆裂0免赔","含租房损失补偿"], bestFor:["有房/房东"], score:86 },
-    { name:"众安千万家财险", company:"众安保险", price:"89-299元/年", highlights:["房屋+装修","水火盗抢全覆盖","线上理赔便捷"], bestFor:["互联网用户","性价比"], score:84 },
-    { name:"宠物医疗险·平安宠爱一生", company:"平安产险", price:"199-799元/年", highlights:["猫狗通用","800+定点医院","意外+疾病全覆盖","最高90%报销"], bestFor:["养宠人士","宠物医疗"], score:87 },
-    { name:"宠物险·众安宠爱保", company:"众安保险", price:"149-599元/年", highlights:["猫狗通用","合作医院1000+","含第三方责任","0免赔"], bestFor:["养宠人士","性价比"], score:85 },
-    { name:"宠物险·太平洋萌宠保", company:"太平洋保险", price:"168-688元/年", highlights:["猫狗通用","含疫苗/体检","住院补贴","第三者责任险"], bestFor:["养宠","综合保障"], score:83 },
-    { name:"家政服务险·平安家政保", company:"平安产险", price:"50-150元/年", highlights:["家政人员意外保障","雇主责任","财产损失","第三者责任"], bestFor:["雇佣保姆/月嫂/钟点工"], score:82 },
-    { name:"租房险·众安租房保", company:"众安保险", price:"49-99元/年", highlights:["租客室内财产","租房期间意外","管道破裂","盗抢"], bestFor:["租房一族"], score:78 },
-    { name:"装修险·平安装修保", company:"平安产险", price:"200-500元/次", highlights:["装修期间意外","第三者责任","材料损失","工人意外"], bestFor:["装修业主"], score:76 },
-    { name:"无人机险·众安无人机保", company:"众安保险", price:"200-800元/年", highlights:["无人机坠毁/丢失","第三者人身/财产","最高50万","航拍必备"], bestFor:["无人机爱好者","航拍"], score:72 },
-    { name:"手机碎屏险·众安屏安保", company:"众安保险", price:"69-199元/年", highlights:["碎屏免费修","原厂配件","上门维修","不限次数"], bestFor:["手机用户","碎屏党"], score:70 },
-    { name:"保姆月嫂险·平安家政责任", company:"平安产险", price:"100-300元/年", highlights:["家政人员意外+医疗","雇主责任","财产损失","合法用工必备"], bestFor:["雇佣家政","合法用工"], score:79 },
-    { name:"演出/活动险·平安活动保", company:"平安产险", price:"100-500元/次", highlights:["活动取消/延期","公众责任","演职人员意外","临时保障"], bestFor:["活动主办方","演出/展会"], score:73 }
-  ],
-  dental: [
-    { name:"齿科险·泰康E齿康", company:"泰康在线", price:"588元/年", highlights:["预防+基础+复杂治疗全覆盖","含拔牙/根管/牙冠","合作诊所网络广"], bestFor:["口腔保健","牙齿治疗"], score:88 },
-    { name:"齿科险·平安齿康保", company:"平安健康", price:"380-880元/年", highlights:["洁牙/补牙/拔牙全覆盖","正畸/种植优惠","无等待期"], bestFor:["日常口腔维护","正畸需求"], score:86 },
-    { name:"齿科险·众安牙医保", company:"众安保险", price:"288-688元/年", highlights:["预防保健100%报销","基础治疗80%报销","线上预约便捷"], bestFor:["性价比","互联网用户"], score:84 },
-    { name:"齿科险·国任齿科保", company:"国任保险", price:"398-798元/年", highlights:["含儿童涂氟/窝沟封闭","成人洁牙/牙周治疗","种植牙报销"], bestFor:["家庭口腔","儿童齿科"], score:82 }
-  ],
-  maternity: [
-    { name:"孕产险·平安幸孕星", company:"平安产险", price:"268-588元/年", highlights:["妊娠并发症20种","新生儿先天性疾病","流产/早产保障"], bestFor:["备孕及孕期女性"], score:88 },
-    { name:"孕产险·众安好孕保", company:"众安保险", price:"198-498元/年", highlights:["妊娠期并发症+新生儿保障","含产后抑郁","0免赔"], bestFor:["孕期女性","互联网用户"], score:86 },
-    { name:"孕产险·太平洋幸孕保", company:"太平洋保险", price:"328-688元/年", highlights:["母婴共保","妊娠28种并发症","新生儿NICU费用"], bestFor:["孕期女性","大品牌"], score:84 },
-    { name:"高端孕产·MSH孕中险", company:"MSH万欣和", price:"8,000-30,000元/年", highlights:["全球孕产覆盖","含私立医院/和睦家","顺产/剖腹产均报销"], bestFor:["高端孕产需求","私立医院分娩"], score:78 }
-  ],
-  hmb: [
-    { name:"惠民保·北京普惠健康保", company:"政府指导/多家共保", price:"195元/年", highlights:["不限年龄/职业/病史","医保内外均可报","带病可保可赔"], bestFor:["北京参保人群","高龄/有病史者"], score:85 },
-    { name:"惠民保·沪惠保2026", company:"政府指导/太保主承保", price:"129元/年", highlights:["不限年龄/病史","特药覆盖广","微信一键投保"], bestFor:["上海参保人群"], score:85 },
-    { name:"惠民保·穗岁康2026", company:"政府指导/国寿主承保", price:"180元/年", highlights:["门诊+住院+特药","一站式结算","带病参保无差别"], bestFor:["广州参保人群"], score:85 },
-    { name:"全国版惠民保·众安全民保", company:"众安保险", price:"79-168元/年", highlights:["不限地域/年龄/职业","医保内外均可报","既往症可投"], bestFor:["无本地惠民保","三线城市","老年人"], score:88 },
-    { name:"全国版惠民保·泰康全民e保", company:"泰康在线", price:"98-198元/年", highlights:["全国可投","医保内外最高400万","特药0免赔"], bestFor:["无惠民保地区","补充医保"], score:84 }
-  ],
-  cancer: [
-    { name:"防癌医疗险·安享一生2026", company:"平安健康", price:"30岁约150元/年", highlights:["癌症专项医疗","0免赔100%报销","不限社保","终身保证续保"], bestFor:["癌症专项","高龄","三高人群"], score:90 },
-    { name:"防癌险·孝亲宝2026", company:"德华安顾", price:"50-70岁约500-2,000元/年", highlights:["确诊即赔(非报销)","免体检额度高","三高/糖尿病可投"], bestFor:["老年防癌","三高人群"], score:88 },
-    { name:"防癌险·阳光神农2026", company:"阳光人寿", price:"30岁约300元/年", highlights:["轻/重症癌症双赔","原位癌覆盖","保费低杠杆高"], bestFor:["年轻人防癌","癌症家族史"], score:86 },
-    { name:"防癌险·太平洋银发安康", company:"太平洋人寿", price:"50-75岁约600-2,500元/年", highlights:["老年专属","免体检","含特定癌症额外赔","大品牌"], bestFor:["老年","太平洋品牌偏好"], score:84 },
-    { name:"特定疾病险·复星联合特定心脑", company:"复星联合健康", price:"按年龄/保额定價", highlights:["心梗/脑梗/搭桥专项","免体检","与重疾险互补"], bestFor:["心脑血管家族史","重疾补充"], score:82 },
-    { name:"特定疾病险·信美肝病保", company:"信美相互", price:"按年龄定价", highlights:["肝病专项(肝炎/肝硬化/肝癌)","乙肝携带可投","确诊即赔"], bestFor:["乙肝携带者","肝病高危"], score:80 }
-  ],
-  employerLiability: [
-    { name:"雇主责任险·平安雇主保", company:"平安产险", price:"按员工人数/行业定價", highlights:["工伤+职业病全覆盖","误工费+护理费","法律费用保障","平安品牌"], bestFor:["中小企业","制造业/服务业"], score:88 },
-    { name:"雇主责任险·人保雇主安心保", company:"中国人保", price:"按员工人数定價", highlights:["1-6类职业全覆盖","工伤+意外+猝死","全国理赔网络"], bestFor:["高危行业企业","人保品牌"], score:86 },
-    { name:"雇主责任险·太平洋雇主守护", company:"太平洋保险", price:"按行业定價", highlights:["含24小时意外扩展","误工费+住院津贴","性价比高"], bestFor:["预算型企业","服务行业"], score:84 },
-    { name:"团体意外险·平安团体保", company:"平安产险", price:"100-500元/人/年", highlights:["3人起保","1-6类职业","可换人","员工福利标配"], bestFor:["中小企业","员工福利"], score:85 },
-    { name:"公众责任险·人保公众责任", company:"中国人保", price:"800-5,000元/年", highlights:["经营场所第三者责任","客伤/物损","火灾/爆炸"], bestFor:["餐饮/零售/教育","实体经营者"], score:82 }
-  ]
-};
-
-/* ==================== TRUNK + BRANCH QUESTIONS (tree structure, 25 per path) ==================== */
-
-// 5 trunk questions — first 2 always shown, Q3-5 only for adults
-const TRUNK = [
-  { id:"t1", t:"您的年龄段是？", s:"不同阶段的身体状况、收入水平和保障需求差异巨大", ty:"single", o:[
-    {v:"18-25",l:"18-25 岁（初入社会）",i:"🧑‍🎓"},{v:"26-35",l:"26-35 岁（事业上升期）",i:"💼"},
-    {v:"36-45",l:"36-45 岁（家庭顶梁柱）",i:"🏠"},{v:"46-55",l:"46-55 岁（中年稳健期）",i:"🧔"},
-    {v:"56-65",l:"56-65 岁（退休过渡期）",i:"🌅"},{v:"66+",l:"66 岁以上（银发期）",i:"👴"}
-  ]},
-  { id:"t2", t:"您的性别是？", s:"男女费率差异可达10-30%", ty:"single", o:[
-    {v:"male",l:"男性",i:"👨"},{v:"female",l:"女性",i:"👩"}
-  ]},
-  { id:"t3", t:"您目前所处的家庭角色？", s:"家庭责任大小直接决定身故/失能保障的保额", ty:"single", o:[
-    {v:"single",l:"单身独立",i:"🧍"},
-    {v:"couple",l:"已婚/伴侣，尚无子女",i:"💑"},
-    {v:"parent",l:"已婚有子女",i:"👨‍👩‍👧"},
-    {v:"single-parent",l:"单亲家庭",i:"👩‍👧"},
-    {v:"elder",l:"退休/半退休状态",i:"🌅"}
-  ]},
-  { id:"t4", t:"您的家庭年收入？", s:"收入水平是确定保额和保费预算的最核心依据", ty:"single", o:[
-    {v:"lt5",l:"5 万以下",i:"💰"},{v:"5-15",l:"5-15 万",i:"💰💰"},
-    {v:"15-30",l:"15-30 万",i:"💰💰💰"},{v:"30-100",l:"30-100 万",i:"💎"},
-    {v:"100-500",l:"100-500 万",i:"👑"},{v:"gt500",l:"500 万以上",i:"🏰"}
-  ]},
-  { id:"t5", t:"您的职业身份？", s:"涉及社保覆盖、职业风险和税务身份", ty:"single", o:[
-    {v:"employee",l:"企业职员/打工人",i:"💻"},{v:"civil",l:"公务员/事业单位/国企",i:"🏛️"},
-    {v:"freelancer",l:"自由职业/灵活就业",i:"✍️"},{v:"business-owner",l:"企业主/股东/个体户老板",i:"🏢"},
-    {v:"high-risk",l:"高危职业（建筑/运输/矿工等4-6类）",i:"🏗️"},
-    {v:"professional",l:"医生/律师/高管等高收入专业人士",i:"⚕️"},{v:"retired",l:"已退休/无业",i:"🏡"}
-  ]}
+// Search
+const INDEX = [
+  { t:"达尔文12号", m:"重疾险 · 复星联合健康", icon:"🏥" },
+  { t:"完美人生8号", m:"重疾险 · 复星联合健康", icon:"🏥" },
+  { t:"超级玛丽16号Pro", m:"重疾险 · 君龙人寿", icon:"🏥" },
+  { t:"大黄蜂17号全能版", m:"少儿重疾险 · 北京人寿", icon:"🏥" },
+  { t:"好医保·长期医疗", m:"百万医疗险 · 人保健康", icon:"💊" },
+  { t:"蓝医保·好医好药Pro", m:"百万医疗险 · 太平洋健康", icon:"💊" },
+  { t:"人保大护甲8号", m:"意外险 · 中国人保", icon:"🤕" },
+  { t:"擎天柱12号", m:"定期寿险 · 和泰人寿", icon:"🛡️" },
+  { t:"岁享金生", m:"增额终身寿 · 昆仑健康", icon:"📈" },
+  { t:"星福家朱雀版", m:"分红型增额寿 · 复星保德信", icon:"📈" },
+  { t:"平安车险", m:"车险 · 平安产险", icon:"🚗" },
+  { t:"复星联合健康", m:"保险公司", icon:"🏢" },
+  { t:"君龙人寿", m:"保险公司", icon:"🏢" },
+  { t:"中国人保", m:"保险公司", icon:"🏢" },
+  { t:"重疾险怎么选", m:"保险科普", icon:"📚" },
+  { t:"医疗险避坑指南", m:"保险科普", icon:"📚" },
+  { t:"金税四期与保险", m:"从业者课程", icon:"🎓" },
+  { t:"法商课堂", m:"从业者课程", icon:"🎓" },
+  { t:"智能规划", m:"25题问答匹配方案", icon:"🎯" },
+  { t:"保险科普", m:"视频课程", icon:"📚" },
 ];
 
-// Helper: build a question object
-const mq=(id,t,s,ty,o)=>({id,t,s,ty,o});
-
-// ===== Branch A: 年轻奋斗族 (age 18-35, no kids, not biz owner) =====
-const BRANCH_A = [
-  mq("a1","您的社保覆盖情况？","社保是防线基础，缺口决定商业险配置力度","multi",[
-    {v:"employee-ins",l:"职工医保+养老保险",i:"✅"},{v:"resident-ins",l:"居民医保/新农合",i:"🟡"},
-    {v:"no-ins",l:"无任何社保",i:"❌"},{v:"supplement",l:"有补充医疗保险（企业团险）",i:"➕"}
-  ]),
-  mq("a2","您的健康状况与体检异常？（可多选）","健康告知是投保第一关，有异常≠不能投保","multi",[
-    {v:"healthy",l:"身体健康，近2年体检无异常",i:"🟢"},
-    {v:"nodule-thyroid",l:"甲状腺结节",i:"🟡"},{v:"nodule-breast",l:"乳腺结节",i:"🟡"},
-    {v:"overweight",l:"BMI≥28/肥胖",i:"🟡"},{v:"mental",l:"抑郁/焦虑症史",i:"🟡"},
-    {v:"cancer-family",l:"直系亲属癌症病史",i:"🟠"},{v:"smoking",l:"长期吸烟（>10年）",i:"🚬"}
-  ]),
-  mq("a3","您目前已配置了哪些商业保险？（可多选）","避免重复投保","multi",[
-    {v:"none",l:"目前没有任何商业保险",i:"🆕"},{v:"critical",l:"重疾险",i:"🏥"},
-    {v:"medical",l:"百万医疗险",i:"💊"},{v:"accident",l:"意外险",i:"🤕"},
-    {v:"term-life",l:"定期寿险",i:"🛡️"},{v:"auto",l:"车险",i:"🚗"}
-  ]),
-  mq("a4","您最想优先解决的问题？","如果预算有限，按优先级排列","single",[
-    {v:"all-around",l:"全面规划，需要系统性方案",i:"🎯"},{v:"disease",l:"大病保障",i:"🏥"},
-    {v:"hospital",l:"住院报销",i:"💸"},{v:"accident-risk",l:"意外风险",i:"🚑"},
-    {v:"family-protect",l:"家庭支柱保障",i:"😢"},{v:"retirement",l:"提前规划养老",i:"🌴"}
-  ]),
-  mq("a5","您每月的保费预算？","合理年保费约为年收入的5-10%","single",[
-    {v:"minimal",l:"月均 <100 元",i:"🪙"},{v:"low",l:"月均 100-300 元",i:"💵"},
-    {v:"mid",l:"月均 300-800 元",i:"💵💵"},{v:"mid-high",l:"月均 800-2,000 元",i:"💎"},
-    {v:"high",l:"月均 >2,000 元",i:"👑"}
-  ]),
-  mq("a6","您的家庭负担结构？（可多选）","","multi",[
-    {v:"no-dependent",l:"无抚养/赡养责任",i:"🧍"},{v:"elder-parents",l:"需赡养父母",i:"👴"},
-    {v:"mortgage",l:"有房贷/车贷",i:"🏦"}
-  ]),
-  mq("a7","您对保险公司的偏好？","","single",[
-    {v:"best-value",l:"只看性价比",i:"🏷️"},{v:"big-brand",l:"偏好大品牌",i:"🏢"},
-    {v:"internet",l:"互联网保险也可",i:"📱"},{v:"state-owned",l:"偏好央企/国资背景",i:"🏛️"}
-  ]),
-  mq("a8","您偏好的缴费期限？","","single",[
-    {v:"short",l:"趸交或5年内",i:"⚡"},{v:"mid",l:"10-20年",i:"⚖️"},
-    {v:"long",l:"20-30年（杠杆最大化）",i:"📅"},{v:"flexible",l:"听专业建议",i:"🤔"}
-  ]),
-  mq("a9","您买保险最看重什么？（可多选）","","multi",[
-    {v:"claims-speed",l:"理赔速度",i:"⚡"},{v:"price",l:"价格/性价比",i:"💰"},
-    {v:"coverage",l:"保障范围",i:"📋"},{v:"digital",l:"线上操作便捷",i:"📱"}
-  ]),
-  mq("a10","您或家人是否有过理赔经历？","","single",[
-    {v:"no-experience",l:"从未理赔过",i:"🆕"},{v:"good-experience",l:"体验不错",i:"😊"},
-    {v:"bad-experience",l:"体验不好/拒赔",i:"😞"},{v:"heard-bad",l:"听过拒赔案例",i:"👂"}
-  ]),
-  mq("a11","您对保障缺口最大的自评是？","","single",[
-    {v:"medical-gap",l:"大病/住院的费用缺口",i:"🏥"},{v:"income-gap",l:"收入中断后的开支",i:"💸"},
-    {v:"accident-gap",l:"意外事故应对",i:"🚑"},{v:"retirement-gap",l:"养老生活质量",i:"🌴"},
-    {v:"no-gap",l:"感觉各方面都还够",i:"✅"}
-  ]),
-  mq("a12","您偏好的保障方式？","","single",[
-    {v:"consumer-term",l:"消费型+定期（性价比最高）",i:"⚡"},
-    {v:"consumer-lifetime",l:"消费型+终身（一步到位）",i:"🛡️"},
-    {v:"hybrid",l:"核心消费型+储蓄搭配",i:"⚖️"},{v:"return-premium",l:"偏好返还型",i:"🔄"}
-  ]),
-  mq("a13","您的保险购买渠道偏好？","","single",[
-    {v:"online",l:"线上自助",i:"📱"},{v:"agent",l:"代理人/经纪人",i:"🤝"},
-    {v:"hybrid-channel",l:"线上了解+线下成交",i:"⚖️"},{v:"no-pref",l:"无所谓",i:"🏷️"}
-  ]),
-  mq("a14","您是否有养宠、旅游等细分保障需求？（可多选）","","multi",[
-    {v:"pet",l:"养猫/狗——宠物险",i:"🐾"},{v:"travel",l:"经常旅游——旅游险",i:"✈️"},
-    {v:"dental",l:"口腔健康——齿科险",i:"🦷"},{v:"none",l:"以上都不需要",i:"➖"}
-  ]),
-  mq("a15","您对恋爱/婚姻的规划？","影响未来保障责任变化","single",[
-    {v:"single-now",l:"目前单身，短期内不考虑",i:"🧍"},{v:"dating",l:"恋爱中，可能结婚",i:"💑"},
-    {v:"soon-marry",l:"计划1-2年内结婚",i:"💍"},{v:"not-concerned",l:"暂不考虑这个问题",i:"🤷"}
-  ]),
-  mq("a16","您是否考虑香港或海外保险？","","single",[
-    {v:"no",l:"不考虑",i:"🇨🇳"},{v:"curious",l:"想了解一下",i:"🤔"},
-    {v:"hk-savings",l:"考虑香港储蓄分红险",i:"🇭🇰"}
-  ]),
-  mq("a17","您的运动/出行习惯？","影响意外险配置","multi",[
-    {v:"sedentary",l:"以室内/办公室为主",i:"💻"},{v:"outdoor",l:"经常户外/徒步",i:"🥾"},
-    {v:"extreme",l:"参与极限运动",i:"🧗"},{v:"drive",l:"经常开车",i:"🚗"}
-  ]),
-  mq("a18","您的家庭总资产规模？","","single",[
-    {v:"lt100w",l:"100 万以下",i:"🏠"},{v:"100-500w",l:"100-500 万",i:"🏠🏠"},
-    {v:"500-2000w",l:"500-2000 万",i:"🏘️"},{v:"gt2000w",l:"2000 万以上",i:"🏰"}
-  ]),
-  mq("a19","您对保险的了解程度？","","single",[
-    {v:"beginner",l:"不太了解，需要科普",i:"🌱"},{v:"some",l:"了解一些基础概念",i:"📖"},
-    {v:"experienced",l:"比较熟悉，知道要什么",i:"🎓"}
-  ]),
-  mq("a20","您所在的地区？","","single",[
-    {v:"tier1",l:"一线城市",i:"🌆"},{v:"new-tier1",l:"新一线/省会",i:"🏙️"},
-    {v:"tier2-3",l:"二三线城市",i:"🏘️"},{v:"rural",l:"县乡/农村",i:"🌾"}
-  ])
-];
-
-// ===== Branch B: 家庭守护者 (has kids or married with mortgage) =====
-const BRANCH_B = [
-  mq("b1","您的社保覆盖情况？","","multi",[
-    {v:"employee-ins",l:"职工医保+养老保险",i:"✅"},{v:"resident-ins",l:"居民医保/新农合",i:"🟡"},
-    {v:"no-ins",l:"无任何社保",i:"❌"},{v:"pension",l:"有企业年金",i:"🏦"},{v:"supplement",l:"有补充医疗（团险）",i:"➕"}
-  ]),
-  mq("b2","您的健康状况与体检异常？（可多选）","","multi",[
-    {v:"healthy",l:"身体健康",i:"🟢"},{v:"nodule-thyroid",l:"甲状腺结节",i:"🟡"},
-    {v:"nodule-breast",l:"乳腺结节",i:"🟡"},{v:"nodule-lung",l:"肺结节",i:"🟡"},
-    {v:"hypertension",l:"高血压（服药稳定）",i:"🟡"},{v:"diabetes",l:"2型糖尿病",i:"🟡"},
-    {v:"overweight",l:"BMI≥28",i:"🟡"},{v:"hepatitis",l:"乙肝携带",i:"🟡"},
-    {v:"cancer-family",l:"直系亲属癌症史",i:"🟠"},{v:"smoking",l:"长期吸烟",i:"🚬"}
-  ]),
-  mq("b3","您目前已配置了哪些商业保险？（可多选）","","multi",[
-    {v:"none",l:"目前都没有",i:"🆕"},{v:"critical",l:"重疾险",i:"🏥"},{v:"medical",l:"百万医疗险",i:"💊"},
-    {v:"accident",l:"意外险",i:"🤕"},{v:"term-life",l:"定期寿险",i:"🛡️"},{v:"auto",l:"车险",i:"🚗"}
-  ]),
-  mq("b4","您最想优先解决的问题？","","single",[
-    {v:"all-around",l:"全面规划",i:"🎯"},{v:"disease",l:"大病保障",i:"🏥"},
-    {v:"hospital",l:"住院报销",i:"💸"},{v:"family-protect",l:"家庭支柱保障",i:"😢"},
-    {v:"child-education",l:"子女教育金",i:"🎓"},{v:"wealth",l:"财富增值与传承",i:"📈"}
-  ]),
-  mq("b5","您每月的保费预算（全家合计）？","","single",[
-    {v:"minimal",l:"月均 <200 元",i:"🪙"},{v:"low",l:"月均 200-500 元",i:"💵"},
-    {v:"mid",l:"月均 500-1,500 元",i:"💵💵"},{v:"mid-high",l:"月均 1,500-4,000 元",i:"💎"},
-    {v:"high",l:"月均 >4,000 元",i:"👑"}
-  ]),
-  mq("b6","您的家庭负担结构？（可多选）","","multi",[
-    {v:"young-kids",l:"有6岁以下幼儿",i:"👶"},{v:"school-kids",l:"有学龄子女",i:"📚"},
-    {v:"elder-parents",l:"需赡养父母",i:"👴"},{v:"mortgage",l:"有房贷/车贷",i:"🏦"},
-    {v:"special-needs",l:"有家庭成员需特殊照护",i:"♿"}
-  ]),
-  mq("b7","子女教育金规划？","","single",[
-    {v:"not-yet",l:"还没有孩子",i:"⏳"},{v:"preschool",l:"幼儿园阶段",i:"🧸"},
-    {v:"primary",l:"小学/初中",i:"📚"},{v:"high-school",l:"高中/大学将至",i:"🎓"},
-    {v:"college",l:"大学/出国阶段",i:"✈️"}
-  ]),
-  mq("b8","您的房贷余额及剩余年限？","影响定寿保额计算","single",[
-    {v:"no-mortgage",l:"无房贷",i:"✅"},{v:"lt50w",l:"50万以下",i:"🏠"},
-    {v:"50-150w",l:"50-150万",i:"🏠🏠"},{v:"150-300w",l:"150-300万",i:"🏘️"},
-    {v:"gt300w",l:"300万以上",i:"🏰"}
-  ]),
-  mq("b9","您对保险公司的偏好？","","single",[
-    {v:"best-value",l:"性价比优先",i:"🏷️"},{v:"big-brand",l:"大品牌",i:"🏢"},
-    {v:"internet",l:"互联网保险",i:"📱"},{v:"state-owned",l:"央企/国资",i:"🏛️"}
-  ]),
-  mq("b10","您偏好的缴费期限？","","single",[
-    {v:"short",l:"趸交或5年内",i:"⚡"},{v:"mid",l:"10-20年",i:"⚖️"},
-    {v:"long",l:"20-30年",i:"📅"},{v:"flexible",l:"听建议",i:"🤔"}
-  ]),
-  mq("b11","您买保险最看重什么？（可多选）","","multi",[
-    {v:"claims-speed",l:"理赔速度",i:"⚡"},{v:"price",l:"性价比",i:"💰"},
-    {v:"coverage",l:"保障范围",i:"📋"},{v:"brand-trust",l:"品牌信誉",i:"🏢"},
-    {v:"advisor",l:"专属顾问服务",i:"🤝"},{v:"digital",l:"线上便捷",i:"📱"}
-  ]),
-  mq("b12","您或家人是否有过理赔经历？","","single",[
-    {v:"no-experience",l:"从未理赔",i:"🆕"},{v:"good-experience",l:"体验不错",i:"😊"},
-    {v:"bad-experience",l:"体验不好",i:"😞"},{v:"heard-bad",l:"听过负面案例",i:"👂"}
-  ]),
-  mq("b13","您对保障缺口最大的自评是？","","single",[
-    {v:"medical-gap",l:"大病/住院缺口",i:"🏥"},{v:"income-gap",l:"收入中断",i:"💸"},
-    {v:"death-gap",l:"身故后家人保障",i:"😢"},{v:"accident-gap",l:"意外应对",i:"🚑"},
-    {v:"retirement-gap",l:"养老品质",i:"🌴"}
-  ]),
-  mq("b14","您偏好的保障方式？","","single",[
-    {v:"consumer-term",l:"消费型+定期",i:"⚡"},{v:"consumer-lifetime",l:"消费型+终身",i:"🛡️"},
-    {v:"hybrid",l:"消费+储蓄搭配",i:"⚖️"},{v:"return-premium",l:"偏好返还型",i:"🔄"}
-  ]),
-  mq("b15","您的保险购买渠道偏好？","","single",[
-    {v:"online",l:"线上自助",i:"📱"},{v:"agent",l:"代理人/经纪人",i:"🤝"},
-    {v:"bank",l:"银行渠道",i:"🏦"},{v:"no-pref",l:"无所谓",i:"🏷️"}
-  ]),
-  mq("b16","是否有养宠、学龄子女、房产等细分需求？（可多选）","","multi",[
-    {v:"pet",l:"宠物险",i:"🐾"},{v:"travel",l:"旅游险",i:"✈️"},
-    {v:"school-kid",l:"学平险",i:"🏫"},{v:"home",l:"家财险",i:"🏠"},
-    {v:"dental",l:"齿科险",i:"🦷"},{v:"none",l:"都不需要",i:"➖"}
-  ]),
-  mq("b17","您对婚姻财产风险有顾虑吗？","","single",[
-    {v:"not-concerned",l:"暂无顾虑",i:"💚"},{v:"pre-marriage",l:"保护婚前财产",i:"💍"},
-    {v:"re-marriage",l:"再婚家庭",i:"🔄"},{v:"inheritance",l:"定向传承",i:"📜"}
-  ]),
-  mq("b18","您的家庭总资产规模？","","single",[
-    {v:"lt100w",l:"100万以下",i:"🏠"},{v:"100-500w",l:"100-500万",i:"🏠🏠"},
-    {v:"500-2000w",l:"500-2000万",i:"🏘️"},{v:"gt2000w",l:"2000万以上",i:"🏰"}
-  ]),
-  mq("b19","您是否考虑过香港保险？","","single",[
-    {v:"no",l:"不考虑",i:"🇨🇳"},{v:"curious",l:"想了解",i:"🤔"},
-    {v:"hk-savings",l:"考虑港险储蓄",i:"🇭🇰"},{v:"both",l:"内地+香港组合",i:"⚖️"}
-  ]),
-  mq("b20","您所在的地区？","","single",[
-    {v:"tier1",l:"一线城市",i:"🌆"},{v:"new-tier1",l:"新一线/省会",i:"🏙️"},
-    {v:"tier2-3",l:"二三线城市",i:"🏘️"},{v:"rural",l:"县乡/农村",i:"🌾"}
-  ])
-];
-
-// ===== Branch C: 企业主/高净值 =====
-const BRANCH_C = [
-  mq("c1","您的企业年营收规模？","","single",[
-    {v:"lt100w",l:"100万以下",i:"🏪"},{v:"100-500w",l:"100-500万",i:"🏢"},
-    {v:"500-5000w",l:"500-5000万",i:"🏭"},{v:"gt5000w",l:"5000万以上",i:"🏰"},
-    {v:"na",l:"非企业主，高净值个人",i:"💎"}
-  ]),
-  mq("c2","您的家企资产隔离状况？","金税四期+CRS 2.0下，家企隔离是资产安全第一道防线","single",[
-    {v:"not-applicable",l:"不涉及企业",i:"💻"},{v:"business-no-mix",l:"严格分开",i:"✅"},
-    {v:"business-mix",l:"存在资金混同",i:"⚠️"},{v:"business-high-risk",l:"有债务/税务/诉讼风险",i:"🔴"}
-  ]),
-  mq("c3","您的健康状况？（可多选）","","multi",[
-    {v:"healthy",l:"身体健康",i:"🟢"},{v:"nodule-thyroid",l:"甲状腺结节",i:"🟡"},
-    {v:"hypertension",l:"高血压",i:"🟡"},{v:"diabetes",l:"糖尿病",i:"🟡"},
-    {v:"overweight",l:"BMI偏高",i:"🟡"},{v:"cancer-family",l:"癌症家族史",i:"🟠"},{v:"smoking",l:"长期吸烟",i:"🚬"}
-  ]),
-  mq("c4","您目前已配置了哪些商业保险？（可多选）","","multi",[
-    {v:"none",l:"目前都没有",i:"🆕"},{v:"critical",l:"重疾险",i:"🏥"},{v:"medical",l:"医疗险",i:"💊"},
-    {v:"accident",l:"意外险",i:"🤕"},{v:"term-life",l:"定期寿险",i:"🛡️"},
-    {v:"whole-life",l:"终身寿险/增额寿",i:"📈"},{v:"annuity",l:"年金险",i:"📅"}
-  ]),
-  mq("c5","您最关注的核心诉求？","","single",[
-    {v:"tax-privacy",l:"税务合规与资产安全",i:"🔒"},{v:"wealth",l:"财富传承",i:"📈"},
-    {v:"disease",l:"大病保障",i:"🏥"},{v:"all-around",l:"全面规划",i:"🎯"},
-    {v:"retirement",l:"高品质养老",i:"🌴"}
-  ]),
-  mq("c6","您的家庭负担结构？（可多选）","","multi",[
-    {v:"young-kids",l:"幼儿抚养",i:"👶"},{v:"school-kids",l:"学龄子女",i:"📚"},
-    {v:"elder-parents",l:"赡养父母",i:"👴"},{v:"mortgage",l:"大额负债",i:"🏦"},
-    {v:"no-dependent",l:"无负担",i:"🧍"}
-  ]),
-  mq("c7","您的家庭总资产规模？","","single",[
-    {v:"500-2000w",l:"500-2000万",i:"🏘️"},{v:"2000-5000w",l:"2000-5000万",i:"🏰"},
-    {v:"5000-1e",l:"5000万-1亿",i:"🏛️"},{v:"gt1e",l:"1亿以上",i:"👑"}
-  ]),
-  mq("c8","您是否有境外资产或跨境税务身份？","CRS 2.0下跨境资产自动交换","single",[
-    {v:"none",l:"纯境内",i:"🇨🇳"},{v:"overseas-property",l:"境外房产/投资",i:"🏠"},
-    {v:"offshore-account",l:"离岸账户/保单",i:"🏝️"},{v:"dual-residency",l:"双重税务居民",i:"🛂"}
-  ]),
-  mq("c9","您是否考虑香港或海外保险？","","single",[
-    {v:"no",l:"只看内地",i:"🇨🇳"},{v:"curious",l:"了解港险",i:"🤔"},
-    {v:"hk-savings",l:"香港储蓄分红",i:"🇭🇰"},{v:"hk-life",l:"香港大额寿险",i:"💼"},
-    {v:"both",l:"内地+香港组合",i:"⚖️"}
-  ]),
-  mq("c10","您对婚姻财产风险有顾虑吗？","","single",[
-    {v:"not-concerned",l:"暂无",i:"💚"},{v:"pre-marriage",l:"婚前财产保护",i:"💍"},
-    {v:"re-marriage",l:"再婚/多子女",i:"🔄"},{v:"inheritance",l:"定向传承",i:"📜"}
-  ]),
-  mq("c11","您每年的保费预算？","高净值人群合理年保费约为家庭年收入的5-15%","single",[
-    {v:"mid",l:"年 2-5 万（月均约 2,000-4,000 元）",i:"💎"},
-    {v:"mid-high",l:"年 5-15 万（月均约 4,000-12,500 元）",i:"💎💎"},
-    {v:"high",l:"年 15-50 万（月均约 1.2-4 万）",i:"👑"},
-    {v:"uhnw",l:"年 50-200 万（定制化方案）",i:"🏰"},
-    {v:"unlimited",l:"年 200 万以上，私人银行/家族办公室级别",i:"🏛️"}
-  ]),
-  mq("c12","您对保险公司的偏好？","","single",[
-    {v:"best-value",l:"性价比",i:"🏷️"},{v:"big-brand",l:"大品牌",i:"🏢"},
-    {v:"joint-venture",l:"合资/外资",i:"🌍"},{v:"state-owned",l:"央企/国资",i:"🏛️"}
-  ]),
-  mq("c13","您偏好的缴费期限？","","single",[
-    {v:"short",l:"趸交或5年内",i:"⚡"},{v:"mid",l:"10-20年",i:"⚖️"},
-    {v:"long",l:"20-30年",i:"📅"},{v:"flexible",l:"听建议",i:"🤔"}
-  ]),
-  mq("c14","您买保险最看重什么？（可多选）","","multi",[
-    {v:"claims-speed",l:"理赔速度",i:"⚡"},{v:"coverage",l:"保障范围",i:"📋"},
-    {v:"brand-trust",l:"品牌信誉",i:"🏢"},{v:"advisor",l:"专属顾问",i:"🤝"},
-    {v:"privacy",l:"隐私保护",i:"🔒"}
-  ]),
-  mq("c15","您是否有过理赔经历？","","single",[
-    {v:"no-experience",l:"从未",i:"🆕"},{v:"good-experience",l:"体验好",i:"😊"},
-    {v:"bad-experience",l:"体验差",i:"😞"}
-  ]),
-  mq("c16","您对保障缺口最大的自评是？","","single",[
-    {v:"wealth-gap",l:"资产传承缺口",i:"📈"},{v:"medical-gap",l:"大病保障缺口",i:"🏥"},
-    {v:"retirement-gap",l:"养老品质",i:"🌴"},{v:"no-gap",l:"基本够用",i:"✅"}
-  ]),
-  mq("c17","您偏好的保障方式？","","single",[
-    {v:"hybrid",l:"消费型+储蓄搭配",i:"⚖️"},{v:"savings-first",l:"储蓄增值+传承为主",i:"📈"},
-    {v:"consumer-lifetime",l:"消费型+终身",i:"🛡️"}
-  ]),
-  mq("c18","您的保险渠道偏好？","","single",[
-    {v:"agent",l:"专属代理人/经纪人",i:"🤝"},{v:"bank",l:"私人银行",i:"🏦"},
-    {v:"hybrid-channel",l:"线上+线下",i:"⚖️"}
-  ]),
-  mq("c19","您是否有养宠、旅行、齿科等偏好？（可多选）","","multi",[
-    {v:"pet",l:"宠物险",i:"🐾"},{v:"travel",l:"高端旅游险",i:"✈️"},
-    {v:"dental",l:"齿科险",i:"🦷"},{v:"home",l:"家财险",i:"🏠"},{v:"none",l:"都不需要",i:"➖"}
-  ]),
-  mq("c20","您所在的地区？","","single",[
-    {v:"tier1",l:"一线城市",i:"🌆"},{v:"new-tier1",l:"新一线/省会",i:"🏙️"},
-    {v:"tier2-3",l:"二三线城市",i:"🏘️"},{v:"overseas",l:"境外/港澳台",i:"🌏"}
-  ])
-];
-
-// ===== Branch D: 银发安康 (age 46+) =====
-const BRANCH_D = [
-  mq("d1","您的社保覆盖情况？","","multi",[
-    {v:"employee-ins",l:"职工医保+养老金",i:"✅"},{v:"resident-ins",l:"居民医保",i:"🟡"},
-    {v:"no-ins",l:"无社保",i:"❌"},{v:"pension",l:"有企业/职业年金",i:"🏦"}
-  ]),
-  mq("d2","您的健康状况与慢病史？（可多选）","中老年投保健告是关键","multi",[
-    {v:"healthy",l:"体检基本正常",i:"🟢"},{v:"hypertension",l:"高血压",i:"🟡"},
-    {v:"diabetes",l:"糖尿病",i:"🟡"},{v:"hyperlipidemia",l:"高血脂",i:"🟡"},
-    {v:"nodule-thyroid",l:"甲状腺结节",i:"🟡"},{v:"nodule-lung",l:"肺结节",i:"🟡"},
-    {v:"heart",l:"冠心病/心律失常",i:"🟠"},{v:"stroke",l:"脑梗/中风史",i:"🔴"},
-    {v:"cancer-history",l:"癌症病史",i:"🔴"},{v:"cancer-family",l:"癌症家族史",i:"🟠"},
-    {v:"arthritis",l:"关节炎/行动不便",i:"🟡"}
-  ]),
-  mq("d3","您目前已配置了哪些保险？（可多选）","","multi",[
-    {v:"none",l:"目前都没有",i:"🆕"},{v:"medical",l:"百万医疗险",i:"💊"},
-    {v:"accident",l:"意外险",i:"🤕"},{v:"critical",l:"重疾险",i:"🏥"},
-    {v:"annuity",l:"年金险/养老金",i:"📅"},{v:"whole-life",l:"终身寿险",i:"📈"}
-  ]),
-  mq("d4","您最想优先解决的问题？","","single",[
-    {v:"hospital",l:"住院/大病报销",i:"💸"},{v:"disease",l:"大病保障",i:"🏥"},
-    {v:"accident-risk",l:"意外跌倒/骨折",i:"🚑"},{v:"retirement",l:"养老金补充",i:"🌴"},
-    {v:"nursing",l:"护理/长期照料",i:"♿"},{v:"inheritance",l:"身后传承",i:"📜"}
-  ]),
-  mq("d5","您每月的保费预算？","","single",[
-    {v:"low",l:"月均 100-300 元",i:"💵"},{v:"mid",l:"月均 300-800 元",i:"💵💵"},
-    {v:"mid-high",l:"月均 800-2,000 元",i:"💎"},{v:"high",l:"月均 >2,000 元",i:"👑"}
-  ]),
-  mq("d6","您的居住和照护安排？","","single",[
-    {v:"independent",l:"独立居住，生活自理",i:"🏡"},{v:"with-family",l:"与子女/家人同住",i:"👨‍👩‍👧"},
-    {v:"community",l:"养老社区/公寓",i:"🏘️"},{v:"need-care",l:"需要日常护理帮助",i:"♿"}
-  ]),
-  mq("d7","您的子女情况？","","single",[
-    {v:"no-children",l:"无子女",i:"🧍"},{v:"adult-nearby",l:"成年子女在附近",i:"👨‍👩‍👧"},
-    {v:"adult-far",l:"子女异地/国外",i:"✈️"},{v:"supporting",l:"仍在资助子女",i:"💸"}
-  ]),
-  mq("d8","您是否有退休金/企业年金？","","single",[
-    {v:"govt-only",l:"仅有社保养老金",i:"📅"},{v:"enterprise-pension",l:"有企业年金补充",i:"🏦"},
-    {v:"rental",l:"有房租/投资收入",i:"🏠"},{v:"abundant",l:"退休收入充裕",i:"✅"}
-  ]),
-  mq("d9","您对保险公司的偏好？","","single",[
-    {v:"best-value",l:"性价比优先",i:"🏷️"},{v:"big-brand",l:"大品牌（平安/人保/国寿）",i:"🏢"},
-    {v:"state-owned",l:"央企/国资",i:"🏛️"}
-  ]),
-  mq("d10","您偏好的缴费期限？","","single",[
-    {v:"short",l:"趸交或5年内",i:"⚡"},{v:"mid",l:"10年",i:"⚖️"},
-    {v:"flexible",l:"听建议",i:"🤔"}
-  ]),
-  mq("d11","您买保险最看重什么？（可多选）","","multi",[
-    {v:"claims-speed",l:"理赔快",i:"⚡"},{v:"coverage",l:"保障范围",i:"📋"},
-    {v:"brand-trust",l:"品牌可靠",i:"🏢"},{v:"advisor",l:"有专人服务",i:"🤝"},
-    {v:"simple",l:"条款简单易懂",i:"📖"}
-  ]),
-  mq("d12","您是否担心未来护理费用？","","single",[
-    {v:"not-concerned",l:"不担心",i:"💚"},{v:"somewhat",l:"有些担心",i:"🟡"},
-    {v:"very",l:"非常担心",i:"🔴"},{v:"already-planned",l:"已做好规划",i:"✅"}
-  ]),
-  mq("d13","您对保障缺口的自评？","","single",[
-    {v:"medical-gap",l:"大病/住院",i:"🏥"},{v:"accident-gap",l:"意外/骨折",i:"🚑"},
-    {v:"retirement-gap",l:"养老金不足",i:"🌴"},{v:"nursing-gap",l:"护理费用",i:"♿"},
-    {v:"inheritance-gap",l:"身后传承",i:"📜"}
-  ]),
-  mq("d14","您是否有过理赔经历？","","single",[
-    {v:"no-experience",l:"从未",i:"🆕"},{v:"good-experience",l:"体验好",i:"😊"},
-    {v:"bad-experience",l:"体验差/拒赔",i:"😞"},{v:"heard-bad",l:"听过负面案例",i:"👂"}
-  ]),
-  mq("d15","您偏好的保障方式？","","single",[
-    {v:"consumer-term",l:"消费型",i:"⚡"},{v:"return-premium",l:"返还型",i:"🔄"},
-    {v:"savings-first",l:"储蓄/传承为主",i:"📈"},{v:"hybrid",l:"混合",i:"⚖️"}
-  ]),
-  mq("d16","您的保险渠道偏好？","","single",[
-    {v:"agent",l:"代理人/经纪人",i:"🤝"},{v:"bank",l:"银行",i:"🏦"},
-    {v:"online",l:"线上/APP",i:"📱"},{v:"no-pref",l:"无所谓",i:"🏷️"}
-  ]),
-  mq("d17","是否有细分保障需求？（可多选）","","multi",[
-    {v:"pet",l:"宠物险",i:"🐾"},{v:"travel",l:"旅游险",i:"✈️"},
-    {v:"dental",l:"齿科险",i:"🦷"},{v:"home",l:"家财险",i:"🏠"},{v:"none",l:"不需要",i:"➖"}
-  ]),
-  mq("d18","您是否考虑惠民保等普惠产品？","","single",[
-    {v:"already-have",l:"已参保当地惠民保",i:"✅"},{v:"interested",l:"想了解",i:"🤔"},
-    {v:"not-interested",l:"不感兴趣",i:"🚫"}
-  ]),
-  mq("d19","您对身后传承的规划？","","single",[
-    {v:"not-concerned",l:"暂无规划",i:"💚"},{v:"simple-will",l:"简单安排即可",i:"📝"},
-    {v:"formal-plan",l:"需要正式规划",i:"📜"},{v:"already-done",l:"已安排好",i:"✅"}
-  ]),
-  mq("d20","您所在的地区？","","single",[
-    {v:"tier1",l:"一线城市",i:"🌆"},{v:"new-tier1",l:"新一线/省会",i:"🏙️"},
-    {v:"tier2-3",l:"二三线城市",i:"🏘️"},{v:"rural",l:"县乡/农村",i:"🌾"}
-  ])
-];
-
-// ===== Branch E: 宝贝成长 (age 0-17, answering for child) =====
-const BRANCH_E = [
-  mq("e1","孩子的具体年龄？","不同年龄段保障重点差异显著","single",[
-    {v:"0-1",l:"0-1 岁（新生儿）",i:"🍼"},{v:"2-3",l:"2-3 岁（幼儿）",i:"🧸"},
-    {v:"4-6",l:"4-6 岁（学龄前）",i:"🎨"},{v:"7-12",l:"7-12 岁（小学）",i:"📚"},
-    {v:"13-17",l:"13-17 岁（中学）",i:"🧑‍🎓"}
-  ]),
-  mq("e2","孩子的社保/医保情况？","","single",[
-    {v:"resident-ins",l:"有少儿医保/居民医保",i:"✅"},{v:"no-ins",l:"无医保",i:"❌"},
-    {v:"supplement",l:"有学校的学平险",i:"🏫"}
-  ]),
-  mq("e3","孩子的健康状况？（可多选）","少儿投保核保关键","multi",[
-    {v:"healthy",l:"健康足月出生",i:"🟢"},{v:"premature",l:"早产/低体重(<2.5kg)",i:"🟡"},
-    {v:"oval-foramen",l:"卵圆孔未闭",i:"🟡"},{v:"jaundice",l:"新生儿黄疸(病理性)",i:"🟡"},
-    {v:"allergy",l:"过敏体质/哮喘",i:"🟡"},{v:"congenital",l:"先天性疾病",i:"🔴"},
-    {v:"development",l:"发育迟缓/自闭倾向",i:"🟠"}
-  ]),
-  mq("e4","孩子目前已配置了哪些保险？（可多选）","","multi",[
-    {v:"none",l:"目前没有任何保险",i:"🆕"},{v:"critical",l:"少儿重疾险",i:"🏥"},
-    {v:"medical",l:"医疗险",i:"💊"},{v:"accident",l:"意外险",i:"🤕"},
-    {v:"school",l:"学平险",i:"🏫"},{v:"education",l:"教育金/年金",i:"🎓"}
-  ]),
-  mq("e5","您为孩子最担心什么？（可多选）","","multi",[
-    {v:"leukemia",l:"白血病等少儿高发重疾",i:"🏥"},{v:"accident",l:"意外摔伤/烫伤/误食",i:"🤕"},
-    {v:"hospital",l:"住院/手术费用",i:"💸"},{v:"development",l:"发育/心理问题",i:"🧠"},
-    {v:"education",l:"未来教育金不足",i:"🎓"}
-  ]),
-  mq("e6","家庭年收入（决定给孩子投保的预算上限）？","","single",[
-    {v:"lt5",l:"5 万以下",i:"💰"},{v:"5-15",l:"5-15 万",i:"💰💰"},
-    {v:"15-30",l:"15-30 万",i:"💰💰💰"},{v:"30-100",l:"30-100 万",i:"💎"},
-    {v:"gt100",l:"100 万以上",i:"👑"}
-  ]),
-  mq("e7","父母是否已配置了自身的保障？","父母的保障是孩子最大的安全感","single",[
-    {v:"yes-full",l:"父母双方保障齐全",i:"✅"},{v:"yes-partial",l:"父母有一方保障齐全",i:"🟡"},
-    {v:"no",l:"父母都没有商业保险",i:"❌"},{v:"not-sure",l:"不太清楚",i:"🤷"}
-  ]),
-  mq("e8","您每月的保费预算（孩子部分）？","","single",[
-    {v:"minimal",l:"月均 <100 元",i:"🪙"},{v:"low",l:"月均 100-300 元",i:"💵"},
-    {v:"mid",l:"月均 300-800 元",i:"💵💵"},{v:"high",l:"月均 >800 元",i:"💎"}
-  ]),
-  mq("e9","您是否规划了子女教育金？","","single",[
-    {v:"not-yet",l:"还没有，想了解",i:"🤔"},{v:"saving-informally",l:"自己存钱，但没专门规划",i:"💰"},
-    {v:"education-insurance",l:"考虑教育金保险",i:"🎓"},{v:"already-plan",l:"已有明确规划",i:"✅"}
-  ]),
-  mq("e10","您对保险公司的偏好？","","single",[
-    {v:"best-value",l:"性价比优先",i:"🏷️"},{v:"big-brand",l:"大品牌（平安/人保/国寿）",i:"🏢"},
-    {v:"internet",l:"互联网保险也可",i:"📱"},{v:"state-owned",l:"央企/国资",i:"🏛️"}
-  ]),
-  mq("e11","您偏好的缴费期限？","","single",[
-    {v:"short",l:"趸交或5年内",i:"⚡"},{v:"mid",l:"10-20年",i:"⚖️"},
-    {v:"long",l:"20-30年",i:"📅"},{v:"flexible",l:"听建议",i:"🤔"}
-  ]),
-  mq("e12","您买保险最看重什么？（可多选）","","multi",[
-    {v:"coverage",l:"保障范围",i:"📋"},{v:"price",l:"价格",i:"💰"},
-    {v:"brand-trust",l:"公司信誉",i:"🏢"},{v:"claims-speed",l:"理赔快",i:"⚡"},
-    {v:"advisor",l:"有专人服务",i:"🤝"}
-  ]),
-  mq("e13","您是否有过理赔经历？","","single",[
-    {v:"no-experience",l:"从未",i:"🆕"},{v:"good-experience",l:"体验好",i:"😊"},
-    {v:"bad-experience",l:"体验差",i:"😞"}
-  ]),
-  mq("e14","您对保障缺口的自评？","","single",[
-    {v:"critical-gap",l:"少儿重疾保障",i:"🏥"},{v:"medical-gap",l:"住院报销",i:"💊"},
-    {v:"accident-gap",l:"意外伤害",i:"🤕"},{v:"education-gap",l:"教育金",i:"🎓"},
-    {v:"no-gap",l:"感觉够了",i:"✅"}
-  ]),
-  mq("e15","您偏好的保障方式？","","single",[
-    {v:"consumer-term",l:"消费型（性价比高）",i:"⚡"},{v:"consumer-lifetime",l:"终身保障",i:"🛡️"},
-    {v:"hybrid",l:"保障+教育金搭配",i:"⚖️"},{v:"return-premium",l:"返还型",i:"🔄"}
-  ]),
-  mq("e16","您的保险渠道偏好？","","single",[
-    {v:"online",l:"线上自助",i:"📱"},{v:"agent",l:"代理人/经纪人",i:"🤝"},
-    {v:"bank",l:"银行",i:"🏦"},{v:"no-pref",l:"无所谓",i:"🏷️"}
-  ]),
-  mq("e17","是否有细分需求？（可多选）","","multi",[
-    {v:"school-kid",l:"学平险",i:"🏫"},{v:"dental",l:"儿童齿科",i:"🦷"},
-    {v:"pet",l:"宠物险",i:"🐾"},{v:"travel",l:"亲子旅游险",i:"✈️"},{v:"none",l:"不需要",i:"➖"}
-  ]),
-  mq("e18","您是否考虑过给孩子存一笔「成长基金」？","通过增额寿/年金实现子女长期储蓄","single",[
-    {v:"interested",l:"有兴趣了解",i:"🤔"},{v:"already",l:"已经有类似安排",i:"✅"},
-    {v:"no",l:"暂时不考虑",i:"🚫"}
-  ]),
-  mq("e19","您对孩子的教育规划路线？","","single",[
-    {v:"public",l:"公立学校路线",i:"🏫"},{v:"private",l:"私立/国际学校",i:"🏛️"},
-    {v:"overseas",l:"计划出国留学",i:"✈️"},{v:"not-sure",l:"还没想好",i:"🤷"}
-  ]),
-  mq("e20","您所在的地区？","","single",[
-    {v:"tier1",l:"一线城市",i:"🌆"},{v:"new-tier1",l:"新一线/省会",i:"🏙️"},
-    {v:"tier2-3",l:"二三线城市",i:"🏘️"},{v:"rural",l:"县乡/农村",i:"🌾"}
-  ]),
-  mq("e21","您是孩子的？","您是投保人，您的信息影响保费和核保","single",[
-    {v:"father",l:"父亲",i:"👨"},{v:"mother",l:"母亲",i:"👩"},
-    {v:"grandparent",l:"祖父母/外祖父母",i:"👴"},{v:"guardian",l:"其他法定监护人",i:"🤝"}
-  ]),
-  mq("e22","您的职业身份？","投保人的职业和收入影响承保条件","single",[
-    {v:"employee",l:"企业职员",i:"💻"},{v:"civil",l:"公务员/事业单位",i:"🏛️"},
-    {v:"business-owner",l:"企业主/个体户",i:"🏢"},{v:"freelancer",l:"自由职业",i:"✍️"},
-    {v:"professional",l:"医生/律师/高管",i:"⚕️"},{v:"high-risk",l:"高危职业",i:"🏗️"}
-  ]),
-  mq("e23","您（投保人）的健康状况？（可多选）","父母的健康状况也影响部分少儿险种的核保","multi",[
-    {v:"healthy",l:"身体健康",i:"🟢"},{v:"nodule-thyroid",l:"甲状腺结节",i:"🟡"},
-    {v:"hypertension",l:"高血压",i:"🟡"},{v:"diabetes",l:"糖尿病",i:"🟡"},
-    {v:"hepatitis",l:"乙肝携带",i:"🟡"},{v:"cancer-family",l:"癌症家族史",i:"🟠"},
-    {v:"smoking",l:"长期吸烟",i:"🚬"}
-  ])
-];
-
-// Branch resolution function (adults only)
-function resolveBranch(trunkAnswers){
-  const age=trunkAnswers["t1"]; const role=trunkAnswers["t3"];
-  const income=trunkAnswers["t4"]; const occupation=trunkAnswers["t5"];
-  // C: business owner / high income
-  if(occupation==="business-owner"||["100-500","gt500"].includes(income))return {branch:"C",label:"企业主/高净值"};
-  // D: age 46+ → Senior (unless biz owner)
-  if(["46-55","56-65","66+"].includes(age)&&occupation!=="business-owner")return {branch:"D",label:"银发安康"};
-  // B: family (has kids / married)
-  if(["parent","single-parent"].includes(role)||["couple"].includes(role))return {branch:"B",label:"家庭守护者"};
-  // A: default → young strivers
-  return {branch:"A",label:"年轻奋斗族"};
-}
-
-/* ==================== SCORING ENGINE ==================== */
-function calculateRecommendations(answers) {
-  const scores={};
-  function g(id){return answers[id]}
-  function ga(id){const v=answers[id];return Array.isArray(v)?v:(v?[v]:[])}
-  function h(arr,val){return arr.includes(val)}
-  // Multi-ID lookup: tries each possible branch-specific ID, returns first non-undefined
-  function gm(ids){for(const id of ids){const v=answers[id];if(v!==undefined)return v;}return undefined;}
-  function gma(ids){const v=gm(ids);return Array.isArray(v)?v:(v?[v]:[]);}
-  function add(cat,name,pts,reason){
-    if(!scores[cat])scores[cat]={};
-    if(!scores[cat][name])scores[cat][name]={score:0,reasons:[]};
-    scores[cat][name].score+=pts;
-    scores[cat][name].reasons.push(reason);
-  }
-
-  // Trunk answers (IDs: t1-t5)
-  const age=g("t1"),gender=g("t2"),role=g("t3"),income=g("t4"),occupation=g("t5");
-  // Branch answers — use gm() to find across branches
-  const socialS=new Set(gma(["a1","b1","c1","d1"]));
-  const healthS=new Set(gma(["a2","b2","c3","d2"]));
-  const existingS=new Set(gma(["a3","b3","c4","d3"]));
-  const priority=gm(["a4","b4","c5","d4"])||"all-around";
-  const depS=new Set(gma(["a6","b6","c6"]));
-  const assets=gm(["a18","b18","c7"])||"lt100w";
-  const bizRisk=gm(["c2"])||"not-applicable";
-  const overseas=gm(["c8"])||"none";
-  const hkPref=gm(["a16","b19","c9"])||"no";
-  const marriageRisk=gm(["b17","c10","a15"])||"not-concerned";
-  const budget=gm(["a5","b5","c11","d5"])||"mid";
-  const brandPref=gm(["a7","b9","c12","d9"])||"best-value";
-  const payPeriod=gm(["a8","b10","c13","d10"])||"flexible";
-  const valuesS=new Set(gma(["a9","b11","c14","d11"]));
-  const claimsExp=gm(["a10","b12","c15","d14"])||"no-experience";
-  const gapSelf=gm(["a11","b13","c16","d13"])||"medical-gap";
-  const termPref=gm(["a12","b14","c17","d15"])||"consumer-term";
-  const channelPref=gm(["a13","b15","c18","d16"])||"no-pref";
-  const microS=new Set(gma(["a14","b16","c19","d17"]));
-  const region=gm(["a20","b20","c20","d20"])||"tier1";
-
-  const isMiddle=h(["36-45","46-55"],age);
-  const isSenior=h(["56-65","66+"],age);
-  const isYoung=h(["18-25","26-35"],age);
-  const hasDep=depS.has("young-kids")||depS.has("school-kids")||depS.has("elder-parents");
-  const hasDebt=depS.has("mortgage");
-  const isHighIncome=h(["30-100","100-500","gt500"],income);
-  const isUhnw=h(["gt500"],income)||h(["gt5000w","2000-5000w","5000-1e","gt1e","gt2000w"],assets);
-  const highAssets=h(["500-2000w","2000-5000w","gt5000w","5000-1e","gt1e","gt2000w"],assets);
-  const needWealth=priority==="wealth"||priority==="tax-privacy"||isHighIncome||bizRisk==="business-high-risk"||highAssets;
-
-  // === Medical ===
-  if(!existingS.has("medical")){
-    if(isSenior||healthS.has("hypertension")||healthS.has("diabetes")||healthS.has("hepatitis"))
-      add("medical","好医保·长期医疗(旗舰版)",30,"续保最稳——癌症/心血管终身续保，健告宽松，有既往症首选");
-    add("medical","蓝医保·好医好药Pro版",28,"DRG后外购药不限清单是刚需，276种特药+64种进口药+186家私立医院");
-    if(budget==="minimal"||budget==="low")
-      add("medical","京东保·长期医疗险",22,"30岁仅200-298元/年，20年+终身续保，极致性价比");
-    if(healthS.has("cancer-family")||age==="66+")
-      add("medical","防癌医疗险·安享一生2026",25,"癌症专项、终身保证续保、0免赔100%报销，高龄/癌症家族首选");
-    if(isHighIncome&&h(["2000-5000w","gt5000w"],assets))
-      add("medical","高端医疗·卓越人生",16,"全球就医+保额无上限+含美国，高净值家庭标配");
-    add("medical","好医保·长期医疗(旗舰版)",15,"续保最稳定，停售可免健告转保");
-  }
-
-  // === Critical Illness ===
-  if(!existingS.has("critical")&&!isSenior){
-      if(gender==="male"){add("criticalIllness","达尔文12号",30,"男性性价比之王，意外重疾额外赔35%");}
-      else{add("criticalIllness","完美人生8号",30,"女性首选——4大特疾额外赔10%、癌症拓展金50%");add("criticalIllness","达尔文12号",18,"也可选，综合保障扎实");}
-      if(healthS.has("nodule-thyroid")||healthS.has("nodule-breast")||healthS.has("nodule-lung")||healthS.has("hepatitis"))
-        add("criticalIllness","超级玛丽16号Pro",28,"三大结节专项保障，结节/慢病人群核保友好");
-      if(occupation==="high-risk")
-        add("criticalIllness","哪吒2号",22,"1-6类职业可投，60岁前重疾额外赔90%");
-      if(brandPref==="big-brand"||brandPref==="state-owned"){
-        add("criticalIllness","阿基米德2025",18,"太平洋人寿(世界500强)，等待期仅90天");
-      }
-  }
-
-  // === Accident ===
-  if(!existingS.has("accident")){
-    if(isSenior){
-      add("accident","太平洋孝心安6号",30,"50-85岁可投，0免赔不限社保，骨折保障");
-      if(healthS.has("hypertension")||healthS.has("diabetes"))add("accident","平安孝福康2号",22,"免健康告知，高血压糖尿病可投");
-      add("accident","众安孝欣保3号",18,"139元/年起，可选骨折加油包+陪诊/护工");
-    }else if(occupation==="high-risk"){
-      add("accident","小蜜蜂无畏版",30,"高危职业专属，1-6类可投，含猝死+住院津贴");
-      add("accident","人保1-6类守护神",25,"人保品牌+最高50万+社保内100%报销");
-    }else{
-      add("accident","人保大护甲8号旗舰版",30,"成人标杆——0免赔不限社保+猝死50万+意外医疗10万");
-      add("accident","太平洋小蜜蜂6号",25,"节假日双倍赔+动物致伤美容费，298元保100万");
-    }
-    if(microS.has("travel"))add("accident","旅游险·安联环游四海",20,"全球紧急救援+航班延误+高海拔/潜水覆盖");
-  }
-
-  // === Term Life ===
-  if(!existingS.has("term-life")&&!existingS.has("whole-life")){
-    const needTerm=role==="parent"||role==="single-parent"||hasDep||hasDebt||priority==="family-protect";
-    if(needTerm||isMiddle){
-      if(healthS.has("nodule-thyroid")||healthS.has("nodule-breast")||healthS.has("nodule-lung")||healthS.has("hepatitis")||healthS.has("hypertension"))
-        add("termLife","定海柱8号",30,"健康告知最宽松——不问乙肝/结节/高血压，猝死最高赔180%");
-      if(region==="tier1"||hasDebt||income==="100-500"||income==="gt500")
-        add("termLife","华贵大麦2026A款",28,"最高400万保额，一线城市高房贷首选，可选失能保障");
-      add("termLife","擎天柱12号·泰然一生版",30,"价格全网最低——30岁女仅600元/年保100万，免责仅3条");
-      if(role==="couple")add("termLife","大麦甜蜜家2026A款",22,"夫妻共保，同一意外最高赔1200万");
-      if(termPref==="return-premium")add("termLife","同方全球臻爱2026A",18,"满期返还保费，适合不想保费白花的人群");
-    }
-  }
-
-  // === Savings / Wealth ===
-  if(needWealth||priority==="child-education"||priority==="retirement"||termPref==="savings-first"){
-    if(termPref!=="return-premium"&&budget!=="minimal")
-      add("savings","岁享金生(固收型增额寿)",28,"IRR 1.99%行业最高+第4年回本+含护理保障，确定性最强");
-    if(priority==="retirement"||priority==="child-education"){
-      add("savings","快享福5号(分红型年金)",26,"保底1.75%+2025分红实现率152%，养老/教育规划首选");
-      add("savings","星颐朱雀版(分红型年金)",20,"长期IRR 3.11%，领取金额高，养老金刚需配置");
-    }
-    if(isHighIncome||priority==="wealth"||bizRisk==="business-high-risk"||h(["500-2000w","2000-5000w"],assets)){
-      add("savings","星福家朱雀版(分红型增额寿)",28,"保底+演示双顶格，连续13年分红100%+，传承+增值双优");
-      if(isUhnw)add("savings","泰赢家2.0(分红型增额寿)",24,"近10年分红达成率183%行业第一，50万起投，高净值专属");
-    }
-    if(brandPref==="joint-venture")add("savings","一生中意福享版(分红型增额寿)",26,"中石油+忠利保险合资，20年分红记录");
-    if(brandPref==="big-brand"||brandPref==="state-owned"){
-      add("savings","E增福优享版(固收型增额寿)",22,"新华人寿大品牌，IRR 1.93%+第6年回本");
-      add("savings","福有余2025(固收型增额寿)",18,"太平洋品牌+服务网络强+IRR 1.90%");
-    }
-    if(healthS.has("cancer-family")||healthS.has("hypertension")||healthS.has("diabetes")||healthS.has("hepatitis"))
-      add("savings","如意尊8.0(固收型增额寿)",5,"核保最宽松的增额寿，有体况也可投保");
-    if(brandPref==="big-brand"&&isHighIncome)add("savings","盛世金越(分红型增额寿)",18,"平安品牌+双被保人设计，两代传承");
-    // Internet channel specific
-    if(channelPref==="online"||brandPref==="internet"){add("savings","金满意足2026(固收型增额寿)",22,"互联网专属，减保灵活不限次数，线上投保便捷");}
-  }
-
-  // === HK/Offshore insurance ===
-  if(hkPref!=="no"&&hkPref&&hkPref!=="curious"){
-    if(!scores["hkInsurance"])scores["hkInsurance"]={};
-    add("hkInsurance","友邦「充裕未来」储蓄计划",22,"友邦香港旗舰储蓄产品，长期IRR 5-7%，多元货币灵活，10年红利实现率>95%");
-    if(hkPref==="hk-life"||priority==="wealth")add("hkInsurance","保诚「隽富」多元货币计划",24,"6种货币自由转换+无限次更换受保人+保单分拆，传承功能行业最强");
-    if(isUhnw||income==="gt500"||h(["5000-1e","gt1e"],assets)){add("hkInsurance","宏利「创富传承」保障计划",22,"高净值专属，保证现金价值+终期红利，家企传承工具");add("hkInsurance","万通「富饶传承」储蓄计划",18,"高预期回报+万能账户附加，退休+传承双目标");}
-    if(overseas!=="none"||hkPref==="both")add("hkInsurance","安盛「挚汇」储蓄计划",20,"9种货币+全球投资标的，跨境家庭/全球资产配置首选");
-    if(!scores["savings"])scores["savings"]={};
-    if(!scores["savings"]["__hk_note__"])scores["savings"]["__hk_note__"]={score:0,reasons:["【港险配置建议】香港储蓄分红险优势：①长期IRR可达5-7% vs 内地2%左右；②多元货币转换对冲汇率风险；③更换受保人+保单分拆实现多代传承","【注意事项】①必须本人赴港签单（内地签署无效）；②CRS 2.0下保单信息自动交换至内地税务机构；③汇率风险（美元/港币 vs 人民币）；④法律适用差异（香港普通法）","【配置策略】建议内地险解决基础保障（医疗/重疾/定寿），港险解决长期储蓄+多元币种+传承需求，两者互补而非替代"]};
-  }
-  if(hkPref==="curious"){
-    if(!scores["savings"])scores["savings"]={};
-    if(!scores["savings"]["__hk_note__"])scores["savings"]["__hk_note__"]={score:0,reasons:["【港险入门】香港储蓄分红险与内地增额寿核心差异：①港险长期IRR 5-7%（非保证）vs 内地2%左右（写进合同）；②港险多币种（美元/港币）vs 内地仅人民币；③港险需赴港签单、受香港法律管辖；④港险红利不确定性高于内地分红险","【建议】如果你年收入30万+且有美元资产配置需求，可以考虑港险组合配置；如果预算有限或追求确定性，内地增额寿/年金险更合适"]};
-  }
-
-  // === Biz Risk / Tax / Legal ===
-  if(bizRisk==="business-mix"||bizRisk==="business-high-risk")
-    add("savings","星福家朱雀版(分红型增额寿)",8,"【法商提示】家企混同风险：保单架构设计（投保人设为无债务风险的配偶/父母）可实现个人资产与企业债务隔离。金税四期以数治税背景下，保单资金来源合法性和合理商业目的是合规前提");
-  if(overseas!=="none"&&overseas!=="planning")
-    add("savings","星福家朱雀版(分红型增额寿)",6,"【CRS 2.0】2026年起加密资产和离岸壳公司自动穿透至UBO。国内大额保单合规披露优于隐性持有");
-  if(marriageRisk&&marriageRisk!=="not-concerned")
-    add("savings","星福家朱雀版(分红型增额寿)",5,"【婚姻法商】增额寿指定受益人实现定向传承，身故金不属于遗产、不经过法定继承程序，有效规避婚姻财产分割和继承纠纷");
-
-  // === Claims experience influence ===
-  if(claimsExp==="good-experience"){/* reinforce recommendations - no change needed, positive bias implicit */}
-  if(claimsExp==="bad-experience"||claimsExp==="heard-bad"){
-    // Boost companies known for good claims experience
-    if(scores["medical"]&&scores["medical"]["好医保·长期医疗(旗舰版)"]){scores["medical"]["好医保·长期医疗(旗舰版)"].score+=5;scores["medical"]["好医保·长期医疗(旗舰版)"].reasons.unshift("理赔体验友好，智能核赔通过率高");}
-    if(scores["accident"]&&scores["accident"]["人保大护甲8号旗舰版"]){scores["accident"]["人保大护甲8号旗舰版"].score+=5;scores["accident"]["人保大护甲8号旗舰版"].reasons.unshift("人保线下网点最广，理赔查勘最快");}
-  }
-
-  // === Self-assessed gap reinforcement ===
-  if(gapSelf==="medical-gap"){if(scores["medical"])for(const k of Object.keys(scores["medical"])){scores["medical"][k].score+=8;scores["medical"][k].reasons.unshift("您自评医疗缺口最大，优先级提高");}}
-  if(gapSelf==="income-gap"){if(scores["criticalIllness"])for(const k of Object.keys(scores["criticalIllness"])){scores["criticalIllness"][k].score+=8;scores["criticalIllness"][k].reasons.unshift("您自评收入中断风险最大，重疾险优先级提高");}}
-  if(gapSelf==="death-gap"){if(scores["termLife"])for(const k of Object.keys(scores["termLife"])){scores["termLife"][k].score+=8;scores["termLife"][k].reasons.unshift("您自评身故保障缺口最大，定寿优先级提高");}}
-  if(gapSelf==="retirement-gap"||gapSelf==="wealth-gap"){
-    if(!scores["savings"])add("savings","岁享金生(固收型增额寿)",0,"您自评养老/财富缺口最大，储蓄险加入推荐");
-    else for(const k of Object.keys(scores["savings"])){scores["savings"][k].score+=8;scores["savings"][k].reasons.unshift("您自评养老/财富缺口，储蓄险优先级提高");}
-  }
-
-  // === Social insurance gap ===
-  if(socialS.has("no-ins")||socialS.has("resident-ins")){
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){scores["medical"][k].score+=5;scores["medical"][k].reasons.unshift("⚠️ 社保覆盖不足，商业医疗险优先级最高");}
-  }
-
-  // === Auto ===
-  if(priority==="auto"||existingS.has("auto")||occupation==="high-risk"){
-    if(region==="rural"||region==="tier2-3")add("auto","人保车险",30,"县域覆盖率97.3%，乡镇查勘最快，偏远首选");
-    else if(budget==="minimal"||budget==="low")add("auto","太平洋车险",28,"同保障价格最低，不强制捆绑，万元以下当天到账");
-    else add("auto","平安车险",30,"城市通勤首选——AI闪赔3分钟到账，新能源配套，83.7%线上结案");
-  }
-
-  // === Property / Pet ===
-  if(microS.has("home")){add("property","平安家庭财产险",25,"房屋+装修+室内财产+第三者责任，100-500元/年");add("property","人保家财宝",20,"房屋主体最高500万+管道破裂+水渍");}
-  if(microS.has("pet")){add("property","宠物医疗险·平安宠爱一生",28,"猫狗通用+800+定点医院+最高90%报销");add("property","宠物险·众安宠爱保",22,"合作医院1000+，含第三方责任，0免赔");}
-
-  // === Dental ===
-  if(microS.has("dental")){add("dental","齿科险·泰康E齿康",28,"预防+基础+复杂治疗全覆盖，含拔牙/根管/牙冠");add("dental","齿科险·平安齿康保",22,"洁牙/补牙/拔牙全覆盖，正畸/种植优惠");}
-
-  // === Maternity ===
-  if(gender==="female"&&h(["18-25","26-35","36-45"],age)){add("maternity","孕产险·平安幸孕星",22,"妊娠并发症20种+新生儿先天性疾病，备孕/孕期必备");add("maternity","孕产险·众安好孕保",18,"妊娠期并发症+新生儿保障+产后抑郁，0免赔");}
-
-  // === 惠民保 (City-subsidized) ===
-  if(!existingS.has("medical")&&(isSenior||healthS.size>0||budget==="minimal")){add("hmb","全国版惠民保·众安全民保",22,"不限地域/年龄/职业/病史，79-168元/年，医保内外均可报");add("hmb","全国版惠民保·泰康全民e保",16,"全国可投，医保内外最高400万，特药0免赔");}
-
-  // === Employer liability (business owners) ===
-  if(bizRisk==="business-mix"||bizRisk==="business-high-risk"||bizRisk==="business-no-mix"||occupation==="business-owner"){
-    add("employerLiability","雇主责任险·平安雇主保",22,"企业主必备——工伤+职业病全覆盖+误工费+法律费用");
-    if(occupation==="high-risk")add("employerLiability","雇主责任险·人保雇主安心保",20,"高危行业专属，1-6类全覆盖+全国理赔");
-    add("employerLiability","团体意外险·平安团体保",16,"3人起保员工福利标配，可随时换人");
-  }
-
-  // === Cancer-specific ===
-  if(healthS.has("cancer-family")||age==="66+"||(isSenior&&!existingS.has("critical"))){add("cancer","防癌医疗险·安享一生2026",26,"癌症专项+终身保证续保+0免赔+不限社保，高龄/家族史必备");add("cancer","防癌险·孝亲宝2026",20,"确诊即赔(非报销)+免体检+三高可投，50-70岁专属");}
-  if(healthS.has("hepatitis")){add("cancer","特定疾病险·信美肝病保",24,"肝病专项(肝炎/肝硬化/肝癌)，乙肝携带可投，填补保障空白");}
-  if(healthS.has("cancer-family")||healthS.has("smoking")){add("cancer","防癌险·阳光神农2026",22,"轻/重症癌症双赔+原位癌覆盖，保费低杠杆高");}
-
-  // === Channel preference adjustments ===
-  if(channelPref==="online"||channelPref==="hybrid-channel"){
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){if(k.includes("京东保")||k.includes("微医保")||k.includes("众安"))scores["medical"][k].score+=3;}
-  }
-  if(channelPref==="agent"||channelPref==="bank"){
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("平安")||k.includes("国寿")||k.includes("太平洋")||k.includes("友邦"))scores["savings"][k].score+=3;}
-  }
-
-  // === Pay period adjustments ===
-  if(payPeriod==="short"){
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("趸交")||k.includes("一次"))scores["savings"][k].score+=4;scores["savings"][k].reasons.unshift("偏好短期缴费，趸交/短期产品匹配");}
-    if(scores["criticalIllness"])for(const k of Object.keys(scores["criticalIllness"])){scores["criticalIllness"][k].reasons.unshift("偏好短期缴费，可考虑趸交或5年交");}
-  }
-  if(payPeriod==="long"){
-    if(scores["termLife"])for(const k of Object.keys(scores["termLife"])){scores["termLife"][k].score+=3;scores["termLife"][k].reasons.unshift("偏好长期缴费，杠杆最大化");}
-    if(scores["criticalIllness"])for(const k of Object.keys(scores["criticalIllness"])){scores["criticalIllness"][k].score+=2;scores["criticalIllness"][k].reasons.unshift("偏好30年长期缴费，年缴压力最低");}
-  }
-
-  // === Values-based adjustments (what user cares about most) ===
-  if(valuesS.has("claims-speed")){
-    // Boost companies known for fast claims
-    if(scores["medical"]){for(const k of Object.keys(scores["medical"])){if(k.includes("好医保")||k.includes("蓝医保"))scores["medical"][k].score+=4;}}
-    if(scores["accident"]){for(const k of Object.keys(scores["accident"])){if(k.includes("平安")||k.includes("人保"))scores["accident"][k].score+=4;}}
-    if(scores["auto"]){for(const k of Object.keys(scores["auto"])){if(k.includes("平安"))scores["auto"][k].score+=5;scores["auto"][k].reasons.unshift("您最看重理赔速度，平安AI闪赔3分钟到账行业领先");}}
-  }
-  if(valuesS.has("price")){
-    if(scores["termLife"]){for(const k of Object.keys(scores["termLife"])){if(k.includes("擎天柱"))scores["termLife"][k].score+=5;}}
-    if(scores["accident"]){for(const k of Object.keys(scores["accident"])){if(k.includes("小蜜蜂")||k.includes("小神童"))scores["accident"][k].score+=4;}}
-    if(scores["medical"]){for(const k of Object.keys(scores["medical"])){if(k.includes("京东保")||k.includes("星相守"))scores["medical"][k].score+=4;}}
-  }
-  if(valuesS.has("brand-trust")){
-    if(scores["criticalIllness"])for(const k of Object.keys(scores["criticalIllness"])){if(k.includes("阿基米德")||k.includes("青云卫"))scores["criticalIllness"][k].score+=5;}
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){if(k.includes("好医保")||k.includes("e生保")||k.includes("微医保"))scores["medical"][k].score+=4;}
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("平安")||k.includes("国寿")||k.includes("太平洋")||k.includes("新华"))scores["savings"][k].score+=4;}
-  }
-  if(valuesS.has("coverage")){
-    if(scores["criticalIllness"])for(const k of Object.keys(scores["criticalIllness"])){if(k.includes("超级玛丽")||k.includes("大黄蜂"))scores["criticalIllness"][k].score+=5;}
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){if(k.includes("蓝医保")||k.includes("尊享e生"))scores["medical"][k].score+=5;}
-  }
-  if(valuesS.has("advisor")){
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("友邦")||k.includes("中意")||k.includes("大都会"))scores["savings"][k].score+=4;}
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){if(k.includes("高端")||k.includes("MSH")||k.includes("Bupa"))scores["medical"][k].score+=4;}
-  }
-  if(valuesS.has("digital")){
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){if(k.includes("微医保")||k.includes("京东保")||k.includes("众安"))scores["medical"][k].score+=4;}
-    if(scores["accident"])for(const k of Object.keys(scores["accident"])){if(k.includes("众安")||k.includes("小蜜蜂"))scores["accident"][k].score+=3;}
-  }
-
-  // === Branch-specific deep adjustments ===
-  const exerciseHabits=gm(["a17"]);
-  if(exerciseHabits==="extreme"){if(scores["accident"])for(const k of Object.keys(scores["accident"])){if(k.includes("运动")||k.includes("安联"))scores["accident"][k].score+=8;scores["accident"][k].reasons.unshift("极限运动爱好者，需含高风险运动保障");}}
-  if(exerciseHabits==="outdoor"){if(scores["accident"])for(const k of Object.keys(scores["accident"])){scores["accident"][k].score+=2;}}
-  if(exerciseHabits==="drive"){if(!scores["auto"])add("auto","平安车险",20,"经常开车出行，车险+驾乘险双重保障");}
-
-  const insuranceKnowledge=gm(["a19"]);
-  if(insuranceKnowledge==="beginner"){
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){scores["medical"][k].reasons.unshift("您是保险新手，推荐条款清晰、健告友好的入门产品");}
-  }
-
-  const childEduStage=gm(["b7"]);
-  if(childEduStage==="college"){if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("年金")||k.includes("教育"))scores["savings"][k].score+=5;}}
-  const mortgageAmt=gm(["b8"]);
-  if(mortgageAmt==="150-300w"||mortgageAmt==="gt300w"){
-    if(scores["termLife"])for(const k of Object.keys(scores["termLife"])){if(k.includes("大麦"))scores["termLife"][k].score+=8;scores["termLife"][k].reasons.unshift("高房贷家庭(150万+)，需高额定寿覆盖负债缺口");}
-  }
-
-  const enterpriseRev=gm(["c1"]);
-  if(enterpriseRev==="gt5000w"||enterpriseRev==="500-5000w"){
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("泰赢家")||k.includes("星福家"))scores["savings"][k].score+=6;}
-  }
-
-  const livingArrangement=gm(["d6"]);
-  if(livingArrangement==="need-care"){
-    if(!scores["savings"])scores["savings"]={};
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("光明")||k.includes("护理"))scores["savings"][k].score+=8;scores["savings"][k].reasons.unshift("需要日常护理支持，养老社区+护理保障产品优先");}
-  }
-  const nursingConcern=gm(["d12"]);
-  if(nursingConcern==="very"){
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("光明一生")||k.includes("护理")||k.includes("岁享金生"))scores["savings"][k].score+=6;scores["savings"][k].reasons.unshift("非常担心护理费用，含护理/养老社区的产品优先推荐");}
-  }
-  // Pension community + senior annuity recommendations
-  if(isSenior||priority==="retirement"||nursingConcern==="very"){
-    if(!scores["savings"])scores["savings"]={};
-    add("savings","颐养天年2026(养老年金)",18,"人保大品牌+养老金每年递增3%抗通胀+保证领取20年，退休规划首选");
-    add("savings","颐年金2026(养老年金)",16,"平安品牌+保证领取25年+可附加护理险+养老社区对接");
-    add("savings","金生有约2026(养老年金)",14,"保证领取20年+可选每年递增5%+健告宽松");
-    if(highAssets){
-      add("savings","悦享金生2026(养老年金)",20,"太平小镇养老社区保证入住+候鸟式养老(上海/三亚/成都)+含医疗绿通");
-      add("savings","星盈家2026(分红型增额寿)",18,"复星保德信+星堡养老社区对接+连续13年分红≥100%+增值传承双优");
-      add("savings","金麒麟2026(固收型增额寿)",14,"长城人寿国企背景+趸交第4年回本+含意外身故额外赔");
-    }
-    if(brandPref==="big-brand"||brandPref==="state-owned"){
-      add("savings","金利优享2026(固收型年金)",16,"新华大品牌+保证领取20年+可附加万能账户+缴费灵活");
-      add("savings","福临门2026(快返型年金)",12,"华夏人寿+第5年起返还+万能账户结算约3.2%+灵活支取");
-    }
-    if(brandPref==="joint-venture"){
-      add("savings","鑫丰年2026(分红型年金)",14,"工商银行+安盛合资+满5年即返还+年金万能组合");
-      add("savings","金裕安康2026(养老年金)",14,"招商信诺+保证领取25年+可附加重疾豁免+招商银行渠道");
-    }
-  }
-  const inheritancePlan=gm(["d19"]);
-  if(inheritancePlan==="formal-plan"){
-    if(scores["savings"])for(const k of Object.keys(scores["savings"])){if(k.includes("星福家")||k.includes("盛世金越")||k.includes("一生中意"))scores["savings"][k].score+=6;scores["savings"][k].reasons.unshift("有正式传承规划需求，指定受益人+多代传承产品匹配");}
-  }
-
-  // === Combined factor boosts ===
-  // High income + no existing insurance = urgent need, boost everything
-  if(isHighIncome&&existingS.has("none")&&existingS.size===1){
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){scores["medical"][k].score+=5;scores["medical"][k].reasons.unshift("高收入但无任何保障，配置优先级最高");}
-    if(scores["criticalIllness"])for(const k of Object.keys(scores["criticalIllness"])){scores["criticalIllness"][k].score+=5;}
-  }
-  // Budget-conscious + young = push accident + medical before critical illness
-  if((budget==="minimal"||budget==="low")&&isYoung){
-    if(scores["accident"])for(const k of Object.keys(scores["accident"])){scores["accident"][k].score+=5;scores["accident"][k].reasons.unshift("预算有限但年轻人意外风险高，意外险百元级高杠杆优先配置");}
-    if(scores["medical"])for(const k of Object.keys(scores["medical"])){if(k.includes("京东保")||k.includes("尊享e生"))scores["medical"][k].score+=3;}
-  }
-  // Smoker + term life = higher need
-  if(healthS.has("smoking")&&scores["termLife"]){
-    for(const k of Object.keys(scores["termLife"])){if(k.includes("定海柱"))scores["termLife"][k].score+=5;scores["termLife"][k].reasons.unshift("长期吸烟，健康告知宽松的定寿产品优先");}
-  }
-
-  // === Sort & select top 2 ===
-  const result={};
-  for(const [cat,prodScores] of Object.entries(scores)){
-    if(cat==="savings"&&prodScores["__hk_note__"]){
-      result["__hk__"]=prodScores["__hk_note__"];
-      delete prodScores["__hk_note__"];
-    }
-    const sorted=Object.entries(prodScores).sort((a,b)=>b[1].score-a[1].score);
-    if(sorted.length>0){
-      const catProds=PRODUCTS[cat];
-      if(!catProds)continue;
-      result[cat]=sorted.slice(0,2).map(([name,data])=>{
-        const prod=catProds.find(p=>p.name===name);
-        return prod?{...prod,matchScore:Math.min(data.score,99),matchReasons:data.reasons}:null;
-      }).filter(Boolean);
-    }
-  }
-  return result;
-}
-
-/* ==================== REACT COMPONENTS ==================== */
-function ProgressBar({current,total}){
-  const pct=Math.round((current/total)*100);
-  return(<div className="w-full px-6 pt-8 pb-2"><div className="flex items-center justify-between mb-2"><span className="text-sm font-medium text-gray-400">第 {current}/{total} 题</span><span className="text-sm font-medium text-gray-400">{pct}%</span></div><div className="progress-bar w-full"><div className="progress-bar-fill" style={{width:`${pct}%`}}></div></div></div>);
-}
-
-function QuestionCard({question,selected,onSelect,onNext,onPrev,isFirst,isLast,isMulti}){
-  const [multiSelected,setMultiSelected]=useState(Array.isArray(selected)?selected:[]);
-  const prevSelected=useRef(null);
-  useEffect(()=>{
-    if(Array.isArray(selected)&&JSON.stringify(selected)!==JSON.stringify(prevSelected.current)){setMultiSelected(selected);prevSelected.current=selected;}
-  },[selected]);
-
-  const goSingle=v=>{onSelect(v);onNext();};
-  const goToggle=v=>{
-    let upd;
-    if(v==="none"&&!multiSelected.includes("none"))upd=["none"];
-    else if(v==="none")upd=[];
-    else upd=multiSelected.includes(v)?multiSelected.filter(x=>x!==v):[...multiSelected.filter(x=>x!=="none"),v];
-    setMultiSelected(upd);onSelect(upd);
-  };
-  const goMultiNext=()=>{if(multiSelected.length>0)onNext();};
-
-  return(<div className="slide-in flex flex-col items-center justify-center min-h-[70vh] px-4 max-w-2xl mx-auto">
-    <div className="text-center mb-8"><h2 className="text-3xl font-bold text-gray-800 mb-3 leading-tight tracking-tight">{question.t}</h2><p className="text-base text-gray-400 font-normal">{question.s}</p></div>
-    <div className="w-full space-y-3" style={{maxHeight:'55vh',overflowY:'auto',paddingRight:'4px'}}>
-      {question.o.map(opt=>{
-        const isSel=isMulti?multiSelected.includes(opt.v):selected===opt.v;
-        return(<button key={opt.v} className={`btn-option ${isSel?'selected':''} flex items-center gap-4 text-left`} onClick={()=>isMulti?goToggle(opt.v):goSingle(opt.v)}>
-          <span className="text-2xl flex-shrink-0">{opt.i}</span><span className={`font-medium flex-1 ${isSel?'text-blue-600':'text-gray-700'}`}>{opt.l}</span>
-          {isSel&&!isMulti&&<span className="text-blue-500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>}
-          {isSel&&isMulti&&<span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">已选</span>}
-        </button>);
-      })}
-    </div>
-    {isMulti&&<button className={`btn-primary mt-6 px-12 py-3 text-base`} disabled={multiSelected.length===0} onClick={goMultiNext}>继续 →</button>}
-    <div className="flex justify-between w-full mt-6">{!isFirst&&<button onClick={onPrev} className="text-gray-400 hover:text-gray-600 font-medium text-sm transition-colors">← 上一题</button>}<div className="flex-1"></div>{!isFirst&&!isMulti&&<span className="text-xs text-gray-300">按 ← 返回修改</span>}</div>
-  </div>);
-}
-
-function SuggestionBox(){
-  const [text,setText]=useState("");const [sent,setSent]=useState(false);
-  const submit=()=>{
-    if(!text.trim())return;
-    const body=encodeURIComponent(text.trim()+"\n\n---\n"+new Date().toLocaleString("zh-CN"));
-    window.open("mailto:862175542@qq.com?subject=ApexCover%E5%BB%BA%E8%AE%AE&body="+body,"_blank");
-    setSent(true);
-  };
-  return(<div className="max-w-3xl mx-auto px-4 pb-16">
-    <div className="bg-white rounded-2xl p-8 card-shadow">
-      <h3 className="text-lg font-bold text-gray-800 mb-2">💬 你的建议</h3>
-      <p className="text-sm text-gray-400 mb-4">觉得哪里可以改进？有什么保险产品想让我们加入？告诉我们</p>
-      {sent?(
-        <div className="text-center py-6"><div className="text-4xl mb-3">🎉</div><p className="text-green-600 font-medium">感谢！邮件客户端已打开</p><p className="text-sm text-gray-400 mt-1">如未打开请直接发邮件到 862175542@qq.com</p></div>
-      ):(
-        <><textarea className="w-full border border-gray-200 rounded-xl p-4 text-sm resize-none focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" rows={4} placeholder="写下你的想法..." maxLength={500} value={text} onChange={e=>setText(e.target.value)}/>
-        <div className="flex justify-between items-center mt-3">
-          <span className="text-xs text-gray-300">{text.length}/500</span>
-          <button className="btn-primary text-sm px-6 py-2" disabled={!text.trim()} onClick={submit}>📧 发送建议</button>
-        </div></>
-      )}
-    </div>
-  </div>);
-}
-
-
-function ResultsPage({recommendations,onRestart}){
-  const cats=[
-    {key:"medical",title:"🏥 百万医疗险",desc:"住院报销——年保费几百元撬动百万保障，DRG改革后最重要的底层保障"},
-    {key:"criticalIllness",title:"🛡️ 重疾险",desc:"确诊即赔——弥补大病导致的收入中断和康复费用，建议保额≥3倍年收入"},
-    {key:"accident",title:"🤕 意外险",desc:"意外身故/伤残/医疗——保费极低杠杆极高，人人必备"},
-    {key:"termLife",title:"💙 定期寿险",desc:"家庭支柱必备——万一身故家人获赔，覆盖房贷+子女教育+父母赡养"},
-    {key:"savings",title:"📈 储蓄险 / 财富管理",desc:"增额终身寿+年金险+分红险——资产增值、养老规划、财富传承、家企隔离"},
-    {key:"auto",title:"🚗 车险",desc:"交强险+商业险——出行安全保障，选对公司比便宜几十元更重要"},
-    {key:"property",title:"🏠 家财/宠物/其他",desc:"家财险+宠物险+旅游险+学平险——保费极低但非常实用"},
-    {key:"hkInsurance",title:"🇭🇰 香港保险（高净值专属）",desc:"香港储蓄分红险——长期IRR 5-7%、多元货币、多代传承、需赴港签单"},
-    {key:"employerLiability",title:"🏢 雇主责任/企业保险",desc:"工伤+职业病+公众责任——企业主必备，员工福利标配"},
-    {key:"dental",title:"🦷 齿科保险",desc:"日常口腔保健+治疗——洁牙/补牙/根管/正畸，无等待期"},
-    {key:"maternity",title:"🤰 孕产保险",desc:"妊娠并发症+新生儿保障——备孕/孕期女性的专属守护"},
-    {key:"hmb",title:"🏛️ 惠民保",desc:"政府指导普惠型保险——不限年龄/职业/病史，79-195元/年"},
-    {key:"cancer",title:"🎗️ 防癌/特定疾病险",desc:"癌症/心脑血管/肝病专项——填补主险缺口，三高人群可投"}
-  ];
-  const hasAny=Object.keys(recommendations).filter(k=>k!=="__hk__").length>0;
-  if(recommendations&&recommendations._error){
-    return(<div className="fade-in max-w-2xl mx-auto px-4 py-20 text-center">
-      <div className="text-5xl mb-6">🔧</div><h1 className="text-2xl font-bold text-red-500 mb-4">出错了</h1>
-      <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-left mb-6"><p className="text-sm font-mono text-red-700 mb-2">{recommendations._message}</p><pre className="text-xs text-red-500 overflow-auto max-h-40 whitespace-pre-wrap">{recommendations._stack}</pre></div>
-      <button onClick={onRestart} className="btn-primary">重新测评</button>
-    </div>);
-  }
-  return(<div className="fade-in max-w-3xl mx-auto px-4 py-12">
-    <div className="text-center mb-12"><div className="text-5xl mb-4">🎯</div><h1 className="text-3xl font-extrabold text-gray-800 mb-3 tracking-tight">你的专属保障方案</h1><p className="text-gray-400 text-lg mb-2">23名平均从业超过十年的保险规划师给您的最好建议</p><p className="text-gray-300 text-sm mb-6">基于你的回答，从 {Object.values(PRODUCTS).flat().length} 款在售产品中精准匹配</p><button onClick={onRestart} className="text-blue-500 hover:text-blue-600 font-medium text-sm transition-colors">← 重新测评</button></div>
-    {!hasAny&&<div className="text-center py-12 text-gray-400"><p className="text-lg">根据你的情况，目前的保障需求已基本覆盖。</p><p className="mt-2">建议每年定期检视保单，确保保障与生活阶段匹配。</p></div>}
-    <div className="space-y-8">
-      {cats.map(cat=>{const recs=recommendations[cat.key];if(!recs||recs.length===0)return null;return(<div key={cat.key} className="card-shadow-lg bg-white rounded-2xl p-8"><h3 className="text-xl font-bold text-gray-800 mb-1">{cat.title}</h3><p className="text-gray-400 text-sm mb-6">{cat.desc}</p><div className="space-y-4">{recs.map((rec,idx)=>(<div key={rec.name} className="product-card"><div className="flex items-start justify-between mb-3"><div><div className="flex items-center gap-3 flex-wrap"><h4 className="text-lg font-bold text-gray-800">{rec.name}</h4>{idx===0&&<span className="tag tag-recommend">🏆 首选</span>}{idx===1&&<span className="tag tag-consider">备选</span>}{rec.matchReasons.some(r=>r.includes("法商")||r.includes("CRS")||r.includes("金税"))&&<span className="tag tag-wealth">🔒 法商</span>}</div><p className="text-sm text-gray-400 mt-1">{rec.company}</p></div><span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full whitespace-nowrap">匹配 {rec.matchScore}%</span></div>{rec.matchReasons.length>0&&<div className="mb-3"><p className="text-xs text-gray-400 font-medium mb-1">💡 为什么推荐</p><ul className="text-sm text-gray-600 space-y-1">{rec.matchReasons.map((r,i)=><li key={i} className="flex items-start gap-2"><span className={r.includes("法商")||r.includes("CRS")||r.includes("金税")?"text-purple-500 mt-1 flex-shrink-0":"text-green-500 mt-1 flex-shrink-0"}>{r.includes("法商")||r.includes("CRS")||r.includes("金税")?"⚖️":"✓"}</span>{r}</li>)}</ul></div>}<div className="mb-3"><p className="text-xs text-gray-400 font-medium mb-1">⭐ 产品亮点</p><div className="flex flex-wrap gap-2">{rec.highlights.slice(0,5).map((h,i)=><span key={i} className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-md">{h}</span>)}</div></div><p className="text-xs text-gray-500"><span className="font-medium">参考价格：</span>{rec.price}</p></div>))}</div></div>);})}
-      {recommendations["__hk__"]&&<div className="card-shadow-lg bg-yellow-50 border border-yellow-200 rounded-2xl p-8"><h3 className="text-xl font-bold text-gray-800 mb-1">🇭🇰 香港/海外保险建议</h3><div className="space-y-2 mt-4">{recommendations["__hk__"].reasons.map((r,i)=><p key={i} className="text-sm text-gray-700 flex items-start gap-2"><span className="text-yellow-600 mt-1 flex-shrink-0">📌</span>{r}</p>)}</div></div>}
-    </div>
-    <div className="mt-12 bg-gray-50 rounded-2xl p-8 text-center"><p className="text-sm font-medium text-gray-500 mb-2">🤝 23名平均从业超过十年的保险规划师为您提供建议</p><p className="text-xs text-gray-300">以上推荐基于你提供的信息自动匹配，仅供参考 · 实际投保以保险公司条款为准 · 投保前请仔细阅读健康告知和免责条款</p><p className="text-xs text-gray-300 mt-1">法商/税务相关提示不构成法律建议 · 涉及具体税务筹划请咨询持牌税务师或律师</p></div>
-    <SuggestionBox/>
-  </div>);
-}
-
-
-function WelcomeScreen({onStart}){
-  return(<div className="fade-in flex flex-col items-center justify-center min-h-screen px-6 text-center">
-    <div className="text-7xl mb-8">🛡️</div><h1 className="text-4xl font-extrabold text-gray-800 mb-4 tracking-tight leading-tight">找到最适合你的<br/>保险保障方案</h1><p className="text-lg text-gray-500 mb-3 max-w-md font-medium">23名平均从业超过十年的保险规划师给您的最好建议</p><p className="text-sm text-gray-300 mb-10 max-w-sm">覆盖重疾险 · 医疗险 · 意外险 · 寿险 · 储蓄险 · 年金险 · 车险 · 家财险 · 宠物险 · 高端医疗<br/>基于 {Object.values(PRODUCTS).flat().length} 款 2026 年在售产品数据库精准匹配</p>
-    <div className="flex gap-4 mb-10">
-      <div className="text-center px-4"><div className="text-2xl font-bold text-gray-800">25</div><div className="text-xs text-gray-400">深度问题</div></div>
-      <div className="text-center px-4 border-l border-gray-200"><div className="text-2xl font-bold text-gray-800">{Object.values(PRODUCTS).flat().length}</div><div className="text-xs text-gray-400">在售产品</div></div>
-      <div className="text-center px-4 border-l border-gray-200"><div className="text-2xl font-bold text-gray-800">7</div><div className="text-xs text-gray-400">保障维度</div></div>
-      <div className="text-center px-4 border-l border-gray-200"><div className="text-2xl font-bold text-gray-800">4 分钟</div><div className="text-xs text-gray-400">快速评估</div></div>
-    </div>
-    <button className="btn-primary px-12 py-4 text-lg rounded-2xl shadow-lg" onClick={onStart}>开始测评 →</button>
-    <p className="mt-10 text-xs text-gray-300">全程无需注册 · 数据不上传 · 约 4 分钟完成</p>
-    <SuggestionBox/>
-  </div>);
-}
-
-const BRANCHES={A:BRANCH_A,B:BRANCH_B,C:BRANCH_C,D:BRANCH_D};
-const BRANCH_LABELS={A:"年轻奋斗族",B:"家庭守护者",C:"企业主/高净值",D:"银发安康"};
-
-function App(){
-  const [step,setStep]=useState("welcome");
-  const [phase,setPhase]=useState("trunk"); // trunk | branch | branchIntro | result
-  const [qIdx,setQIdx]=useState(0);
-  const [branchKey,setBranchKey]=useState(null);
-  const [recommendations,setRecommendations]=useState(null);
-  const latestAnswers=useRef({});
-
-  const currentQuestions=phase==="trunk"?TRUNK:(branchKey?BRANCHES[branchKey]:[]);
-  const totalQuestions=currentQuestions.length;
-
-  // === Universal cross-question filter ===
-  function getFilteredQuestion(q,answers){
-    const age=answers["t1"]; const role=answers["t3"]; const income=answers["t4"];
-    const occupation=answers["t5"]; const existingS=new Set(Array.isArray(answers["a3"]||answers["b3"]||answers["c4"]||answers["d3"])?(answers["a3"]||answers["b3"]||answers["c4"]||answers["d3"]):[]);
-    const depS=new Set(Array.isArray(answers["a6"]||answers["b6"]||answers["c6"])?(answers["a6"]||answers["b6"]||answers["c6"]):[]);
-    const childStage=answers["b7"]; const mortgageAmt=answers["b8"];
-    const enterpriseRev=answers["c1"]; const childrenSituation=answers["d7"];
-
-    let opts=[...q.o]; let subtitle=q.s||""; let changed=false;
-    const filterOut=(...vals)=>{const prev=opts.length;opts=opts.filter(o=>!vals.includes(o.v));if(opts.length<prev)changed=true;};
-    const boost=(val,label)=>{const o=opts.find(x=>x.v===val);if(o&&!o.l.includes(label)){o.l=o.l+label;changed=true;}};
-    const autoSelect=(val)=>{opts=[opts.find(o=>o.v===val)].filter(Boolean);changed=true;};
-
-    // === Q-specific rules ===
-    switch(q.id){
-      case "t3": // Family role — no age filter, all options available to everyone
-        break;
-      case "t4": // Income ← age + role
-        if(age&&["18-25"].includes(age)){boost("lt5","（含学生/零收入）");}
-        if(role==="elder"||age&&["66+"].includes(age)){filterOut("gt500");boost("lt5","（退休金收入）");boost("5-15","（退休金+储蓄）");}
-        break;
-      case "t5": // Occupation ← age + role
-        if(age&&["56-65","66+"].includes(age)){filterOut("high-risk","freelancer");boost("retired","（推荐）");}
-        if(role==="elder"){autoSelect("retired");}
-        break;
-      case "a1": case "b1": case "c1": case "d1": // Social ← occupation
-        if(occupation==="civil"||occupation==="employee"){boost("employee-ins","（当前职业匹配）");}
-        if(occupation==="freelancer"||occupation==="retired"){boost("resident-ins","（灵活就业/居民医保）");}
-        break;
-      case "a4": case "b4": case "c5": case "d4": // Priority ← existing insurance
-        if(existingS.has("critical")) filterOut("disease");
-        if(existingS.has("medical")) filterOut("hospital");
-        if(existingS.has("accident")) filterOut("accident-risk");
-        if(existingS.has("term-life")||existingS.has("whole-life")) filterOut("family-protect");
-        if(existingS.has("annuity")||existingS.has("whole-life")){filterOut("retirement");filterOut("child-education");}
-        break;
-      case "a5": case "b5": // Budget ← income
-        if(income==="lt5"||income==="5-15"){filterOut("unlimited","high");boost("minimal","（与收入匹配）");boost("low","（与收入匹配）");}
-        if(income==="100-500"||income==="gt500"){filterOut("minimal");boost("high","（收入水平充裕）");}
-        break;
-      case "b6": // Burden ← child stage
-        if(childStage==="not-yet"){filterOut("young-kids","school-kids");boost("no-dependent","（当前无子女）");}
-        if(childStage==="college") filterOut("young-kids");
-        if(mortgageAmt==="no-mortgage") filterOut("mortgage");
-        break;
-      case "b7": // Child education stage ← burden
-        if(!depS.has("young-kids")&&!depS.has("school-kids")){opts=[{v:"not-yet",l:"还没有孩子",i:"⏳"}];changed=true;}
-        break;
-      case "b8": // Mortgage ← burden
-        if(!depS.has("mortgage")){opts=[{v:"no-mortgage",l:"无房贷",i:"✅"},...opts.filter(o=>o.v==="no-mortgage"||o.v!=="no-mortgage").slice(0,4)];changed=true;}
-        break;
-      case "c1": // Enterprise revenue ← occupation
-        if(occupation&&occupation!=="business-owner"){boost("na","（非企业主，高净值个人）");}
-        break;
-      case "c2": // Biz risk ← enterprise revenue
-        if(enterpriseRev==="na"){autoSelect("not-applicable");}
-        break;
-      case "c11": // Budget ← income
-        if(income==="100-500"||income==="gt500"){filterOut("mid");boost("uhnw","（与收入匹配）");boost("unlimited","（与收入匹配）");}
-        break;
-      case "d4": // Priority for seniors ← health + age
-        if(age==="66+"){boost("nursing","（高龄必备）");boost("accident-risk","（跌倒风险增加）");}
-        if(age==="56-65"){boost("retirement","（临近退休）");}
-        break;
-      case "d7": // Children situation ← age
-        if(age==="56-65"){boost("adult-nearby","（子女大概率已成年）");boost("adult-far","（子女可能异地）");filterOut("supporting");}
-        if(age==="66+"){filterOut("supporting");boost("adult-nearby","");boost("adult-far","");}
-        break;
-      case "d12": // Nursing concern ← age
-        if(age==="66+"){boost("very","（高龄阶段重点关注）");boost("somewhat","");filterOut("not-concerned");}
-        break;
-      case "d19": // Inheritance ← children
-        if(childrenSituation==="no-children"){filterOut("formal-plan");boost("simple-will","（无直系继承人）");boost("not-concerned","");}
-        break;
-    }
-
-    if(changed&&!subtitle.includes("智能筛选")){subtitle=subtitle?subtitle+"（已根据前面回答智能筛选）":"（已根据前面回答智能筛选）";}
-    return opts.length!==q.o.length||changed?{...q,o:opts,s:subtitle}:q;
-  }
-
-  const q=currentQuestions[qIdx];
-  const displayQ=getFilteredQuestion(q,latestAnswers.current);
-
-  const handleSelect=v=>{
-    const id=currentQuestions[qIdx].id;
-    latestAnswers.current={...latestAnswers.current,[id]:v};
-  };
-  const handleNext=()=>{
-    if(phase==="branchIntro"){setPhase("branch");setQIdx(0);return;}
-    if(qIdx<currentQuestions.length-1){setQIdx(p=>p+1)}
-    else{
-      if(phase==="trunk"){
-        const bi=resolveBranch(latestAnswers.current);
-        setBranchKey(bi.branch);
-        setPhase("branchIntro");
-      }else{
-        try{setRecommendations(calculateRecommendations(latestAnswers.current));setStep("result");}
-        catch(e){console.error("评分引擎错误:",e.message);setRecommendations({_error:true,_message:e.message,_stack:e.stack||''});setStep("result");}
-      }
-    }
-  };
-  const handlePrev=()=>{if(qIdx>0)setQIdx(p=>p-1)};
-  const handleRestart=()=>{setStep("welcome");setPhase("trunk");setQIdx(0);setBranchKey(null);setRecommendations(null);latestAnswers.current={};};
-
-  if(step==="welcome")return<WelcomeScreen onStart={()=>setStep("quiz")}/>;
-  if(step==="result")return<ResultsPage recommendations={recommendations} onRestart={handleRestart}/>;
-
-  if(phase==="branchIntro")return(
-    <div className="fade-in flex flex-col items-center justify-center min-h-screen px-6 text-center">
-      <div className="text-6xl mb-6">{branchKey==="A"?"🚀":branchKey==="B"?"🏠":branchKey==="C"?"🏰":"🌅"}</div>
-      <h2 className="text-3xl font-bold text-gray-800 mb-3">已识别你的画像：<span className="text-blue-600">{BRANCH_LABELS[branchKey]}</span></h2>
-      <p className="text-gray-400 mb-2 max-w-md">接下来是为你量身定制的专属问题</p>
-      <p className="text-gray-300 text-sm mb-8">总题数 5+{BRANCHES[branchKey].length}=<b>{5+BRANCHES[branchKey].length} 题</b></p>
-      <button className="btn-primary px-12 py-4 text-lg rounded-2xl" onClick={handleNext}>进入专属问答 →</button>
-    </div>
-  );
-
-  const progressTotal = TRUNK.length + totalQuestions;
-  const progressCurrent = phase==="trunk" ? qIdx+1 : TRUNK.length + qIdx + 1;
-  return(<div className="min-h-screen bg-[#f5f5f7]">
-    <ProgressBar current={progressCurrent} total={progressTotal}/>
-    {phase==="branch"&&<div className="px-6 pt-2"><span className="text-xs text-blue-500 bg-blue-50 px-3 py-1 rounded-full font-medium">{BRANCH_LABELS[branchKey]} · 专属问题</span></div>}
-    <div key={displayQ.id}><QuestionCard question={displayQ} selected={latestAnswers.current[displayQ.id]||(displayQ.ty==="multi"?[]:null)} onSelect={handleSelect} onNext={handleNext} onPrev={handlePrev} isFirst={phase==="trunk"?qIdx===0:false} isLast={phase==="branch"&&qIdx===totalQuestions-1} isMulti={displayQ.ty==="multi"}/></div>
-    <SuggestionBox/>
-    <div className="fixed bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f5f5f7] to-transparent pointer-events-none"></div>
-  </div>);
-}
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+const input = document.getElementById('searchInput');
+const results = document.getElementById('searchResults');
+input.addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) { results.classList.remove('show'); return; }
+  const hits = INDEX.filter(i => i.t.toLowerCase().includes(q) || i.m.toLowerCase().includes(q)).slice(0, 6);
+  results.innerHTML = hits.length
+    ? hits.map(h => `<div class="item"><span class="icon">${h.icon}</span><div><div class="title">${h.t}</div><div class="meta">${h.m}</div></div></div>`).join('')
+    : '<div class="item" style="color:#6e6e73">未找到相关内容</div>';
+  results.classList.add('show');
+});
+document.addEventListener('click', e => { if(!e.target.closest('.search-wrap')) results.classList.remove('show'); });
 </script>
 </body>
 </html>
