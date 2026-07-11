@@ -316,6 +316,7 @@ section .lead {
   background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgba(41,151,255,.06) 0%, transparent 60%);
   opacity: 0;
   transition: opacity .3s;
+  pointer-events: none;
 }
 .featured:hover { border-color: var(--border-hover); }
 .featured:hover::after { opacity: 1; }
