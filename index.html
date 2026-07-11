@@ -330,15 +330,15 @@ section .lead {
 .featured h3 { font-size: 28px; font-weight: 700; letter-spacing: -.015em; margin-bottom: 12px; }
 .featured .desc { font-size: 16px; color: var(--text-tertiary); line-height: 1.65; margin-bottom: 28px; letter-spacing: -.005em; }
 .featured .links { display: flex; flex-direction: column; gap: 2px; }
-.featured .links div {
+.featured .links span,.featured .links div {
   font-size: 15px; color: var(--text-secondary);
   padding: 10px 0;
   border-bottom: 1px solid var(--border);
   transition: all .25s;
   display: flex; align-items: center; justify-content: space-between;
 }
-.featured .links div:last-child { border-bottom: none; }
-.featured .links div::after {
+.featured .links span,.featured .links div:last-child { border-bottom: none; }
+.featured .links span,.featured .links div::after {
   content: '';
   width: 6px; height: 6px;
   border-right: 1.5px solid currentColor;
@@ -347,8 +347,8 @@ section .lead {
   opacity: 0;
   transition: all .25s;
 }
-.featured .links div:hover { color: var(--accent); padding-left: 4px; }
-.featured .links div:hover::after { opacity: 1; }
+.featured .links span,.featured .links div:hover { color: var(--accent); padding-left: 4px; }
+.featured .links span,.featured .links div:hover::after { opacity: 1; }
 
 /* Footer */
 footer {
@@ -406,30 +406,30 @@ footer {
 <section>
   <div class="container">
     <div class="featured-grid">
-      <div class="featured reveal">
+      <div class="featured reveal" style="cursor:pointer" onclick="location.href='advisor.html'">
         <div class="tag">消费者</div>
         <h3>我想买保险</h3>
         <p class="desc">为自己和家人，找到合适的保障方案。</p>
         <div class="links">
-          <a href="advisor.html" style="text-decoration:none;color:inherit"><div>智能规划</div></a>
-          <a href="learn.html" style="text-decoration:none;color:inherit"><div>保险科普</div></a>
-          <a href="products.html" style="text-decoration:none;color:inherit"><div>产品目录</div></a>
+          <span style="cursor:pointer" onclick="event.stopPropagation();location.href='advisor.html'">智能规划</span>
+          <span style="cursor:pointer" onclick="event.stopPropagation();location.href='learn.html'">保险科普</span>
+          <span style="cursor:pointer" onclick="event.stopPropagation();location.href='products.html'">产品目录</span>
         </div>
       </div>
-      <div class="featured reveal reveal-delay-1">
+      <div class="featured reveal reveal-delay-1" style="cursor:pointer" onclick="location.href='learn.html'">
         <div class="tag">从业者</div>
         <h3>我是保险从业者</h3>
         <p class="desc">提升专业能力，更精准地服务每一位客户。</p>
         <div class="links">
-          <a href="learn.html" style="text-decoration:none;color:inherit"><div>产品拆解</div></a>
-          <a href="learn.html" style="text-decoration:none;color:inherit"><div>法商课堂</div></a>
-          <a href="learn.html" style="text-decoration:none;color:inherit"><div>金税四期</div></a>
-          <a href="learn.html" style="text-decoration:none;color:inherit"><div>销售实战</div></a>
+          <span>产品拆解</span>
+          <span>法商课堂</span>
+          <span>金税四期</span>
+          <span>销售实战</span>
         </div>
       </div>
     </div>
   </div>
-</section><footer class="reveal">
+</section>footer class="reveal">
   ApexCover · 23 名平均从业超过十年的保险规划师给您的最好建议
 </footer>
 
