@@ -559,15 +559,6 @@ input.addEventListener('input', function() {
   results.classList.add('show');
 });
 document.addEventListener('click', e => { if(!e.target.closest('.search-wrap')) results.classList.remove('show'); });
-// Make card links clickable
-document.querySelectorAll('.card, .featured').forEach(el => {
-  el.style.cursor = 'pointer';
-  el.addEventListener('click', function(e) {
-    if(e.target.closest('.links div') || e.target.closest('.tag')) return;
-    const text = this.textContent.trim();
-    if(text.includes('智能规划')||text.includes('开始测评')) location.href = 'advisor.html'; if(text.includes('保险科普')||text.includes('开始学习')) location.href = 'learn.html'; if(text.includes('浏览产品')||text.includes('产品目录')) location.href = 'advisor.html';
-  });
-});
 
 </script>
 </body>
