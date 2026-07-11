@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保险顾问 — 23名平均从业超过十年的保险规划师给您的最好建议</title>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.6/babel.min.js" crossorigin></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--blue:#0071e3;--gray-50:#f5f5f7;--gray-800:#1d1d1f}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased;min-height:100vh}
+.slide-in{animation:slideIn .4s cubic-bezier(.16,1,.3,1)}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .5s ease-out}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-shadow{box-shadow:0 4px 24px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04)}
+.card-shadow-lg{box-shadow:0 12px 48px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04)}
+.btn-primary{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary:hover{background:#0062c4;transform:scale(1.01)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-option{background:#fff;border:1.5px solid #d2d2d7;border-radius:14px;padding:16px 20px;font-size:15px;cursor:pointer;transition:all .2s;text-align:left;width:100%}
+.btn-option:hover{border-color:var(--blue);background:#f0f5ff}
+.btn-option.selected{border-color:var(--blue);background:#e8f0fe;box-shadow:0 0 0 3px rgba(0,113,227,.15)}
+.progress-bar{height:4px;background:#d2d2d7;border-radius:2px}
+.progress-bar-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.tag-recommend{background:#e8f5e9;color:#1b5e20}
+.tag-consider{background:#fff3e0;color:#e65100}
+.tag-wealth{background:#f3e5f5;color:#4a148c}
+.product-card{background:#fff;border-radius:18px;padding:24px;border:1px solid #e8e8ed;transition:all .2s}
+.product-card:hover{border-color:#d2d2d7;box-shadow:0 8px 32px rgba(0,0,0,.06)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="error-screen" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:9999;padding:40px;font-family:monospace;overflow:auto">
+  <h2 style="color:red;margin-bottom:16px">⚠️ 运行时错误</h2>
+  <pre id="error-msg" style="white-space:pre-wrap;word-break:break-all;background:#fff0f0;padding:16px;border-radius:8px;font-size:13px"></pre>
+  <button onclick="location.reload()" style="margin-top:16px;padding:10px 24px;background:#0071e3;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">刷新页面</button>
+</div>
+<script>
+window.onerror=function(msg,url,line,col,err){
+  document.getElementById('root').style.display='none';
+  var es=document.getElementById('error-screen');es.style.display='block';
+  document.getElementById('error-msg').textContent=(err&&err.stack)||(msg+' @ line '+line+':'+col);
+};
+window.addEventListener('unhandledrejection',function(e){
+  document.getElementById('root').style.display='none';
+  var es=document.getElementById('error-screen');es.style.display='block';
+  document.getElementById('error-msg').textContent='Unhandled Promise: '+(e.reason&&e.reason.stack||e.reason);
+});
+</script>
+<script type="text/babel">
+const { useState, useEffect, useCallback, useRef } = React;
+
+/* ==================== FULL PRODUCT DATABASE ==================== */
+const PRODUCTS = {
+  criticalIllness: [
+    { name:"达尔文12号", company:"复星联合健康", price:"30岁男约6,620元/年(50万保终身/30年交)", highlights:["意外重疾额外赔35%","60岁后住院津贴500元/天","重疾赔完轻中症继续赔","全网性价比标杆"], bestFor:["成人男性","追求性价比"], score:95 },
+    { name:"完美人生8号", company:"复星联合健康", price:"30岁女约6,330元/年(50万保终身/30年交)", highlights:["女性4大特疾额外赔10%","癌症拓展金50%","重疾后轻中症0间隔期"], bestFor:["成人女性","妇科癌症家族史"], score:93 },
+    { name:"超级玛丽16号Pro", company:"君龙人寿", price:"30岁约8,000元/年(50万保终身/30年交)", highlights:["首创重疾医疗金报销","三大结节专项保障","癌症全周期覆盖","核保友善"], bestFor:["有结节/慢病史","亚健康"], score:91 },
+    { name:"哪吒2号", company:"海保人寿", price:"30岁男约6,620元/年(50万保终身/30年交)", highlights:["1-6类职业可投","60岁前重疾额外赔90%","轻中症后重疾多赔30%"], bestFor:["高危职业","高杠杆需求"], score:88 },
+    { name:"阿基米德2025", company:"太平洋人寿", price:"保30年50万约3,615元/年", highlights:["世界500强品牌","等待期仅90天","中症60%/轻症30%"], bestFor:["大品牌偏好","稳健型"], score:85 },
+    { name:"大黄蜂17号全能版", company:"北京人寿", price:"0岁约2,500元/年(50万保终身/30年交)", highlights:["癌症不限次赔付","自闭症/抑郁症保障","18岁前保额额外108%"], bestFor:["少儿","全面保障"], score:94 },
+    { name:"达尔文宝贝计划15号", company:"信美相互", price:"0岁约2,698元/年(50万保终身/30年交)", highlights:["20种特疾额外120%","核保宽松(早产/卵圆孔)","先天性疾病可赔"], bestFor:["新生儿","出生异常"], score:92 },
+    { name:"青云卫6号", company:"招商仁和(央企)", price:"0岁约3,510元/年(50万保终身)", highlights:["白血病骨髓移植赔50万","缴费期确诊退全保费","央企品牌"], bestFor:["白血病关注","央企品牌"], score:89 },
+    { name:"妈咪保贝爱常在B款", company:"复星联合健康", price:"0岁约3,109元/年(50万保终身)", highlights:["白血病保障最强","孤独症关爱金","29年交省1年保费"], bestFor:["少儿白血病","心理健康"], score:87 },
+    { name:"i保·重疾险2026", company:"阳光人寿", price:"30岁约5,500元/年(50万保终身/30年交)", highlights:["大品牌+性价比","轻中症赔付次数多","含身故保障"], bestFor:["均衡型","阳光品牌偏好"], score:84 },
+    { name:"健康保·多倍版2026", company:"昆仑健康", price:"30岁约7,000元/年(50万/终身/30年交)", highlights:["重疾不分组多次赔","含护理保障","轻中症赔付比例高"], bestFor:["多次赔付需求","护理关注者"], score:83 },
+    { name:"凡尔赛PLUS·成人重疾", company:"同方全球人寿", price:"30岁约6,800元/年(50万/终身/30年交)", highlights:["合资品牌","重疾不分组多次赔","免体检额度高"], bestFor:["合资品牌偏好","高保额"], score:81 },
+    { name:"守卫者8号", company:"瑞泰人寿", price:"30岁约7,500元/年(50万/终身/30年交)", highlights:["重疾6次赔付","癌症多次赔","心脑血管二次赔"], bestFor:["家族病史","多次赔付刚需"], score:80 },
+    { name:"康惠保2026(旗舰版)", company:"百年人寿", price:"30岁约5,200元/年(50万保至70岁/30年交)", highlights:["纯重疾极致低价","无身故责任","消费型标杆"], bestFor:["预算极度有限","纯保障需求"], score:78 },
+    { name:"如意久久2026", company:"信泰人寿", price:"30岁约7,200元/年(50万/终身/30年交)", highlights:["重疾不分组6次赔","中症70%/轻症40%","身故返保费","含豁免"], bestFor:["终身多次赔付","高端保障"], score:79 },
+    { name:"多倍保2026", company:"新华人寿", price:"30岁约8,500元/年(50万/终身/30年交)", highlights:["重疾分5组赔5次","前10年额外50%","新华大品牌","含身故"], bestFor:["大品牌+多次赔","稳健型"], score:78 },
+    { name:"倍享健康2026", company:"富德生命", price:"30岁约5,800元/年(50万/终身/30年交)", highlights:["重疾不分组2次","中症60%/轻症30%","癌症二次120%","性价比突出"], bestFor:["中端多次赔","性价比"], score:80 },
+    { name:"安康福2026", company:"友邦人寿", price:"30岁约9,000元/年(50万/终身/30年交)", highlights:["友邦品牌","全球理赔","含海外二次诊疗","高端服务"], bestFor:["友邦品牌","全球服务"], score:77 },
+    { name:"常青树2026(特需版)", company:"华夏人寿", price:"30岁约6,500元/年(50万/终身/30年交)", highlights:["含特需部/国际部医疗","重疾绿通","二次诊疗","住院垫付"], bestFor:["中高端医疗资源","绿通需求"], score:79 },
+    { name:"老来保·老年重疾", company:"众安保险", price:"56-70岁约3,000-6,000元/年", highlights:["专为50+设计","免体检","含10种高发重疾","确诊即赔"], bestFor:["老年人专属","免体检"], score:76 }  ],
+  medical: [
+    { name:"好医保·长期医疗(旗舰版)", company:"人保健康", price:"30岁约400元/年", highlights:["20年+癌症/心血管终身续保","0免赔阶梯赔付","1500+种药械","健告宽松"], bestFor:["续保稳定","有既往症","中老年"], score:95 },
+    { name:"蓝医保·好医好药Pro版", company:"太平洋健康", price:"30岁约410元/年", highlights:["外购药不限清单","276种特药+64种进口药","186家私立医院","写入主险20年续保"], bestFor:["用药自由","DRG改革应对"], score:94 },
+    { name:"星相守2号", company:"众安保险", price:"30岁约298元/年", highlights:["0免赔","外购药不限清单","特需部可选","性价比突出"], bestFor:["中端医疗","性价比"], score:88 },
+    { name:"微医保·百万医疗险2026版", company:"泰康在线(腾讯微保)", price:"30岁约350元/年", highlights:["微信操作便捷","600万高保额","190家私立医院"], bestFor:["微信生态用户","年轻人群"], score:82 },
+    { name:"京东保·长期医疗险", company:"京东安联", price:"30岁约200-298元/年", highlights:["20年+终身续保","0免赔","外购药不限清单","极致性价比"], bestFor:["极致性价比","年轻人"], score:86 },
+    { name:"尊享e生2026", company:"众安保险", price:"30岁约308元/年", highlights:["300万一般+600万重疾","质子重离子100%报销","可选0免赔","就医绿通"], bestFor:["综合保障","绿通服务"], score:84 },
+    { name:"防癌医疗险·安享一生2026", company:"平安健康", price:"30岁约150元/年", highlights:["癌症专项医疗","0免赔100%报销","不限社保目录","终身保证续保"], bestFor:["癌症专项","高龄父母"], score:88 },
+    { name:"中端医疗·欣享人生2026", company:"MSH万欣和", price:"30岁约2,000-4,000元/年", highlights:["含特需/国际部","直付网络覆盖","私立医院可选","全球紧急救援"], bestFor:["中高端需求","特需部就诊"], score:83 },
+    { name:"高端医疗·卓越人生", company:"Bupa保柏", price:"30岁约8,000-20,000元/年", highlights:["全球就医","含美国","年度保额无上限","既往症有条件承保"], bestFor:["高净值","全球就医"], score:80 },
+    { name:"中端医疗·安盛天平智选", company:"安盛天平", price:"30岁约3,000-6,000元/年", highlights:["含特需/国际部","直付网络","门诊+住院","可选牙科"], bestFor:["中高端人群","特需部需求"], score:82 },
+    { name:"中端医疗·乐健一生2026", company:"复星联合健康", price:"30岁约1,500-4,000元/年", highlights:["0免赔可选","特需部/VIP病房","门诊+住院灵活组合"], bestFor:["中端入门","0免赔需求"], score:81 },
+    { name:"百万医疗·e生保2026", company:"平安健康", price:"30岁约380元/年", highlights:["平安品牌","一般医疗200万+重疾400万","可选特需部","平安健康APP管理"], bestFor:["平安品牌偏好","综合保障"], score:83 },
+    { name:"百万医疗·微医保·长期医疗", company:"泰康在线", price:"30岁约360元/年", highlights:["20年保证续保","微信生态一键投保","智能核保便
