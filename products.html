@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品目录 — ApexCover</title>
+<style>
+:root {
+  --bg:#000;--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.06);
+  --text:#e8e8ed;--text-secondary:#98989e;--text-tertiary:#636369;
+  --blue:#5e9eff;--accent:#5e9eff;--nav-bg:rgba(0,0,0,.7);
+}
+[data-theme="light"] {
+  --bg:#fbfbfd;--surface:#fff;--border:#e5e5ea;
+  --text:#1d1d1f;--text-secondary:#6e6e73;--text-tertiary:#aeaeb2;
+  --blue:#0066cc;--accent:#0066cc;--nav-bg:rgba(251,251,253,.8);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.container{max-width:1100px;margin:0 auto;padding:0 32px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--border)}
+nav .logo{font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--text)}
+nav .logo a{color:var(--text);text-decoration:none}
+nav .logo span{color:var(--accent)}
+nav .links{display:flex;gap:24px;align-items:center}
+nav .links a{color:var(--text-secondary);text-decoration:none;font-size:14px;transition:color .2s}
+nav .links a:hover,.nav .links .active{color:var(--accent)}
+.theme-btn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.15);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#f5f5f7}
+[data-theme="light"] .theme-btn{background:#1d1d1f}
+.theme-btn:hover{opacity:.8}
+[data-theme="light"] .sun{display:none}
+html:not([data-theme="light"]) .moon{display:none}
+.hero{padding:120px 0 40px;text-align:center}
+.hero h1{font-size:clamp(36px,5vw,56px);font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+.hero p{font-size:18px;color:var(--text-secondary);margin-bottom:32px}
+.search-bar{max-width:480px;margin:0 auto 48px;position:relative}
+.search-bar input{width:100%;padding:16px 20px 16px 48px;border:1px solid var(--border);border-radius:14px;font-size:16px;font-family:inherit;background:var(--surface);color:var(--text);outline:none}
+.search-bar input:focus{border-color:var(--accent)}
+.search-bar svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:48px;flex-wrap:wrap}
+.tab{padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);transition:all .2s}
+.tab:hover{color:var(--text);border-color:var(--border-hover,#d2d2d7)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.category{margin-bottom:48px}
+.category h2{font-size:24px;font-weight:700;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .25s}
+.card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.card .name{font-size:16px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.card .company{font-size:13px;color:var(--text-tertiary);margin-bottom:12px}
+.card .highlights{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.card .highlights span{font-size:12px;padding:4px 10px;border-radius:8px;background:rgba(94,158,255,.1);color:var(--accent)}
+.card .price{font-size:12px;color:var(--text-tertiary)}
+footer{text-align:center;padding:60px 20px;color:var(--text-tertiary);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+@media(max-width:768px){.container{padding:0 20px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">Apex<span>Cover</span></a></div>
+  <div class="links">
+    <a href="index.html">首页</a>
+    <a href="learn.html">保险科普</a>
+    <a href="advisor.html">智能规划</a>
+    <a href="products.html" class="active">产品目录</a>
+  </div>
+  <button class="theme-btn" id="themeToggle">
+    <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</nav>
+
+<section class="hero"><div class="container"><h1>产品目录</h1><p>185 款在售保险产品，按险种分类浏览</p></div></section>
+
+<div class="container">
+  <div class="search-bar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="搜产品名、公司...">
+  </div>
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-cat="all">全部</div>
+    <div class="tab" data-cat="criticalIllness">🏥 重疾险</div>
+    <div class="tab" data-cat="medical">💊 医疗险</div>
+    <div class="tab" data-cat="accident">🤕 意外险</div>
+    <div class="tab" data-cat="termLife">💙 定期寿险</div>
+    <div class="tab" data-cat="savings">📈 储蓄/年金</div>
+    <div class="tab" data-cat="auto">🚗 车险</div>
+    <div class="tab" data-cat="property">🏠 家财/宠物</div>
+  </div>
+  <div id="content"></div>
+</div>
+
+<footer>ApexCover · 23 名平均从业超过十年的保险规划师给您的最好建议</footer>
+
+<script>
+// Theme
+(function(){
+  const s=localStorage.getItem('apexcover-theme');
+  if(s==='light')document.documentElement.setAttribute('data-theme','light');
+  document.getElementById('themeToggle').addEventListener('click',()=>{
+    const c=document.documentElement.getAttribute('data-theme');
+    const n=c==='light'?'dark':'light';
+    document.documentElement.setAttribute('data-theme',n);
+    localStorage.setItem('apexcover-theme',n);
+  });
+})();
+
+const PRODUCTS={
+  criticalIllness:[
+    {n:"达尔文12号",c:"复星联合健康",p:"30岁男约6,620元/年",h:["意外重疾额外赔35%","60岁后住院津贴500元","重疾赔完轻中症继续赔"]},
+    {n:"完美人生8号",c:"复星联合健康",p:"30岁女约6,330元/年",h:["女性4大特疾额外赔10%","癌症拓展金50%","妇科专项保障"]},
+    {n:"超级玛丽16号Pro",c:"君龙人寿",p:"30岁约8,000元/年",h:["首创重疾医疗金报销","三大结节专项保障","核保友善"]},
+    {n:"哪吒2号",c:"海保人寿",p:"30岁男约6,620元/年",h:["1-6类职业可投","60岁前重疾额外赔90%"]},
+    {n:"阿基米德2025",c:"太平洋人寿",p:"保30年约3,615元/年",h:["世界500强品牌","等待期仅90天","大品牌标杆"]},
+    {n:"大黄蜂17号全能版",c:"北京人寿",p:"0岁约2,500元/年",h:["癌症不限次赔付","自闭症/抑郁症保障","少儿首选"]},
+    {n:"达尔文宝贝计划15号",c:"信美相互",p:"0岁约2,698元/年",h:["核保宽松","早产/卵圆孔可投","先天性疾病可赔"]},
+    {n:"青云卫6号",c:"招商仁和(央企)",p:"0岁约3,510元/年",h:["央企品牌","白血病骨髓移植赔50万"]},
+    {n:"妈咪保贝爱常在B款",c:"复星联合健康",p:"0岁约3,109元/年",h:["白血病保障最强","孤独症关爱金"]},
+    {n:"i保·重疾险2026",c:"阳光人寿",p:"30岁约5,500元/年",h:["大品牌+性价比","轻中症赔付次数多"]},
+    {n:"守卫者8号",c:"瑞泰人寿",p:"30岁约7,500元/年",h:["重疾6次赔付","癌症多次赔","心脑血管二次赔"]},
+    {n:"康惠保2026",c:"百年人寿",p:"30岁约5,200元/年",h:["纯重疾极致低价","消费型标杆"]},
+  ],
+  medical:[
+    {n:"好医保·长期医疗(旗舰版)",c:"人保健康",p:"30岁约400元/年",h:["20年+癌症终身续保","0免赔阶梯赔付","健告宽松"]},
+    {n:"蓝医保·好医好药Pro版",c:"太平洋健康",p:"30岁约410元/年",h:["外购药不限清单","276种特药","186家私立医院"]},
+    {n:"星相守2号",c:"众安保险",p:"30岁约298元/年",h:["0免赔","外购药不限清单","特需部可选"]},
+    {n:"微医保·百万医疗险2026",c:"泰康在线",p:"30岁约350元/年",h:["微信操作便捷","600万高保额"]},
+    {n:"京东保·长期医疗险",c:"京东安联",p:"30岁约200-298元/年",h:["20年+终身续保","极致性价比"]},
+    {n:"尊享e生2026",c:"众安保险",p:"30岁约308元/年",h:["300万+600万保障","质子重离子100%"]},
+    {n:"防癌医疗险·安享一生2026",c:"平安健康",p:"30岁约150元/年",h:["癌症专项","终身保证续保","0免赔"]},
+    {n:"中端医疗·欣享人生2026",c:"MSH万欣和",p:"30岁约2,000-4,000元/年",h:["含特需/国际部","直付网络","私立医院可选"]},
+    {n:"e生保2026",c:"平安健康",p:"30岁约380元/年",h:["平安品牌","200万+400万","可选特需部"]},
+    {n:"微医保·长期医疗",c:"泰康在线",p:"30岁约360元/年",h:["20年保证续保","微信投保","智能核保"]},
+  ],
+  accident:[
+    {n:"人保大护甲8号旗舰版",c:"中国人保",p:"138-355元/年",h:["最高150万","0免赔不限社保","猝死50万"]},
+    {n:"太平洋小蜜蜂6号",c:"太平洋保险",p:"118-298元/年",h:["0免赔不限社保","节假日双倍赔"]},
+    {n:"平安小顽童7号",c:"平安产险",p:"68元/年",h:["0免赔不限社保","儿童专属","覆盖私立医院"]},
+    {n:"太平洋孝心安6号",c:"太平洋保险",p:"198元/年起",h:["50-85岁可投","骨折保障","0免赔不限社保"]},
+    {n:"小蜜蜂无畏版",c:"中国太保",p:"318元/年起",h:["1-6类职业可投","高危职业专属","含猝死"]},
+    {n:"平安小神童7号",c:"平安产险",p:"62元/年",h:["0免赔","监护人责任","极致低价"]},
+    {n:"众安孝欣保3号",c:"众安保险",p:"139元/年起",h:["0免赔不限社保","陪诊/护工服务"]},
+    {n:"平安孝福康2号",c:"平安产险",p:"256元/年",h:["免健康告知","高血压糖尿病可投"]},
+    {n:"学平险·平安少儿综合",c:"平安产险",p:"100-200元/年",h:["学生专属","意外+疾病住院"]},
+    {n:"旅游险·安联环游四海",c:"安联财险",p:"按天定价",h:["全球紧急救援","航班延误"]},
+  ],
+  termLife:[
+    {n:"擎天柱12号·泰然一生版",c:"和泰人寿",p:"30岁男约1,112元/年",h:["价格全网最低","夫妻双倍赔","免责仅3条"]},
+    {n:"定海柱8号",c:"国富人寿",p:"30岁男约1,174元/年",h:["健告最宽松","不问乙肝/结节","猝死最高赔180%"]},
+    {n:"华贵大麦2026A款",c:"华贵人寿(茅台控股)",p:"30岁男约1,213元/年",h:["最高400万保额","可选失能保障","国资背景"]},
+    {n:"大麦甜蜜家2026A款",c:"华贵人寿",p:"夫妻共保定價",h:["夫妻共保","同一意外最高1200万"]},
+    {n:"同方全球臻爱2026A",c:"同方全球人寿",p:"30岁男约1,500元/年",h:["满期返还保费","不白花保费"]},
+  ],
+  savings:[
+    {n:"岁享金生(固收型增额寿)",c:"昆仑健康",p:"趸交最低1万元",h:["IRR 1.99%行业最高","第4年回本","含护理保障"]},
+    {n:"快享福5号(分红型年金)",c:"新华人寿",p:"趸交5000元起",h:["保底1.75%行业最高","2025分红实现率152%"]},
+    {n:"星福家朱雀版(分红型增额寿)",c:"复星保德信",p:"期交5000元起",h:["连续13年分红100%+","回本约4-5年"]},
+    {n:"如意尊8.0(固收型增额寿)",c:"信泰人寿",p:"期交5000元起",h:["IRR 1.97%","核保最宽松"]},
+    {n:"泰赢家2.0(分红型增额寿)",c:"陆家嘴国泰",p:"50万元起",h:["近10年分红达成率183%","行业第一"]},
+    {n:"一生中意福享版",c:"中意人寿",p:"趸交1万元起",h:["中石油+忠利合资","20年分红记录"]},
+    {n:"颐养天年2026",c:"人保寿险",p:"期交5000元起",h:["人保大品牌","养老金年递增3%抗通胀"]},
+    {n:"颐年金2026",c:"平安人寿",p:"期交1万元起",h:["平安品牌","保证领取25年","护理险可选"]},
+    {n:"金满意足2026",c:"弘康人寿",p:"期交5000元起",h:["IRR 1.96%","互联网专属","减保灵活"]},
+  ],
+  auto:[
+    {n:"平安车险",c:"平安产险",p:"10万级约4,500元/年",h:["AI闪赔3分钟到账","新能源专属","83.7%线上结案"]},
+    {n:"人保车险",c:"中国人保",p:"10万级约4,700元/年",h:["县域覆盖率97.3%","大额人伤专业"]},
+    {n:"太平洋车险",c:"太平洋保险",p:"10万级约4,500元/年",h:["价格最低","不强制捆绑","万元以下当天到账"]},
+    {n:"平安新能源车险",c:"平安产险",p:"按车型定价",h:["电池三电专属","充电桩责任","衰减险可选"]},
+  ],
+  property:[
+    {n:"平安家庭财产险",c:"平安产险",p:"100-500元/年",h:["房屋+装修+财产","水管爆裂/盗抢/火灾"]},
+    {n:"人保家财宝",c:"中国人保",p:"88-388元/年",h:["房屋最高500万","管道破裂+水渍"]},
+    {n:"宠物医疗险·平安宠爱一生",c:"平安产险",p:"199-799元/年",h:["猫狗通用","800+定点医院","最高90%报销"]},
+    {n:"宠物险·众安宠爱保",c:"众安保险",p:"149-599元/年",h:["合作医院1000+","含第三方责任"]},
+  ]
+};
+
+const catNames={criticalIllness:"🏥 重疾险",medical:"💊 医疗险",accident:"🤕 意外险",termLife:"💙 定期寿险",savings:"📈 储蓄/年金",auto:"🚗 车险",property:"🏠 家财/宠物"};
+
+function render(cat,search){
+  const content=document.getElementById('content');
+  let html='';
+  const cats=cat==='all'?Object.keys(PRODUCTS):[cat];
+  cats.forEach(k=>{
+    let prods=PRODUCTS[k];
+    if(search){prods=prods.filter(p=>p.n.includes(search)||p.c.includes(search))}
+    if(!prods.length)return;
+    html+=`<div class="category"><h2>${catNames[k]} · ${prods.length}款</h2><div class="grid">`;
+    prods.forEach(p=>{
+      html+=`<div class="card"><div class="name">${p.n}</div><div class="company">${p.c}</div><div class="highlights">${p.h.map(h=>`<span>${h}</span>`).join('')}</div><div class="price">${p.p}</div></div>`;
+    });
+    html+=`</div></div>`;
+  });
+  content.innerHTML=html||'<p style="color:var(--text-tertiary);text-align:center;padding:60px">没有找到匹配的产品</p>';
+}
+
+document.getElementById('tabs').addEventListener('click',e=>{
+  if(!e.target.classList.contains('tab'))return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+  render(e.target.dataset.cat,document.getElementById('searchInput').value.trim());
+});
+
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input',function(){
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{
+    const active=document.querySelector('.tab.active');
+    render(active?active.dataset.cat:'all',this.value.trim());
+  },200);
+});
+
+render('all');
+</script>
+</body>
+</html>
