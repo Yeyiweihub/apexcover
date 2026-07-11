@@ -143,6 +143,11 @@ footer{text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;
   <div class="container">
     <h1>保险科普</h1>
     <p>每种保险最常见的坑，3 分钟给你讲明白</p>
+<div style="max-width:800px;margin:20px auto 0">
+  <iframe src="//player.bilibili.com/player.html?bvid=BV1MwNA6TEKb&page=1&high_quality=1" 
+    scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"
+    style="width:100%;height:450px;border-radius:16px"></iframe>
+</div>
   </div>
 </section>
 
@@ -186,6 +191,8 @@ footer{text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;
   });
 })();
 
+const BILIBILI = "https://www.bilibili.com/video/BV1MwNA6TEKb/";
+
 const VIDEOS = [
   {cat:'medical',title:'保证续保的猫腻',desc:'百万医疗险最大的卖点是保证续保20年。但20年后呢？停售了怎么办？已经理赔过还能续吗？',duration:'3:20',thumb:'🏥'},
   {cat:'medical',title:'外购药：最容易被忽视的坑',desc:'DRG改革后，越来越多的药要自己去院外买。你的医疗险报销吗？报销多少？',duration:'3:50',thumb:'💊'},
@@ -216,7 +223,7 @@ function renderVideos(filter){
   if(filter && filter !== 'all'){
     html += `<div class="category"><h2>${catNames[filter]}</h2><p class="desc">${catDescs[filter]}</p><div class="videos">`;
     videos.forEach(v => {
-      html += `<div class="video-card"><div class="thumb"><div class="bg"></div><span class="icon">${v.thumb}</span><div class="play"></div><span class="duration">${v.duration}</span></div><div class="info"><h3>${v.title}</h3><p>${v.desc}</p><div class="tag-row"><span>坑</span></div></div></div>`;
+      html += `<div class="video-card" onclick="window.open(BILIBILI)" style="cursor:pointer"><div class="thumb"><div class="bg"></div><span class="icon">${v.thumb}</span><div class="play"></div><span class="duration">${v.duration}</span></div><div class="info"><h3>${v.title}</h3><p>${v.desc}</p><div class="tag-row"><span>坑</span></div></div></div>`;
     });
     html += '</div></div>';
   } else {
@@ -225,7 +232,7 @@ function renderVideos(filter){
       if(!catVids.length) return;
       html += `<div class="category"><h2>${catNames[cat]}</h2><p class="desc">${catDescs[cat]}</p><div class="videos">`;
       catVids.forEach(v => {
-        html += `<div class="video-card"><div class="thumb"><div class="bg"></div><span class="icon">${v.thumb}</span><div class="play"></div><span class="duration">${v.duration}</span></div><div class="info"><h3>${v.title}</h3><p>${v.desc}</p><div class="tag-row"><span>坑</span></div></div></div>`;
+        html += `<div class="video-card" onclick="window.open(BILIBILI)" style="cursor:pointer"><div class="thumb"><div class="bg"></div><span class="icon">${v.thumb}</span><div class="play"></div><span class="duration">${v.duration}</span></div><div class="info"><h3>${v.title}</h3><p>${v.desc}</p><div class="tag-row"><span>坑</span></div></div></div>`;
       });
       html += '</div></div>';
     });
