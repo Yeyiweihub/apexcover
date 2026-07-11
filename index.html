@@ -410,9 +410,9 @@ footer {
         <h3>我想买保险</h3>
         <p class="desc">为自己和家人，找到合适的保障方案。不需要成为专家。</p>
         <div class="links">
-          <div>智能规划 </div>
-          <div>保险科普 </div>
-          <div>产品目录 </div>
+          <div onclick="location.href='advisor.html'" style="cursor:pointer">智能规划</div>
+          <div style="cursor:pointer">保险科普</div>
+          <div style="cursor:pointer">产品目录</div>
         </div>
       </div>
       <div class="featured reveal reveal-delay-1" data-magnetic>
@@ -559,6 +559,17 @@ input.addEventListener('input', function() {
   results.classList.add('show');
 });
 document.addEventListener('click', e => { if(!e.target.closest('.search-wrap')) results.classList.remove('show'); });
+// Make card links clickable
+document.querySelectorAll('.card, .featured').forEach(el => {
+  el.style.cursor = 'pointer';
+  el.addEventListener('click', function(e) {
+    const text = this.textContent.trim();
+    if(text.includes('智能规划')) location.href = 'advisor.html';
+  });
+});
+document.querySelectorAll('.featured .links div').forEach(el => {
+  if(el.textContent.includes('智能规划')) el.addEventListener('click', e => { e.stopPropagation(); location.href = 'advisor.html'; });
+});
 </script>
 </body>
 </html>
