@@ -117,7 +117,7 @@ footer{text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;
 <div class="container">
   <div class="video-hero">
     <div class="player">
-      <iframe src="//player.bilibili.com/player.html?bvid=BV1MwNA6TEKb&page=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+      <video src="video1.mp4" controls playsinline style="width:100%;height:540px;border-radius:20px;background:#000;outline:none"></video>
     </div>
     <div class="meta">
       <div>
@@ -136,9 +136,8 @@ footer{text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;
         <p>返本型、万能险、电话推销……这个行业靠信息不对称赚了太多钱。这一期，我们撕开它。</p>
         <span class="fv-cta">观看完整视频 →</span>
       </div>
-      <iframe src="//player.bilibili.com/player.html?bvid=BV1CNNg6EEXe&page=1&high_quality=1"
-        scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"
-        style="width:280px;height:180px;border-radius:12px;flex-shrink:0"></iframe>
+      <video src="video2.mp4" controls playsinline
+        style="width:280px;height:180px;border-radius:12px;flex-shrink:0;background:#000;outline:none"></video>
     </div>
   </div>
 
@@ -203,7 +202,7 @@ function render(filter){
   const container = document.getElementById('articles');
   let html = '<div class="articles">';
   vids.forEach((v,i) => {
-    html += `<div class="article" onclick="window.open(BILIBILI)">
+    html += `<div class="article">
       <div class="num">${String(i+1).padStart(2,'0')}</div>
       <div class="info">
         <div class="cat">${catNames[v.cat]}</div>
