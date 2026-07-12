@@ -202,7 +202,7 @@ function render(filter){
   const container = document.getElementById('articles');
   let html = '<div class="articles">';
   vids.forEach((v,i) => {
-    html += `<div class="article" data-vid="${v.vid||''}" style="${v.vid?'cursor:pointer':''}">
+    html += `<div class="article" ${v.vid?`onclick="var p=document.getElementById('mainPlayer');p.src='${v.vid}';p.scrollIntoView({behavior:'smooth'});p.play()" style="cursor:pointer"`:''}>
       <div class="num">${String(i+1).padStart(2,'0')}</div>
       <div class="info">
         <div class="cat">${catNames[v.cat]}${v.vid?` <span style="color:var(--accent);font-size:13px">▶ 观看</span>`:''}</div>
