@@ -320,6 +320,12 @@ section .lead {
 }
 .featured:hover { border-color: var(--border-hover); }
 .featured:hover::after { opacity: 1; }
+.panel-icon {
+  margin-bottom: 20px;
+  color: var(--accent);
+  opacity: .7;
+}
+
 .featured .tag {
   font-size: 12px;
   font-weight: 600;
@@ -409,6 +415,9 @@ footer {
     <div class="featured-grid">
       <div class="featured reveal">
         <div class="tag">消费者</div>
+        <div class="panel-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
         <h3>我想买保险</h3>
         <p class="desc">为自己和家人，找到合适的保障方案。</p>
         <div class="links">
@@ -419,6 +428,9 @@ footer {
       </div>
       <div class="featured reveal reveal-delay-1">
         <div class="tag">从业者</div>
+        <div class="panel-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
         <h3>我是保险从业者</h3>
         <p class="desc">提升专业能力，更精准地服务每一位客户。</p>
         <div class="links">
@@ -433,7 +445,7 @@ footer {
 </section>
 
 <footer class="reveal">
-  ApexCover · 23 名平均从业超过十年的保险规划师给您的最好建议
+  ApexCover · 让保险回归透明
 </footer>
 
 <script>
