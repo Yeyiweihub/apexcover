@@ -43,6 +43,24 @@ html:not([data-theme="light"]) .moon{display:none}
 .video-hero .meta p{font-size:15px;color:var(--text-secondary);line-height:1.6}
 .video-hero .meta .dur{font-size:13px;color:var(--text-tertiary);white-space:nowrap;padding:4px 12px;border:1px solid var(--border);border-radius:20px}
 
+.featured-video{
+  margin-bottom:80px;background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,159,67,.05));
+  border:1px solid rgba(255,107,107,.15);border-radius:20px;padding:40px;
+}
+.fv-badge{display:inline-block;font-size:13px;font-weight:600;color:#ff6b6b;margin-bottom:20px;
+  letter-spacing:.04em;text-transform:uppercase}
+.fv-content{display:flex;gap:48px;align-items:center}
+.fv-text{flex:1}
+.fv-text h2{font-size:28px;font-weight:700;margin-bottom:12px;line-height:1.3}
+.fv-text p{font-size:16px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px}
+.fv-cta{font-size:14px;color:#ff6b6b;font-weight:500;cursor:pointer}
+.fv-placeholder{flex-shrink:0;width:180px;height:120px;background:rgba(255,107,107,.1);
+  border:1px solid rgba(255,107,107,.2);border-radius:14px;
+  display:flex;align-items:center;justify-content:center}
+.fv-play{width:48px;height:48px;border-radius:50%;background:rgba(255,107,107,.2);
+  display:flex;align-items:center;justify-content:center;font-size:18px;color:#ff6b6b}
+@media(max-width:768px){.fv-content{flex-direction:column}.fv-placeholder{width:100%}}
+
 .section{margin-bottom:100px}
 .section h2{font-size:28px;font-weight:700;margin-bottom:8px}
 .section .lead{font-size:15px;color:var(--text-secondary);margin-bottom:36px}
@@ -107,6 +125,20 @@ footer{text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;
         <p>风险共担是保险的本质。理解这一点，你就比 90% 的消费者更懂保险。</p>
       </div>
       <div class="dur">2 分 17 秒</div>
+    </div>
+  </div>
+
+  <div class="featured-video">
+    <div class="fv-badge">🔥 深度揭露</div>
+    <div class="fv-content">
+      <div class="fv-text">
+        <h2>你所知道的保险知识，90% 是错的</h2>
+        <p>返本型、万能险、电话推销……这个行业靠信息不对称赚了太多钱。这一期，我们撕开它。</p>
+        <span class="fv-cta">观看完整视频 →</span>
+      </div>
+      <div class="fv-placeholder">
+        <div class="fv-play">▶</div>
+      </div>
     </div>
   </div>
 
