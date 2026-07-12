@@ -143,7 +143,7 @@ footer{text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;
 
   <div class="section">
     <div class="tabs" id="tabs">
-      <div class="tab active" data-cat="all">全部</div>
+      
       <div class="tab" data-cat="medical">医疗险</div>
       <div class="tab" data-cat="critical">重疾险</div>
       <div class="tab" data-cat="accident">意外险</div>
@@ -197,7 +197,7 @@ const catNames={medical:'医疗险',critical:'重疾险',accident:'意外险',li
 
 function render(filter){
   let vids = VIDEOS;
-  if(filter && filter!=='all') vids = VIDEOS.filter(v=>v.cat===filter);
+  if(filter) vids = VIDEOS.filter(v=>v.cat===filter);
 
   const container = document.getElementById('articles');
   let html = '<div class="articles">';
@@ -218,7 +218,7 @@ document.getElementById('tabs').addEventListener('click', e => {
   render(e.target.dataset.cat);
 });
 
-render('all');
+render('medical');
 
 // Article click → play video
 document.getElementById('articles').addEventListener('click', e => {
