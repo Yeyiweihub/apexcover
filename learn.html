@@ -213,6 +213,17 @@ function render(filter){
   });
   html += '</div>';
   container.innerHTML = html;
+  // Add click handlers for video articles
+  container.querySelectorAll('.article[data-vid]').forEach(el => {
+    el.addEventListener('click', function() {
+      const vid = this.dataset.vid;
+      if (!vid) return;
+      const player = document.getElementById('mainPlayer');
+      player.src = vid;
+      player.scrollIntoView({behavior:'smooth'});
+      player.play();
+    });
+  });
 }
 
 document.getElementById('tabs').addEventListener('click', e => {
