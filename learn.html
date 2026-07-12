@@ -202,15 +202,13 @@ function render(filter){
   const container = document.getElementById('articles');
   let html = '<div class="articles">';
   vids.forEach((v,i) => {
-    const playBtn = v.vid ? `<span style="color:var(--accent);font-size:13px;cursor:pointer;white-space:nowrap" onclick="event.stopPropagation();document.getElementById('mainPlayer').src='${v.vid}';document.getElementById('mainPlayer').scrollIntoView({behavior:'smooth'});document.getElementById('mainPlayer').play()">▶ 观看</span>` : '';
-    html += `<div class="article"${v.vid?` onclick="document.getElementById('mainPlayer').src='${v.vid}';document.getElementById('mainPlayer').scrollIntoView({behavior:'smooth'});document.getElementById('mainPlayer').play()" style="cursor:pointer"`:''}>
+    html += `<div class="article" data-vid="${v.vid||''}" style="${v.vid?'cursor:pointer':''}">
       <div class="num">${String(i+1).padStart(2,'0')}</div>
       <div class="info">
-        <div class="cat">${catNames[v.cat]}${playBtn?`<span style="margin-left:8px">${playBtn}</span>`:''}</div>
+        <div class="cat">${catNames[v.cat]}${v.vid?` <span style="color:var(--accent);font-size:13px">▶ 观看</span>`:''}</div>
         <h4>${v.title}</h4>
         <p>${v.desc}</p>
       </div>
-      ${v.vid?'<div class="arrow" style="opacity:.5">▶</div>':''}
     </div>`;
   });
   html += '</div>';
@@ -225,6 +223,18 @@ document.getElementById('tabs').addEventListener('click', e => {
 });
 
 render('all');
+
+// Article click → play video
+document.getElementById('articles').addEventListener('click', e => {
+  const article = e.target.closest('.article');
+  if (!article) return;
+  const vid = article.dataset.vid;
+  if (!vid) return;
+  const player = document.getElementById('mainPlayer');
+  player.src = vid;
+  player.scrollIntoView({behavior:'smooth'});
+  player.play();
+});
 
 // Set default volume to 30%
 document.querySelectorAll('video').forEach(v => v.volume = 0.3);
