@@ -204,7 +204,7 @@ function render(filter){
   vids.forEach((v,i) => {
     const link = v.vid ? `<a href="${v.vid}" style="text-decoration:none;color:inherit">` : '';
     const linkEnd = v.vid ? '</a>' : '';
-    html += link + '<div class="article" style="' + (v.vid?'cursor:pointer':'') + '"><div class="num">' + String(i+1).padStart(2,'0') + '</div><div class="info"><div class="cat">' + catNames[v.cat] + (v.vid?' <span style="color:var(--accent);font-size:13px">? ??</span>':'') + '</div><h4>' + v.title + '</h4><p>' + v.desc + '</p></div></div>' + linkEnd;
+    html += link + '<div class="article" style="' + (v.vid?'cursor:pointer':'') + '"><div class="num">' + String(i+1).padStart(2,'0') + '</div><div class="info"><div class="cat">' + catNames[v.cat] + (v.vid?' <span style="color:var(--accent);font-size:13px">▶ 观看</span>':'') + '</div><h4>' + v.title + '</h4><p>' + v.desc + '</p></div></div>' + linkEnd;
   });
   html += '</div>';
   container.innerHTML = html;
