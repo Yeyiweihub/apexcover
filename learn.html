@@ -177,9 +177,9 @@ footer{text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;
 const BILIBILI = "https://www.bilibili.com/video/BV1MwNA6TEKb/";
 
 const VIDEOS = [
-  {cat:'medical',title:'保证续保的猫腻',desc:'百万医疗险最大的卖点是保证续保20年。但20年后呢？停售了怎么办？已经理赔过还能续吗？'},
-  {cat:'medical',title:'外购药：最容易被忽视的坑',desc:'DRG改革后，越来越多的药要自己去院外买。你的医疗险报销吗？报销多少？'},
-  {cat:'medical',title:'免赔额陷阱',desc:'0免赔 vs 1万免赔，差了不止一万块。算一笔账你就明白了。'},
+  {cat:'medical',title:'保证续保的猫腻',desc:'百万医疗险最大的卖点是保证续保20年。但20年后呢？停售了怎么办？理赔后续保吗？',vid:'video3.mp4'},
+  {cat:'medical',title:'外购药：最容易被忽视的坑',desc:'DRG改革后，医院开的药要去院外买。你的医疗险报销吗？报销多少？',vid:'video4.mp4'},
+  {cat:'medical',title:'免赔额陷阱',desc:'0免赔 vs 1万免赔，差了不止一万块。算一笔账你就明白了。',vid:'video5.mp4'},
   {cat:'critical',title:'病种凑数：100种重疾全是套路',desc:'重疾险保100种、120种……数字越大越好？监管规定的28种已经覆盖95%。'},
   {cat:'critical',title:'返还型重疾险划算吗？',desc:'有病赔钱，没病返本。听着很完美，算完IRR你就笑不出来了。'},
   {cat:'critical',title:'轻症理赔门槛有多高？',desc:'冠状动脉介入术——必须开胸才赔。微创不算。这些细节没人告诉你。'},
@@ -202,14 +202,15 @@ function render(filter){
   const container = document.getElementById('articles');
   let html = '<div class="articles">';
   vids.forEach((v,i) => {
-    html += `<div class="article">
+    const playBtn = v.vid ? `<span style="color:var(--accent);font-size:13px;cursor:pointer;white-space:nowrap" onclick="event.stopPropagation();document.getElementById('mainPlayer').src='${v.vid}';document.getElementById('mainPlayer').scrollIntoView({behavior:'smooth'});document.getElementById('mainPlayer').play()">▶ 观看</span>` : '';
+    html += `<div class="article"${v.vid?` onclick="document.getElementById('mainPlayer').src='${v.vid}';document.getElementById('mainPlayer').scrollIntoView({behavior:'smooth'});document.getElementById('mainPlayer').play()" style="cursor:pointer"`:''}>
       <div class="num">${String(i+1).padStart(2,'0')}</div>
       <div class="info">
-        <div class="cat">${catNames[v.cat]}</div>
+        <div class="cat">${catNames[v.cat]}${playBtn?`<span style="margin-left:8px">${playBtn}</span>`:''}</div>
         <h4>${v.title}</h4>
         <p>${v.desc}</p>
       </div>
-      <div class="arrow">→</div>
+      ${v.vid?'<div class="arrow" style="opacity:.5">▶</div>':''}
     </div>`;
   });
   html += '</div>';
