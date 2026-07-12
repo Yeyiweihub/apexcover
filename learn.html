@@ -224,6 +224,9 @@ document.getElementById('tabs').addEventListener('click', e => {
 });
 
 render('all');
+
+// Set default volume to 30%
+document.querySelectorAll('video').forEach(v => v.volume = 0.3);
 </script>
 </body>
 </html>
